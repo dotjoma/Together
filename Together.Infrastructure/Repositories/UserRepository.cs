@@ -57,12 +57,18 @@ public class UserRepository : IUserRepository
 
     public async Task<IEnumerable<User>> SearchUsersAsync(string query, int limit)
     {
-        var normalizedQuery = query.ToLower();
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return Enumerable.Empty<User>();
+        }
+
+        var normalizedQuery = query.Trim().ToLower();
 
         return await _context.Users
             .Where(u => u.Username.ToLower().Contains(normalizedQuery) || 
                        u.Email.Value.ToLower().Contains(normalizedQuery))
             .Where(u => u.Visibility == ProfileVisibility.Public)
+            .OrderBy(u => u.Username)
             .Take(limit)
             .ToListAsync();
     }

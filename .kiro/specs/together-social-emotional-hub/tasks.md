@@ -268,7 +268,6 @@
 
 - [x] 15. Implement love streak tracking
 
-
 - [x] 15.1 Create love streak service
 
   - Implement RecordInteractionAsync tracking daily interactions
@@ -287,8 +286,10 @@
   - Add interaction type indicators
   - _Requirements: 7.3, 7.4_
 
-- [ ] 16. Implement challenge system
-- [ ] 16.1 Create challenge generator service
+- [x] 16. Implement challenge system
+
+
+- [x] 16.1 Create challenge generator service
 
   - Implement challenge factory with categories (communication, fun, appreciation, learning)
   - Add GenerateDailyChallengeAsync running at midnight
@@ -297,7 +298,7 @@
   - Add ArchiveExpiredChallengesAsync for 24-hour expiration
   - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5_
 
-- [ ] 16.2 Build challenge UI
+- [x] 16.2 Build challenge UI
 
   - Create ChallengeCardView displaying challenge details
   - Implement ChallengeViewModel with completion tracking

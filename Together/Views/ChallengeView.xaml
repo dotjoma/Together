@@ -1,0 +1,168 @@
+<UserControl x:Class="Together.Presentation.Views.ChallengeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:controls="clr-namespace:Together.Presentation.Controls"
+             xmlns:converters="clr-namespace:Together.Presentation.Converters">
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <converters:InverseBooleanConverter x:Key="InverseBool"/>
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVis"/>
+        <converters:StringToVisibilityConverter x:Key="StringToVis"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header with Score -->
+        <materialDesign:Card Grid.Row="0" Margin="16,16,16,8" Padding="16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Couple Challenges" 
+                               FontSize="24" 
+                               FontWeight="Bold"
+                               Margin="0,0,0,4"/>
+                    <TextBlock Text="Complete challenges together to strengthen your bond" 
+                               FontSize="14"
+                               Foreground="{DynamicResource MaterialDesignBodyLight}"/>
+                </StackPanel>
+
+                <!-- Couple Score -->
+                <Border Grid.Column="1" 
+                        Background="{DynamicResource PrimaryHueMidBrush}"
+                        CornerRadius="8"
+                        Padding="16,8"
+                        VerticalAlignment="Center">
+                    <StackPanel>
+                        <TextBlock Text="Total Score" 
+                                   FontSize="12"
+                                   Foreground="White"
+                                   HorizontalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <materialDesign:PackIcon Kind="Star" 
+                                                   Foreground="#FFD700"
+                                                   Width="24"
+                                                   Height="24"
+                                                   VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding CoupleScore}"
+                                       FontSize="28"
+                                       FontWeight="Bold"
+                                       Foreground="White"
+                                       Margin="4,0,0,0"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </materialDesign:Card>
+
+        <!-- Action Buttons -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="16,0,16,8">
+            <Button Command="{Binding GenerateNewChallengeCommand}"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Margin="0,0,8,0"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Plus" 
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
+                    <TextBlock Text="NEW CHALLENGE" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <Button Command="{Binding CompleteChallengeCommand}"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Margin="0,0,8,0"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Check" 
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
+                    <TextBlock Text="COMPLETE" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <Button Command="{Binding RefreshCommand}"
+                    Style="{StaticResource MaterialDesignIconButton}"
+                    ToolTip="Refresh"
+                    IsEnabled="{Binding IsLoading, Converter={StaticResource InverseBool}}">
+                <materialDesign:PackIcon Kind="Refresh"/>
+            </Button>
+        </StackPanel>
+
+        <!-- Challenges List -->
+        <Grid Grid.Row="2" Margin="16,0,16,16">
+            <!-- Loading Indicator -->
+            <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                         IsIndeterminate="True"
+                         Width="50"
+                         Height="50"
+                         HorizontalAlignment="Center"
+                         VerticalAlignment="Center"
+                         Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}"/>
+
+            <!-- Error Message -->
+            <TextBlock Text="{Binding ErrorMessage}"
+                       Foreground="#F44336"
+                       FontSize="14"
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="16"
+                       Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVis}}"/>
+
+            <!-- Challenges List -->
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                         Visibility="{Binding IsLoading, Converter={StaticResource InverseBoolToVis}}">
+                <ListBox ItemsSource="{Binding ActiveChallenges}"
+                         SelectedItem="{Binding SelectedChallenge}"
+                         Background="Transparent"
+                         BorderThickness="0">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Padding" Value="0"/>
+                            <Setter Property="Margin" Value="0"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <controls:ChallengeCard DataContext="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
+
+            <!-- Empty State -->
+            <StackPanel HorizontalAlignment="Center" 
+                       VerticalAlignment="Center"
+                       Visibility="{Binding HasNoChallenges, Converter={StaticResource BoolToVis}}">
+                <materialDesign:PackIcon Kind="TrophyOutline" 
+                                       Width="64" 
+                                       Height="64"
+                                       Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                       HorizontalAlignment="Center"/>
+                <TextBlock Text="No active challenges" 
+                          FontSize="18"
+                          Foreground="{DynamicResource MaterialDesignBodyLight}"
+                          Margin="0,16,0,8"
+                          HorizontalAlignment="Center"/>
+                <TextBlock Text="Generate a new challenge to get started!" 
+                          FontSize="14"
+                          Foreground="{DynamicResource MaterialDesignBodyLight}"
+                          HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

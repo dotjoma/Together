@@ -203,3 +203,7 @@ D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\EventFormView.baml
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\CalendarView.g.cs
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\EventFormView.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Controls\StreakWidget.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Controls\StreakWidget.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\StreakHistoryView.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\StreakHistoryView.baml

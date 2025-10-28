@@ -5,17 +5,15 @@ using System.Windows.Data;
 
 namespace Together.Presentation.Converters;
 
-public class NullToVisibilityConverter : IValueConverter
+public class NotZeroToVisibilityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        bool isInverse = parameter?.ToString()?.Equals("Inverse", StringComparison.OrdinalIgnoreCase) ?? false;
-        bool isNull = value == null;
-        
-        if (isInverse)
-            isNull = !isNull;
-            
-        return isNull ? Visibility.Collapsed : Visibility.Visible;
+        if (value is int count)
+        {
+            return count > 0 ? Visibility.Visible : Visibility.Collapsed;
+        }
+        return Visibility.Collapsed;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

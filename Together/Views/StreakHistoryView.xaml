@@ -1,0 +1,144 @@
+<UserControl x:Class="Together.Presentation.Views.StreakHistoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:controls="clr-namespace:Together.Presentation.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="Love Streak" 
+                      Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                      VerticalAlignment="Center"/>
+            <Button Style="{StaticResource MaterialDesignIconButton}"
+                   Command="{Binding RefreshCommand}"
+                   HorizontalAlignment="Right"
+                   ToolTip="Refresh">
+                <materialDesign:PackIcon Kind="Refresh"/>
+            </Button>
+        </Grid>
+
+        <!-- Streak Widget -->
+        <controls:StreakWidget Grid.Row="1" 
+                              DataContext="{Binding StreakWidget}"
+                              Visibility="{Binding StreakWidget, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=Inverse}"/>
+
+        <!-- Interaction History -->
+        <materialDesign:Card Grid.Row="2" Margin="8,16,8,0" Padding="16">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,16">
+                    <materialDesign:PackIcon Kind="History" 
+                                           Width="24" 
+                                           Height="24"
+                                           VerticalAlignment="Center"/>
+                    <TextBlock Text="Recent Interactions" 
+                              Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                              Margin="8,0,0,0"
+                              VerticalAlignment="Center"/>
+                </StackPanel>
+
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding InteractionHistory}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                       BorderThickness="0,0,0,1"
+                                       Padding="0,12">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Icon -->
+                                        <Border Grid.Column="0"
+                                               Width="40"
+                                               Height="40"
+                                               CornerRadius="20"
+                                               Margin="0,0,12,0"
+                                               VerticalAlignment="Top">
+                                            <Border.Background>
+                                                <SolidColorBrush Color="{Binding TypeColor}" Opacity="0.2"/>
+                                            </Border.Background>
+                                            <materialDesign:PackIcon Kind="{Binding TypeIcon}"
+                                                                   Width="24"
+                                                                   Height="24"
+                                                                   HorizontalAlignment="Center"
+                                                                   VerticalAlignment="Center">
+                                                <materialDesign:PackIcon.Foreground>
+                                                    <SolidColorBrush Color="{Binding TypeColor}"/>
+                                                </materialDesign:PackIcon.Foreground>
+                                            </materialDesign:PackIcon>
+                                        </Border>
+
+                                        <!-- Content -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Description}" 
+                                                      Style="{StaticResource MaterialDesignBody1TextBlock}"/>
+                                            <TextBlock Text="{Binding Type}" 
+                                                      Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                                      Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                                      Margin="0,2,0,0"/>
+                                        </StackPanel>
+
+                                        <!-- Timestamp -->
+                                        <TextBlock Grid.Column="2"
+                                                  Text="{Binding RelativeTime}"
+                                                  Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                                  Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                                  VerticalAlignment="Center"
+                                                  Margin="12,0,0,0"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <!-- Empty State -->
+                <StackPanel Grid.Row="1"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Visibility="{Binding InteractionHistory.Count, Converter={StaticResource ZeroToVisibilityConverter}}">
+                    <materialDesign:PackIcon Kind="ClockOutline"
+                                           Width="64"
+                                           Height="64"
+                                           Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                           HorizontalAlignment="Center"/>
+                    <TextBlock Text="No interactions yet"
+                              Style="{StaticResource MaterialDesignBody1TextBlock}"
+                              Foreground="{DynamicResource MaterialDesignBodyLight}"
+                              HorizontalAlignment="Center"
+                              Margin="0,16,0,0"/>
+                    <TextBlock Text="Start interacting with your partner to build your streak!"
+                              Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                              Foreground="{DynamicResource MaterialDesignBodyLight}"
+                              HorizontalAlignment="Center"
+                              TextAlignment="Center"
+                              Margin="0,8,0,0"/>
+                </StackPanel>
+
+                <!-- Loading Indicator -->
+                <ProgressBar Grid.Row="1"
+                           IsIndeterminate="True"
+                           Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
+                           VerticalAlignment="Center"/>
+            </Grid>
+        </materialDesign:Card>
+    </Grid>
+</UserControl>

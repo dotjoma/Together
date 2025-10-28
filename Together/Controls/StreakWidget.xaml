@@ -1,0 +1,150 @@
+<UserControl x:Class="Together.Presentation.Controls.StreakWidget"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="350">
+    <UserControl.Resources>
+        <Storyboard x:Key="CelebrationAnimation">
+            <DoubleAnimation Storyboard.TargetName="CelebrationBorder"
+                           Storyboard.TargetProperty="Opacity"
+                           From="0" To="1" Duration="0:0:0.5"/>
+            <DoubleAnimation Storyboard.TargetName="CelebrationBorder"
+                           Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                           From="0.8" To="1.0" Duration="0:0:0.5">
+                <DoubleAnimation.EasingFunction>
+                    <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="CelebrationBorder"
+                           Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                           From="0.8" To="1.0" Duration="0:0:0.5">
+                <DoubleAnimation.EasingFunction>
+                    <BackEase EasingMode="EaseOut" Amplitude="0.3"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
+    
+    <materialDesign:Card Padding="16" Margin="8">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,12">
+                <materialDesign:PackIcon Kind="Fire" 
+                                       Width="24" 
+                                       Height="24"
+                                       VerticalAlignment="Center"
+                                       Foreground="#FF6B35"/>
+                <TextBlock Text="Love Streak" 
+                          Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                          Margin="8,0,0,0"
+                          VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Streak Display -->
+            <StackPanel Grid.Row="1" 
+                       HorizontalAlignment="Center" 
+                       Margin="0,8">
+                <TextBlock Text="{Binding StreakDisplay}" 
+                          Style="{StaticResource MaterialDesignHeadline3TextBlock}"
+                          FontWeight="Bold"
+                          Foreground="#FF6B35"
+                          HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding StreakMessage}" 
+                          Style="{StaticResource MaterialDesignBody2TextBlock}"
+                          TextAlignment="Center"
+                          Foreground="{DynamicResource MaterialDesignBodyLight}"
+                          Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <!-- Progress to Next Milestone -->
+            <StackPanel Grid.Row="2" Margin="0,12,0,8" Visibility="{Binding NextMilestone, Converter={StaticResource NotZeroToVisibilityConverter}}">
+                <TextBlock Text="{Binding NextMilestone, StringFormat='Next milestone: {0} days'}" 
+                          Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                          Margin="0,0,0,4"/>
+                <ProgressBar Value="{Binding ProgressToNextMilestone}" 
+                           Maximum="100"
+                           Height="8"
+                           Foreground="#FF6B35"/>
+            </StackPanel>
+
+            <!-- Achieved Milestones -->
+            <StackPanel Grid.Row="3" Margin="0,8,0,0">
+                <TextBlock Text="Milestones Achieved" 
+                          Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                          Margin="0,0,0,8"
+                          Visibility="{Binding AchievedMilestones.Count, Converter={StaticResource NotZeroToVisibilityConverter}}"/>
+                <ItemsControl ItemsSource="{Binding AchievedMilestones}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <materialDesign:Chip Content="{Binding StringFormat='{}{0} days'}"
+                                               Margin="4,2"
+                                               IconBackground="#FF6B35"
+                                               IconForeground="White">
+                                <materialDesign:Chip.Icon>
+                                    <materialDesign:PackIcon Kind="Trophy"/>
+                                </materialDesign:Chip.Icon>
+                            </materialDesign:Chip>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+            <!-- Loading Indicator -->
+            <ProgressBar Grid.Row="4" 
+                        IsIndeterminate="True"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Margin="0,8,0,0"/>
+
+            <!-- Celebration Overlay -->
+            <Border x:Name="CelebrationBorder"
+                   Grid.Row="0" Grid.RowSpan="5"
+                   Background="#F0FFF4E6"
+                   CornerRadius="4"
+                   Visibility="{Binding ShowCelebration, Converter={StaticResource BooleanToVisibilityConverter}}"
+                   Opacity="0"
+                   RenderTransformOrigin="0.5,0.5">
+                <Border.RenderTransform>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Border.RenderTransform>
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <materialDesign:PackIcon Kind="PartyPopper" 
+                                           Width="64" 
+                                           Height="64"
+                                           Foreground="#FF6B35"
+                                           HorizontalAlignment="Center"/>
+                    <TextBlock Text="Milestone Achieved!" 
+                              Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                              FontWeight="Bold"
+                              HorizontalAlignment="Center"
+                              Margin="0,16,0,8"/>
+                    <TextBlock Text="{Binding StreakMessage}" 
+                              Style="{StaticResource MaterialDesignBody1TextBlock}"
+                              TextAlignment="Center"
+                              HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </materialDesign:Card>
+    
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard Storyboard="{StaticResource CelebrationAnimation}"/>
+        </EventTrigger>
+    </UserControl.Triggers>
+</UserControl>

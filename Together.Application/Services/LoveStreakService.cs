@@ -131,16 +131,16 @@ public class LoveStreakService : ILoveStreakService
         // Create notifications for both partners
         var notification1 = new Notification(
             connection.User1Id,
-            "Love Streak Milestone",
+            "LoveStreakMilestone",
             message,
-            "LoveStreak"
+            connection.Id
         );
 
         var notification2 = new Notification(
             connection.User2Id,
-            "Love Streak Milestone",
+            "LoveStreakMilestone",
             message,
-            "LoveStreak"
+            connection.Id
         );
 
         await _notificationRepository.AddAsync(notification1);
@@ -153,16 +153,16 @@ public class LoveStreakService : ILoveStreakService
 
         var notification1 = new Notification(
             connection.User1Id,
-            "Love Streak Reset",
+            "LoveStreakReset",
             message,
-            "LoveStreak"
+            connection.Id
         );
 
         var notification2 = new Notification(
             connection.User2Id,
-            "Love Streak Reset",
+            "LoveStreakReset",
             message,
-            "LoveStreak"
+            connection.Id
         );
 
         await _notificationRepository.AddAsync(notification1);

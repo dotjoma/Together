@@ -1,0 +1,260 @@
+<UserControl x:Class="Together.Views.JournalView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converters="clr-namespace:Together.Presentation.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <converters:StringToVisibilityConverter x:Key="StringToVis"/>
+        <converters:InverseBooleanConverter x:Key="InverseBoolConverter"/>
+        <converters:ZeroToVisibilityConverter x:Key="ZeroToVisibilityConverter"/>
+        <converters:FirstLetterConverter x:Key="FirstLetterConverter"/>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <materialDesign:Card Grid.Row="0" Margin="16,16,16,8">
+            <Grid Margin="16">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" 
+                          Text="Shared Journal" 
+                          Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                          Margin="0,0,0,8"/>
+
+                <TextBlock Grid.Row="1" 
+                          Text="Share your thoughts and experiences with your partner"
+                          Style="{StaticResource MaterialDesignBody2TextBlock}"
+                          Foreground="{DynamicResource MaterialDesignBodyLight}"/>
+            </Grid>
+        </materialDesign:Card>
+
+        <!-- Main Content -->
+        <ScrollViewer Grid.Row="1" 
+                     VerticalScrollBarVisibility="Auto"
+                     Margin="16,0,16,16">
+            <StackPanel>
+                <!-- Entry Creation Card -->
+                <materialDesign:Card Margin="0,0,0,16">
+                    <StackPanel Margin="16">
+                        <TextBlock Text="Write a new entry" 
+                                  Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                  Margin="0,0,0,12"/>
+
+                        <!-- Content Input -->
+                        <TextBox Text="{Binding EntryCreationViewModel.Content, UpdateSourceTrigger=PropertyChanged}"
+                                AcceptsReturn="True"
+                                TextWrapping="Wrap"
+                                MinHeight="100"
+                                MaxHeight="200"
+                                materialDesign:HintAssist.Hint="What's on your mind?"
+                                Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                Margin="0,0,0,12"/>
+
+                        <!-- Image Preview -->
+                        <Border BorderBrush="{DynamicResource MaterialDesignDivider}"
+                               BorderThickness="1"
+                               CornerRadius="4"
+                               Margin="0,0,0,12"
+                               Visibility="{Binding EntryCreationViewModel.ImageUrl, Converter={StaticResource StringToVis}}">
+                            <Grid>
+                                <Image Source="{Binding EntryCreationViewModel.ImageUrl}"
+                                      MaxHeight="200"
+                                      Stretch="Uniform"
+                                      Margin="8"/>
+                                <Button Style="{StaticResource MaterialDesignIconButton}"
+                                       Command="{Binding EntryCreationViewModel.RemoveImageCommand}"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Top"
+                                       Margin="8">
+                                    <materialDesign:PackIcon Kind="Close"/>
+                                </Button>
+                            </Grid>
+                        </Border>
+
+                        <!-- Error Message -->
+                        <TextBlock Text="{Binding EntryCreationViewModel.ErrorMessage}"
+                                  Foreground="{DynamicResource MaterialDesignValidationErrorBrush}"
+                                  Visibility="{Binding EntryCreationViewModel.ErrorMessage, Converter={StaticResource StringToVis}}"
+                                  Margin="0,0,0,12"/>
+
+                        <!-- Action Buttons -->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <Button Style="{StaticResource MaterialDesignOutlinedButton}"
+                                   Command="{Binding EntryCreationViewModel.SelectImageCommand}"
+                                   Margin="0,0,8,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Image" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="Add Image"/>
+                                </StackPanel>
+                            </Button>
+
+                            <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                   Command="{Binding EntryCreationViewModel.CreateEntryCommand}"
+                                   IsEnabled="{Binding EntryCreationViewModel.IsCreating, Converter={StaticResource InverseBoolConverter}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Send" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                    <TextBlock Text="Post Entry"/>
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </materialDesign:Card>
+
+                <!-- Loading Indicator -->
+                <ProgressBar IsIndeterminate="True"
+                            Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}"
+                            Margin="0,0,0,16"/>
+
+                <!-- Error Message -->
+                <materialDesign:Card Margin="0,0,0,16"
+                                    Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVis}}"
+                                    Background="{DynamicResource MaterialDesignValidationErrorBrush}">
+                    <TextBlock Text="{Binding ErrorMessage}"
+                              Foreground="White"
+                              Margin="16"/>
+                </materialDesign:Card>
+
+                <!-- Journal Entries Timeline -->
+                <ItemsControl ItemsSource="{Binding Entries}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <materialDesign:Card Margin="0,0,0,16">
+                                <Grid Margin="16">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Author Header -->
+                                    <Grid Grid.Row="0" Margin="0,0,0,12">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <!-- Author Avatar -->
+                                        <Border Grid.Column="0"
+                                               Width="40"
+                                               Height="40"
+                                               CornerRadius="20"
+                                               Margin="0,0,12,0">
+                                            <Border.Style>
+                                                <Style TargetType="Border">
+                                                    <Setter Property="Background" Value="{DynamicResource MaterialDesignDivider}"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding AuthorProfilePicture, Converter={StaticResource StringToVisibilityConverter}}" Value="Visible">
+                                                            <Setter Property="Background">
+                                                                <Setter.Value>
+                                                                    <ImageBrush ImageSource="{Binding AuthorProfilePicture}" Stretch="UniformToFill"/>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <TextBlock Text="{Binding AuthorName, Converter={StaticResource FirstLetterConverter}}"
+                                                      FontSize="18"
+                                                      FontWeight="Bold"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"
+                                                      Visibility="{Binding AuthorProfilePicture, Converter={StaticResource StringToVisibilityConverter}, ConverterParameter=Inverse}"/>
+                                        </Border>
+
+                                        <!-- Author Info -->
+                                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding AuthorName}"
+                                                      Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
+                                            <TextBlock Text="{Binding FormattedDate}"
+                                                      Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                                      Foreground="{DynamicResource MaterialDesignBodyLight}"/>
+                                        </StackPanel>
+
+                                        <!-- Read Indicator & Delete Button -->
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                            <!-- Read Indicator -->
+                                            <materialDesign:PackIcon Kind="CheckCircle"
+                                                                    Foreground="{DynamicResource PrimaryHueMidBrush}"
+                                                                    VerticalAlignment="Center"
+                                                                    Margin="0,0,8,0"
+                                                                    ToolTip="Read by partner"
+                                                                    Visibility="{Binding IsReadByPartner, Converter={StaticResource BoolToVis}}"/>
+
+                                            <!-- Delete Button -->
+                                            <Button Style="{StaticResource MaterialDesignIconButton}"
+                                                   Command="{Binding DeleteCommand}"
+                                                   Visibility="{Binding IsOwnEntry, Converter={StaticResource BoolToVis}}"
+                                                   ToolTip="Delete entry">
+                                                <materialDesign:PackIcon Kind="Delete"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+
+                                    <!-- Content -->
+                                    <TextBlock Grid.Row="1"
+                                              Text="{Binding Content}"
+                                              TextWrapping="Wrap"
+                                              Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                              Margin="0,0,0,12"/>
+
+                                    <!-- Image -->
+                                    <Border Grid.Row="2"
+                                           BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                           BorderThickness="1"
+                                           CornerRadius="4"
+                                           Margin="0,0,0,12"
+                                           Visibility="{Binding ImageUrl, Converter={StaticResource StringToVis}}">
+                                        <Image Source="{Binding ImageUrl}"
+                                              MaxHeight="400"
+                                              Stretch="Uniform"/>
+                                    </Border>
+
+                                    <!-- Deleting Indicator -->
+                                    <ProgressBar Grid.Row="3"
+                                                IsIndeterminate="True"
+                                                Visibility="{Binding IsDeleting, Converter={StaticResource BoolToVis}}"/>
+                                </Grid>
+                            </materialDesign:Card>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Empty State -->
+                <materialDesign:Card Visibility="{Binding Entries.Count, Converter={StaticResource ZeroToVisibilityConverter}}">
+                    <StackPanel Margin="32" HorizontalAlignment="Center">
+                        <materialDesign:PackIcon Kind="BookOpen"
+                                                Width="64"
+                                                Height="64"
+                                                HorizontalAlignment="Center"
+                                                Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                                Margin="0,0,0,16"/>
+                        <TextBlock Text="No journal entries yet"
+                                  Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                  HorizontalAlignment="Center"
+                                  Margin="0,0,0,8"/>
+                        <TextBlock Text="Start sharing your thoughts with your partner"
+                                  Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                  Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                  HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </materialDesign:Card>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

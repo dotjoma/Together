@@ -168,7 +168,6 @@
 
 - [x] 10. Implement couple connection system
 
-
 - [x] 10.1 Create couple connection service
 
   - Implement SendConnectionRequestAsync creating pending requests
@@ -185,8 +184,9 @@
   - Display current connection status
   - _Requirements: 2.1, 2.2, 2.3_
 
-- [ ] 11. Implement shared journal
-- [ ] 11.1 Create journal service and repository
+- [x] 11. Implement shared journal
+
+- [x] 11.1 Create journal service and repository
 
   - Implement CreateJournalEntryAsync with timestamp and author tracking
   - Add image attachment support (5MB limit)
@@ -195,7 +195,7 @@
   - Create DeleteJournalEntryAsync
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
 
-- [ ] 11.2 Build shared journal UI
+- [x] 11.2 Build shared journal UI
 
   - Create JournalView displaying entries in timeline format
   - Implement JournalEntryViewModel with create/edit modes
@@ -204,8 +204,9 @@
   - Show author information and timestamps
   - _Requirements: 3.1, 3.2, 3.3_
 
-- [ ] 12. Implement mood tracking
-- [ ] 12.1 Create mood tracking service
+- [x] 12. Implement mood tracking
+
+- [x] 12.1 Create mood tracking service
 
   - Implement CreateMoodEntryAsync with mood type and notes
   - Create GetMoodHistoryAsync returning 30 days of data
@@ -214,7 +215,8 @@
   - Create partner notification for negative moods
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
 
-- [ ] 12.2 Build mood tracking UI
+- [x] 12.2 Build mood tracking UI
+
 
   - Create MoodSelectorView with emoji-based mood selection
   - Implement MoodHistoryView with chart visualization (30 days)

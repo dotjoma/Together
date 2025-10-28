@@ -42,6 +42,10 @@ namespace Together.Presentation
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IFollowRelationshipRepository, FollowRelationshipRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IJournalEntryRepository, JournalEntryRepository>();
+            services.AddScoped<IMoodEntryRepository, MoodEntryRepository>();
+            services.AddScoped<ICoupleConnectionRepository, CoupleConnectionRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
 
             // Application Services
             services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -49,6 +53,9 @@ namespace Together.Presentation
             services.AddScoped<IFollowService, FollowService>();
             services.AddScoped<IPostService, PostService>();
             services.AddScoped<ISocialFeedService, SocialFeedService>();
+            services.AddScoped<IJournalService, JournalService>();
+            services.AddScoped<IMoodTrackingService, MoodTrackingService>();
+            services.AddScoped<IMoodAnalysisService, MoodAnalysisService>();
 
             // Infrastructure Services
             services.AddScoped<IStorageService, SupabaseStorageService>();

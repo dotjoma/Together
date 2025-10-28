@@ -7,4 +7,6 @@ public interface IStorageService
     Task<byte[]> CompressImageAsync(byte[] imageData, int maxSizeInBytes);
     Task<string> UploadImageAsync(string filePath, string folder);
     Task<bool> DeleteImageAsync(string fileUrl);
+    Task<string> UploadFileAsync(Stream fileStream, string filePath, string contentType);
+    Task<bool> DeleteFileAsync(string fileUrl);
 }

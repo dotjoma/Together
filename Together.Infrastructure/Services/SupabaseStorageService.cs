@@ -158,4 +158,31 @@ public class SupabaseStorageService : IStorageService
             return false;
         }
     }
+
+    public async Task<string> UploadFileAsync(Stream fileStream, string filePath, string contentType)
+    {
+        if (fileStream == null || fileStream.Length == 0)
+        {
+            throw new ArgumentException("File stream cannot be empty", nameof(fileStream));
+        }
+
+        // Read stream to byte array
+        using var memoryStream = new MemoryStream();
+        await fileStream.CopyToAsync(memoryStream);
+        var fileData = memoryStream.ToArray();
+
+        // In a real implementation, this would upload to Supabase Storage
+        var publicUrl = $"{_supabaseUrl}/storage/v1/object/public/{_bucketName}/{filePath}";
+
+        // TODO: Implement actual Supabase storage upload
+        // var client = new SupabaseClient(_supabaseUrl, _supabaseKey);
+        // await client.Storage.From(_bucketName).Upload(fileData, filePath, new FileOptions { ContentType = contentType });
+
+        return publicUrl;
+    }
+
+    public async Task<bool> DeleteFileAsync(string fileUrl)
+    {
+        return await DeleteImageAsync(fileUrl);
+    }
 }

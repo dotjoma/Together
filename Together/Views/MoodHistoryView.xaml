@@ -1,0 +1,134 @@
+<UserControl x:Class="Together.Presentation.Views.MoodHistoryView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             Background="White">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Grid.Row="0" 
+                   Text="Mood History (Last 30 Days)"
+                   Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                   Margin="0,0,0,20"/>
+
+        <!-- Trend Summary -->
+        <materialDesign:Card Grid.Row="1"
+                            Margin="0,0,0,20"
+                            Padding="15"
+                            Visibility="{Binding MoodTrend, Converter={StaticResource NullToVisibilityConverter}}">
+            <StackPanel>
+                <TextBlock Text="Mood Trend Analysis"
+                          Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                          Margin="0,0,0,10"/>
+                <TextBlock Text="{Binding TrendDescription}"
+                          TextWrapping="Wrap"
+                          Foreground="{StaticResource MaterialDesignBody}"/>
+                
+                <!-- Mood Distribution -->
+                <TextBlock Text="Mood Distribution:"
+                          Style="{StaticResource MaterialDesignBody2TextBlock}"
+                          Margin="0,15,0,5"/>
+                <ItemsControl ItemsSource="{Binding MoodTrend.MoodDistribution}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="0,2">
+                                <TextBlock Text="{Binding Key}" Width="80"/>
+                                <ProgressBar Value="{Binding Value}" 
+                                           Maximum="30" 
+                                           Width="200" 
+                                           Height="10"
+                                           Margin="10,0"/>
+                                <TextBlock Text="{Binding Value}" Margin="10,0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </materialDesign:Card>
+
+        <!-- Loading Indicator -->
+        <ProgressBar Grid.Row="2"
+                     IsIndeterminate="True"
+                     Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
+                     Margin="0,0,0,20"/>
+
+        <!-- Mood History List -->
+        <ScrollViewer Grid.Row="3"
+                     VerticalScrollBarVisibility="Auto"
+                     Visibility="{Binding IsLoading, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+            <ItemsControl ItemsSource="{Binding MoodHistory}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <materialDesign:Card Margin="0,0,0,10" Padding="15">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Mood Emoji -->
+                                <Border Grid.Column="0"
+                                       Width="50"
+                                       Height="50"
+                                       CornerRadius="25"
+                                       Background="#E3F2FD"
+                                       Margin="0,0,15,0">
+                                    <TextBlock Text="{Binding Mood, Converter={StaticResource MoodToEmojiConverter}}"
+                                             FontSize="24"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"/>
+                                </Border>
+
+                                <!-- Mood Details -->
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Mood}"
+                                             Style="{StaticResource MaterialDesignSubtitle1TextBlock}"/>
+                                    <TextBlock Text="{Binding Notes}"
+                                             TextWrapping="Wrap"
+                                             Foreground="{StaticResource MaterialDesignBodyLight}"
+                                             Visibility="{Binding Notes, Converter={StaticResource StringToVisibilityConverter}}"
+                                             Margin="0,5,0,0"/>
+                                </StackPanel>
+
+                                <!-- Timestamp -->
+                                <TextBlock Grid.Column="2"
+                                         Text="{Binding Timestamp, StringFormat='{}{0:MMM dd, yyyy h:mm tt}'}"
+                                         Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                         Foreground="{StaticResource MaterialDesignBodyLight}"
+                                         VerticalAlignment="Center"/>
+                            </Grid>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Empty State -->
+        <StackPanel Grid.Row="3"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Visibility="{Binding MoodHistory.Count, Converter={StaticResource ZeroToVisibilityConverter}}">
+            <materialDesign:PackIcon Kind="EmoticonSad"
+                                   Width="64"
+                                   Height="64"
+                                   Foreground="{StaticResource MaterialDesignBodyLight}"
+                                   HorizontalAlignment="Center"/>
+            <TextBlock Text="No mood entries yet"
+                      Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                      Foreground="{StaticResource MaterialDesignBodyLight}"
+                      Margin="0,10,0,0"/>
+            <TextBlock Text="Start tracking your mood to see your history here"
+                      Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                      Foreground="{StaticResource MaterialDesignBodyLight}"
+                      TextAlignment="Center"
+                      Margin="0,5,0,0"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

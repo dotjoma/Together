@@ -16,3 +16,5 @@ D:\Visual Studio 2022\Projects\Together\Together.Infrastructure\obj\Debug\net8.0
 D:\Visual Studio 2022\Projects\Together\Together.Infrastructure\obj\Debug\net8.0\Together.Infrastructure.pdb
 D:\Visual Studio 2022\Projects\Together\Together.Infrastructure\obj\Debug\net8.0\ref\Together.Infrastructure.dll
 D:\Visual Studio 2022\Projects\Together\Together.Infrastructure\obj\Debug\net8.0\Together.Infrastructure.sourcelink.json
+D:\Visual Studio 2022\Projects\Together\Together.Infrastructure\bin\Debug\net8.0\Together.Infrastructure.runtimeconfig.json
+D:\Visual Studio 2022\Projects\Together\Together.Infrastructure\obj\Debug\net8.0\Together.Infrastructure.genruntimeconfig.cache

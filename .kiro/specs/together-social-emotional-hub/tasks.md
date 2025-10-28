@@ -26,7 +26,9 @@
   - Add domain interfaces: IUserRepository, ICoupleConnectionRepository, IPostRepository, IMoodEntryRepository
   - _Requirements: 1.1, 2.3, 3.1, 4.1, 11.1_
 
-- [-] 3. Configure database context and migrations
+- [x] 3. Configure database context and migrations
+
+
 
 
   - Create TogetherDbContext with DbSet properties for all entities

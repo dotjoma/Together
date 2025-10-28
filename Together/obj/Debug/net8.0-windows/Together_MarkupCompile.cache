@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 D:\Visual Studio 2022\Projects\Together\Together\App.xaml
-10345082199
+11-1806317046
 22969629690
-28-1895337574
+31-1205553934
 243-853100252
-Controls\FollowButton.xaml;Controls\PostCard.xaml;MainWindow.xaml;Views\FollowerListView.xaml;Views\FollowingListView.xaml;Views\FollowRequestsView.xaml;Views\LoginView.xaml;Views\PostCreationView.xaml;Views\RegisterView.xaml;Views\UserProfileView.xaml;
+Controls\FollowButton.xaml;Controls\PostCard.xaml;MainWindow.xaml;Views\FollowerListView.xaml;Views\FollowingListView.xaml;Views\FollowRequestsView.xaml;Views\LoginView.xaml;Views\PostCreationView.xaml;Views\RegisterView.xaml;Views\SocialFeedView.xaml;Views\UserProfileView.xaml;
 
 False
 

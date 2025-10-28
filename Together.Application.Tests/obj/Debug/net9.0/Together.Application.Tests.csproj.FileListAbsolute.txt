@@ -129,3 +129,6 @@ D:\Visual Studio 2022\Projects\Together\Together.Application.Tests\bin\Debug\net
 D:\Visual Studio 2022\Projects\Together\Together.Application.Tests\bin\Debug\net9.0\Supabase.Storage.dll
 D:\Visual Studio 2022\Projects\Together\Together.Application.Tests\bin\Debug\net9.0\System.Reactive.dll
 D:\Visual Studio 2022\Projects\Together\Together.Application.Tests\bin\Debug\net9.0\Websocket.Client.dll
+D:\Visual Studio 2022\Projects\Together\Together.Application.Tests\bin\Debug\net9.0\Microsoft.Extensions.Caching.Abstractions.dll
+D:\Visual Studio 2022\Projects\Together\Together.Application.Tests\bin\Debug\net9.0\Microsoft.Extensions.Caching.Memory.dll
+D:\Visual Studio 2022\Projects\Together\Together.Application.Tests\bin\Debug\net9.0\Microsoft.Extensions.Options.dll

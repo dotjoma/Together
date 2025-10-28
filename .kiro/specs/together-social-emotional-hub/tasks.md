@@ -103,7 +103,6 @@
 
 - [x] 7. Implement post creation and management
 
-
 - [x] 7.1 Create post service and repository
 
   - Implement CreatePostAsync with 500 character limit validation
@@ -128,8 +127,10 @@
   - Implement post menu with edit/delete options for own posts
   - _Requirements: 13.1, 13.3_
 
-- [ ] 8. Implement social feed
-- [ ] 8.1 Create social feed service
+- [x] 8. Implement social feed
+
+
+- [x] 8.1 Create social feed service
 
   - Implement GetFeedAsync aggregating posts from followed users
   - Add pagination with 20 posts per page
@@ -138,7 +139,7 @@
   - Implement feed caching with cache invalidation
   - _Requirements: 14.1, 14.2, 14.5_
 
-- [ ] 8.2 Build social feed UI
+- [x] 8.2 Build social feed UI
 
   - Create SocialFeedView with virtualized scrolling
   - Implement SocialFeedViewModel with infinite scroll

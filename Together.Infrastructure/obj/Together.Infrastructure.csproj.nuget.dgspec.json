@@ -58,6 +58,10 @@
               "target": "Package",
               "version": "[4.0.3, )"
             },
+            "Microsoft.Extensions.Caching.Memory": {
+              "target": "Package",
+              "version": "[9.0.10, )"
+            },
             "Microsoft.Extensions.Configuration.Abstractions": {
               "target": "Package",
               "version": "[8.0.0, )"
@@ -141,6 +145,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.Extensions.Caching.Memory": {
+              "target": "Package",
+              "version": "[9.0.10, )"
+            },
             "SixLabors.ImageSharp": {
               "target": "Package",
               "version": "[3.1.11, )"
@@ -238,6 +246,10 @@
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.10, )"
+            },
+            "Microsoft.Extensions.Caching.Memory": {
               "target": "Package",
               "version": "[9.0.10, )"
             },

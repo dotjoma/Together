@@ -1540,6 +1540,7 @@
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
           "BCrypt.Net-Next": "4.0.3",
+          "Microsoft.Extensions.Caching.Memory": "9.0.10",
           "Microsoft.Extensions.Configuration.Abstractions": "8.0.0",
           "SixLabors.ImageSharp": "3.1.11",
           "System.IdentityModel.Tokens.Jwt": "8.14.0",
@@ -1557,6 +1558,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
         "dependencies": {
+          "Microsoft.Extensions.Caching.Memory": "9.0.10",
           "SixLabors.ImageSharp": "3.1.11",
           "System.IdentityModel.Tokens.Jwt": "8.14.0",
           "supabase-csharp": "0.16.1"
@@ -1574,6 +1576,7 @@
         "dependencies": {
           "BCrypt.Net-Next": "4.0.3",
           "Microsoft.EntityFrameworkCore": "9.0.10",
+          "Microsoft.Extensions.Caching.Memory": "9.0.10",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.4",
           "SixLabors.ImageSharp": "3.1.11",
           "System.IdentityModel.Tokens.Jwt": "8.14.0",
@@ -4209,6 +4212,7 @@
     "net8.0-windows7.0": [
       "MaterialDesignThemes >= 5.3.0",
       "Microsoft.EntityFrameworkCore.Design >= 9.0.10",
+      "Microsoft.Extensions.Caching.Memory >= 9.0.10",
       "Microsoft.Extensions.Configuration.Json >= 9.0.10",
       "Microsoft.Extensions.DependencyInjection >= 9.0.10",
       "SixLabors.ImageSharp >= 3.1.11",
@@ -4282,6 +4286,10 @@
           "Microsoft.EntityFrameworkCore.Design": {
             "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
             "suppressParent": "All",
+            "target": "Package",
+            "version": "[9.0.10, )"
+          },
+          "Microsoft.Extensions.Caching.Memory": {
             "target": "Package",
             "version": "[9.0.10, )"
           },

@@ -177,3 +177,5 @@ D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Contro
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Controls\PostCard.g.cs
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\PostCreationView.g.cs
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\PostCreationView.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\SocialFeedView.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\SocialFeedView.baml

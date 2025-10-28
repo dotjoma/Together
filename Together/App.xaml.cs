@@ -41,14 +41,20 @@ namespace Together.Presentation
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IFollowRelationshipRepository, FollowRelationshipRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
 
             // Application Services
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IProfileService, ProfileService>();
             services.AddScoped<IFollowService, FollowService>();
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ISocialFeedService, SocialFeedService>();
 
             // Infrastructure Services
             services.AddScoped<IStorageService, SupabaseStorageService>();
+            
+            // Caching
+            services.AddMemoryCache();
 
             // ViewModels will be registered here as they are created
         }

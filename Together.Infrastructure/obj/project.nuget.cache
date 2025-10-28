@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Cm4CXEjXkCg=",
+  "dgSpecHash": "KsWGiCS2mak=",
   "success": true,
   "projectFilePath": "D:\\Visual Studio 2022\\Projects\\Together\\Together.Infrastructure\\Together.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -43,6 +43,7 @@
     "C:\\Users\\joma\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\9.0.4\\npgsql.entityframeworkcore.postgresql.9.0.4.nupkg.sha512",
     "C:\\Users\\joma\\.nuget\\packages\\postgrest-csharp\\3.5.1\\postgrest-csharp.3.5.1.nupkg.sha512",
     "C:\\Users\\joma\\.nuget\\packages\\realtime-csharp\\6.0.4\\realtime-csharp.6.0.4.nupkg.sha512",
+    "C:\\Users\\joma\\.nuget\\packages\\sixlabors.imagesharp\\3.1.7\\sixlabors.imagesharp.3.1.7.nupkg.sha512",
     "C:\\Users\\joma\\.nuget\\packages\\supabase-core\\0.0.3\\supabase-core.0.0.3.nupkg.sha512",
     "C:\\Users\\joma\\.nuget\\packages\\supabase-csharp\\0.16.2\\supabase-csharp.0.16.2.nupkg.sha512",
     "C:\\Users\\joma\\.nuget\\packages\\supabase-storage-csharp\\1.4.0\\supabase-storage-csharp.1.4.0.nupkg.sha512",
@@ -65,5 +66,18 @@
     "C:\\Users\\joma\\.nuget\\packages\\system.threading.channels\\7.0.0\\system.threading.channels.7.0.0.nupkg.sha512",
     "C:\\Users\\joma\\.nuget\\packages\\websocket.client\\4.6.1\\websocket.client.4.6.1.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "message": "Package 'SixLabors.ImageSharp' 3.1.7 has a known moderate severity vulnerability, https://github.com/advisories/GHSA-rxmq-m78w-7wmc",
+      "projectPath": "D:\\Visual Studio 2022\\Projects\\Together\\Together.Infrastructure\\Together.Infrastructure.csproj",
+      "warningLevel": 1,
+      "filePath": "D:\\Visual Studio 2022\\Projects\\Together\\Together.Infrastructure\\Together.Infrastructure.csproj",
+      "libraryId": "SixLabors.ImageSharp",
+      "targetGraphs": [
+        "net8.0"
+      ]
+    }
+  ]
 }

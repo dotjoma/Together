@@ -162,3 +162,6 @@ D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\RegisterView.g.cs
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\App.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\UserProfileView.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\bin\Debug\net8.0-windows\SixLabors.ImageSharp.dll
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\UserProfileView.baml

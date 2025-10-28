@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "gaEc1Cv2+Ug=",
+  "dgSpecHash": "B2sUAl/Yjcw=",
   "success": true,
   "projectFilePath": "D:\\Visual Studio 2022\\Projects\\Together\\Together\\Together.csproj",
   "expectedPackageFiles": [
@@ -52,6 +52,7 @@
     "C:\\Users\\joma\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\9.0.4\\npgsql.entityframeworkcore.postgresql.9.0.4.nupkg.sha512",
     "C:\\Users\\joma\\.nuget\\packages\\postgrest-csharp\\3.5.1\\postgrest-csharp.3.5.1.nupkg.sha512",
     "C:\\Users\\joma\\.nuget\\packages\\realtime-csharp\\6.0.4\\realtime-csharp.6.0.4.nupkg.sha512",
+    "C:\\Users\\joma\\.nuget\\packages\\sixlabors.imagesharp\\3.1.7\\sixlabors.imagesharp.3.1.7.nupkg.sha512",
     "C:\\Users\\joma\\.nuget\\packages\\supabase-core\\0.0.3\\supabase-core.0.0.3.nupkg.sha512",
     "C:\\Users\\joma\\.nuget\\packages\\supabase-csharp\\0.16.2\\supabase-csharp.0.16.2.nupkg.sha512",
     "C:\\Users\\joma\\.nuget\\packages\\supabase-storage-csharp\\1.4.0\\supabase-storage-csharp.1.4.0.nupkg.sha512",

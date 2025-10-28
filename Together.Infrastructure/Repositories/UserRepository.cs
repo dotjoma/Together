@@ -18,6 +18,8 @@ public class UserRepository : IUserRepository
     public async Task<User?> GetByIdAsync(Guid id)
     {
         return await _context.Users
+            .Include(u => u.Followers)
+            .Include(u => u.Following)
             .FirstOrDefaultAsync(u => u.Id == id);
     }
 

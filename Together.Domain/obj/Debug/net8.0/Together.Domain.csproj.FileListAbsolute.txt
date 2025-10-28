@@ -9,3 +9,4 @@ D:\Visual Studio 2022\Projects\Together\Together.Domain\obj\Debug\net8.0\Togethe
 D:\Visual Studio 2022\Projects\Together\Together.Domain\obj\Debug\net8.0\refint\Together.Domain.dll
 D:\Visual Studio 2022\Projects\Together\Together.Domain\obj\Debug\net8.0\Together.Domain.pdb
 D:\Visual Studio 2022\Projects\Together\Together.Domain\obj\Debug\net8.0\ref\Together.Domain.dll
+D:\Visual Studio 2022\Projects\Together\Together.Domain\obj\Debug\net8.0\Together.Domain.sourcelink.json

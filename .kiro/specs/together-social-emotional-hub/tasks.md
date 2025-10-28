@@ -14,14 +14,21 @@
   - Set up dependency injection container in App.xaml.cs
   - _Requirements: 1.1, 1.2, 18.1, 18.2_
 
-- [ ] 2. Implement domain entities and value objects
+- [x] 2. Implement domain entities and value objects
+
+
+
+
+
   - Create User, CoupleConnection, Post, MoodEntry, JournalEntry, TodoItem, SharedEvent, Challenge, VirtualPet entities
   - Implement Email value object with validation
   - Define enums: MoodType, ProfileVisibility, ConnectionStatus, InteractionType, PetState
   - Add domain interfaces: IUserRepository, ICoupleConnectionRepository, IPostRepository, IMoodEntryRepository
   - _Requirements: 1.1, 2.3, 3.1, 4.1, 11.1_
 
-- [ ] 3. Configure database context and migrations
+- [-] 3. Configure database context and migrations
+
+
   - Create TogetherDbContext with DbSet properties for all entities
   - Implement entity configurations using Fluent API for constraints and relationships
   - Configure Supabase connection string in appsettings.json

@@ -10,6 +10,8 @@ public class SocialFeedViewModel : ViewModelBase
 {
     private readonly ISocialFeedService _socialFeedService;
     private readonly IPostService _postService;
+    private readonly ILikeService _likeService;
+    private readonly ICommentService _commentService;
     private readonly Guid _currentUserId;
     private bool _isLoading;
     private bool _isRefreshing;
@@ -19,10 +21,17 @@ public class SocialFeedViewModel : ViewModelBase
     private string _errorMessage = string.Empty;
     private bool _showSuggestedUsers;
 
-    public SocialFeedViewModel(ISocialFeedService socialFeedService, IPostService postService, Guid currentUserId)
+    public SocialFeedViewModel(
+        ISocialFeedService socialFeedService, 
+        IPostService postService,
+        ILikeService likeService,
+        ICommentService commentService,
+        Guid currentUserId)
     {
         _socialFeedService = socialFeedService;
         _postService = postService;
+        _likeService = likeService;
+        _commentService = commentService;
         _currentUserId = currentUserId;
         _currentSkip = 0;
         _hasMorePosts = true;
@@ -90,7 +99,8 @@ public class SocialFeedViewModel : ViewModelBase
             Posts.Clear();
             foreach (var post in result.Posts)
             {
-                var postCardViewModel = new PostCardViewModel(_postService, _currentUserId, post);
+                var isLiked = await _likeService.IsLikedByUserAsync(post.Id, _currentUserId);
+                var postCardViewModel = new PostCardViewModel(_postService, _likeService, _commentService, _currentUserId, post, isLiked);
                 postCardViewModel.PostDeleted += OnPostDeleted;
                 Posts.Add(postCardViewModel);
             }
@@ -132,7 +142,8 @@ public class SocialFeedViewModel : ViewModelBase
 
             foreach (var post in result.Posts)
             {
-                var postCardViewModel = new PostCardViewModel(_postService, _currentUserId, post);
+                var isLiked = await _likeService.IsLikedByUserAsync(post.Id, _currentUserId);
+                var postCardViewModel = new PostCardViewModel(_postService, _likeService, _commentService, _currentUserId, post, isLiked);
                 postCardViewModel.PostDeleted += OnPostDeleted;
                 Posts.Add(postCardViewModel);
             }
@@ -169,7 +180,8 @@ public class SocialFeedViewModel : ViewModelBase
             Posts.Clear();
             foreach (var post in result.Posts)
             {
-                var postCardViewModel = new PostCardViewModel(_postService, _currentUserId, post);
+                var isLiked = await _likeService.IsLikedByUserAsync(post.Id, _currentUserId);
+                var postCardViewModel = new PostCardViewModel(_postService, _likeService, _commentService, _currentUserId, post, isLiked);
                 postCardViewModel.PostDeleted += OnPostDeleted;
                 Posts.Add(postCardViewModel);
             }

@@ -179,3 +179,7 @@ D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\PostCreationView.baml
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\SocialFeedView.g.cs
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\SocialFeedView.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Controls\CommentSection.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Controls\LikeButton.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Controls\CommentSection.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Controls\LikeButton.g.cs

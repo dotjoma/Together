@@ -129,7 +129,6 @@
 
 - [x] 8. Implement social feed
 
-
 - [x] 8.1 Create social feed service
 
   - Implement GetFeedAsync aggregating posts from followed users
@@ -147,8 +146,10 @@
   - Add pull-to-refresh functionality
   - _Requirements: 14.1, 14.2, 14.4, 14.5_
 
-- [ ] 9. Implement post interactions (likes and comments)
-- [ ] 9.1 Create like and comment services
+- [x] 9. Implement post interactions (likes and comments)
+
+
+- [x] 9.1 Create like and comment services
 
   - Implement ToggleLikeAsync incrementing/decrementing like count
   - Create AddCommentAsync with 300 character limit
@@ -156,7 +157,8 @@
   - Add notification creation for likes and comments
   - _Requirements: 15.1, 15.2, 15.3, 15.5_
 
-- [ ] 9.2 Build interaction UI components
+- [x] 9.2 Build interaction UI components
+
   - Create LikeButton with filled/unfilled states
   - Implement CommentSection displaying comments chronologically
   - Add CommentInput with character counter

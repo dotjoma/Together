@@ -9,18 +9,33 @@ namespace Together.Presentation.ViewModels;
 public class PostCardViewModel : ViewModelBase
 {
     private readonly IPostService _postService;
+    private readonly ILikeService _likeService;
+    private readonly ICommentService _commentService;
     private readonly Guid _currentUserId;
     private PostDto _post;
     private bool _isDeleting;
+    private bool _showComments;
 
-    public PostCardViewModel(IPostService postService, Guid currentUserId, PostDto post)
+    public PostCardViewModel(
+        IPostService postService, 
+        ILikeService likeService,
+        ICommentService commentService,
+        Guid currentUserId, 
+        PostDto post,
+        bool isLiked = false)
     {
         _postService = postService;
+        _likeService = likeService;
+        _commentService = commentService;
         _currentUserId = currentUserId;
         _post = post;
 
         EditCommand = new RelayCommand(_ => Edit(), _ => CanEdit());
         DeleteCommand = new RelayCommand(async _ => await DeleteAsync(), _ => !IsDeleting);
+        ToggleCommentsCommand = new RelayCommand(_ => ToggleComments());
+
+        LikeButtonViewModel = new LikeButtonViewModel(_likeService, post.Id, currentUserId, post.LikeCount, isLiked);
+        CommentSectionViewModel = new CommentSectionViewModel(_commentService, post.Id, currentUserId);
     }
 
     public PostDto Post
@@ -70,6 +85,16 @@ public class PostCardViewModel : ViewModelBase
 
     public ICommand EditCommand { get; }
     public ICommand DeleteCommand { get; }
+    public ICommand ToggleCommentsCommand { get; }
+
+    public LikeButtonViewModel LikeButtonViewModel { get; }
+    public CommentSectionViewModel CommentSectionViewModel { get; }
+
+    public bool ShowComments
+    {
+        get => _showComments;
+        set => SetProperty(ref _showComments, value);
+    }
 
     public event EventHandler<PostDto>? EditRequested;
     public event EventHandler<Guid>? PostDeleted;
@@ -109,5 +134,10 @@ public class PostCardViewModel : ViewModelBase
         OnPropertyChanged(nameof(CanEditPost));
         OnPropertyChanged(nameof(TimeAgo));
         OnPropertyChanged(nameof(EditedText));
+    }
+
+    private void ToggleComments()
+    {
+        ShowComments = !ShowComments;
     }
 }

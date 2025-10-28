@@ -21,6 +21,7 @@ public class TogetherDbContext : DbContext
     public DbSet<FollowRelationship> FollowRelationships { get; set; }
     public DbSet<Like> Likes { get; set; }
     public DbSet<Comment> Comments { get; set; }
+    public DbSet<Notification> Notifications { get; set; }
     public DbSet<PostImage> PostImages { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

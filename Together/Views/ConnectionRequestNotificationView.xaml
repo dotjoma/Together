@@ -1,0 +1,128 @@
+<UserControl x:Class="Together.Presentation.Views.ConnectionRequestNotificationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,20">
+            <TextBlock Text="Connection Requests" 
+                       Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                       VerticalAlignment="Center"/>
+            
+            <Button Content="{materialDesign:PackIcon Kind=Refresh}"
+                    Command="{Binding RefreshCommand}"
+                    Style="{StaticResource MaterialDesignIconButton}"
+                    Margin="10,0,0,0"
+                    ToolTip="Refresh"/>
+        </StackPanel>
+
+        <!-- Error Message -->
+        <Border Grid.Row="1"
+                Background="{DynamicResource MaterialDesignPaper}"
+                BorderBrush="Red"
+                BorderThickness="2"
+                CornerRadius="4"
+                Padding="10"
+                Margin="0,0,0,20"
+                Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}">
+            <TextBlock Text="{Binding ErrorMessage}"
+                       Foreground="Red"
+                       TextWrapping="Wrap"/>
+        </Border>
+
+        <!-- Requests List -->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding PendingRequests}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <materialDesign:Card Margin="0,0,0,10" Padding="15">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <!-- User Info -->
+                                <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+                                    <Border Width="50" Height="50" 
+                                            CornerRadius="25"
+                                            Background="{DynamicResource MaterialDesignDivider}"
+                                            Margin="0,0,15,0">
+                                        <TextBlock Text="{Binding FromUser.Username, Converter={StaticResource FirstLetterConverter}}"
+                                                   FontSize="24"
+                                                   FontWeight="Bold"
+                                                   HorizontalAlignment="Center"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="{DynamicResource MaterialDesignBody}"/>
+                                    </Border>
+
+                                    <StackPanel VerticalAlignment="Center">
+                                        <TextBlock Text="{Binding FromUser.Username}"
+                                                   Style="{StaticResource MaterialDesignHeadline6TextBlock}"/>
+                                        <TextBlock Text="{Binding FromUser.Email}"
+                                                   Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                                   Foreground="{DynamicResource MaterialDesignBodyLight}"/>
+                                    </StackPanel>
+                                </StackPanel>
+
+                                <!-- Bio -->
+                                <TextBlock Grid.Row="1"
+                                           Text="{Binding FromUser.Bio}"
+                                           TextWrapping="Wrap"
+                                           Margin="0,0,0,10"
+                                           Visibility="{Binding FromUser.Bio, Converter={StaticResource StringToVisibilityConverter}}"/>
+
+                                <!-- Action Buttons -->
+                                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                                    <Button Content="Reject"
+                                            Command="{Binding DataContext.RejectRequestCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource MaterialDesignOutlinedButton}"
+                                            Margin="0,0,10,0"/>
+                                    
+                                    <Button Content="Accept"
+                                            Command="{Binding DataContext.AcceptRequestCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource MaterialDesignRaisedButton}"/>
+                                </StackPanel>
+                            </Grid>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Empty State -->
+        <StackPanel Grid.Row="2"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Visibility="{Binding PendingRequests.Count, Converter={StaticResource ZeroToVisibilityConverter}}">
+            <materialDesign:PackIcon Kind="AccountMultiplePlus"
+                                     Width="64"
+                                     Height="64"
+                                     Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                     HorizontalAlignment="Center"/>
+            <TextBlock Text="No pending connection requests"
+                       Style="{StaticResource MaterialDesignBody1TextBlock}"
+                       Foreground="{DynamicResource MaterialDesignBodyLight}"
+                       Margin="0,10,0,0"/>
+        </StackPanel>
+
+        <!-- Loading Indicator -->
+        <ProgressBar Grid.Row="2"
+                     IsIndeterminate="True"
+                     Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
+                     VerticalAlignment="Top"/>
+    </Grid>
+</UserControl>

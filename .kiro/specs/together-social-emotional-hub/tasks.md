@@ -148,7 +148,6 @@
 
 - [x] 9. Implement post interactions (likes and comments)
 
-
 - [x] 9.1 Create like and comment services
 
   - Implement ToggleLikeAsync incrementing/decrementing like count
@@ -167,8 +166,10 @@
 
 ## Couple Connection Features
 
-- [ ] 10. Implement couple connection system
-- [ ] 10.1 Create couple connection service
+- [x] 10. Implement couple connection system
+
+
+- [x] 10.1 Create couple connection service
 
   - Implement SendConnectionRequestAsync creating pending requests
   - Add AcceptConnectionRequestAsync establishing mutual connection
@@ -176,7 +177,7 @@
   - Create TerminateConnectionAsync archiving shared data
   - _Requirements: 2.1, 2.3, 2.4, 2.5_
 
-- [ ] 10.2 Build connection request UI
+- [x] 10.2 Build connection request UI
 
   - Create ConnectionRequestView for sending requests
   - Implement ConnectionRequestNotificationView for receiving requests

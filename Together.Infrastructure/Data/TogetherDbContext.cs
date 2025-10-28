@@ -23,6 +23,7 @@ public class TogetherDbContext : DbContext
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Notification> Notifications { get; set; }
     public DbSet<PostImage> PostImages { get; set; }
+    public DbSet<ConnectionRequest> ConnectionRequests { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -183,3 +183,9 @@ D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Contro
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Controls\LikeButton.baml
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Controls\CommentSection.g.cs
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Controls\LikeButton.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\ConnectionRequestNotificationView.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\ConnectionRequestView.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\ConnectionStatusView.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\ConnectionRequestNotificationView.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\ConnectionRequestView.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\ConnectionStatusView.g.cs

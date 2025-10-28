@@ -1,0 +1,98 @@
+<UserControl x:Class="Together.Presentation.Views.ConnectionRequestView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Title -->
+        <TextBlock Grid.Row="0" 
+                   Text="Send Connection Request" 
+                   Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                   Margin="0,0,0,20"/>
+
+        <!-- Search Section -->
+        <StackPanel Grid.Row="1" Margin="0,0,0,20">
+            <TextBlock Text="Search for a user by username or email:" 
+                       Margin="0,0,0,10"/>
+            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox Grid.Column="0"
+                         Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}"
+                         materialDesign:HintAssist.Hint="Username or email"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Margin="0,0,10,0"/>
+
+                <Button Grid.Column="1"
+                        Content="Search"
+                        Command="{Binding SearchUserCommand}"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        IsEnabled="{Binding IsSearching, Converter={StaticResource InverseBooleanConverter}}"/>
+            </Grid>
+
+            <!-- Search Result -->
+            <TextBlock Text="{Binding SearchResult}"
+                       Margin="0,10,0,0"
+                       Foreground="{DynamicResource MaterialDesignBody}"
+                       Visibility="{Binding SearchResult, Converter={StaticResource StringToVisibilityConverter}}"/>
+        </StackPanel>
+
+        <!-- Send Request Button -->
+        <Button Grid.Row="2"
+                Content="Send Connection Request"
+                Command="{Binding SendRequestCommand}"
+                Style="{StaticResource MaterialDesignRaisedButton}"
+                Margin="0,0,0,20"
+                HorizontalAlignment="Left"
+                IsEnabled="{Binding IsSending, Converter={StaticResource InverseBooleanConverter}}"/>
+
+        <!-- Messages -->
+        <StackPanel Grid.Row="3" Margin="0,0,0,20">
+            <!-- Success Message -->
+            <Border Background="{DynamicResource MaterialDesignPaper}"
+                    BorderBrush="Green"
+                    BorderThickness="2"
+                    CornerRadius="4"
+                    Padding="10"
+                    Margin="0,0,0,10"
+                    Visibility="{Binding SuccessMessage, Converter={StaticResource StringToVisibilityConverter}}">
+                <TextBlock Text="{Binding SuccessMessage}"
+                           Foreground="Green"
+                           TextWrapping="Wrap"/>
+            </Border>
+
+            <!-- Error Message -->
+            <Border Background="{DynamicResource MaterialDesignPaper}"
+                    BorderBrush="Red"
+                    BorderThickness="2"
+                    CornerRadius="4"
+                    Padding="10"
+                    Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}">
+                <TextBlock Text="{Binding ErrorMessage}"
+                           Foreground="Red"
+                           TextWrapping="Wrap"/>
+            </Border>
+        </StackPanel>
+
+        <!-- Loading Indicator -->
+        <ProgressBar Grid.Row="4"
+                     IsIndeterminate="True"
+                     Visibility="{Binding IsSearching, Converter={StaticResource BooleanToVisibilityConverter}}"
+                     VerticalAlignment="Top"/>
+    </Grid>
+</UserControl>

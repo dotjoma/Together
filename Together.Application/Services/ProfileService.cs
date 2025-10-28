@@ -9,11 +9,16 @@ public class ProfileService : IProfileService
 {
     private readonly IUserRepository _userRepository;
     private readonly IStorageService _storageService;
+    private readonly IFollowService _followService;
 
-    public ProfileService(IUserRepository userRepository, IStorageService storageService)
+    public ProfileService(
+        IUserRepository userRepository, 
+        IStorageService storageService,
+        IFollowService followService)
     {
         _userRepository = userRepository;
         _storageService = storageService;
+        _followService = followService;
     }
 
     public async Task<ProfileDto> GetProfileAsync(Guid userId)
@@ -25,10 +30,9 @@ public class ProfileService : IProfileService
             throw new NotFoundException(nameof(user), userId);
         }
 
-        // Get follower and following counts
-        // Note: This requires the navigation properties to be loaded
-        var followerCount = user.Followers?.Count ?? 0;
-        var followingCount = user.Following?.Count ?? 0;
+        // Get follower and following counts from follow service
+        var followerCount = await _followService.GetFollowerCountAsync(userId);
+        var followingCount = await _followService.GetFollowingCountAsync(userId);
 
         return new ProfileDto(
             user.Id,

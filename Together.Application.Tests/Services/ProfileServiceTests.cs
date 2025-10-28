@@ -15,13 +15,18 @@ public class ProfileServiceTests
 {
     private readonly Mock<IUserRepository> _mockUserRepository;
     private readonly Mock<IStorageService> _mockStorageService;
+    private readonly Mock<IFollowService> _mockFollowService;
     private readonly ProfileService _profileService;
 
     public ProfileServiceTests()
     {
         _mockUserRepository = new Mock<IUserRepository>();
         _mockStorageService = new Mock<IStorageService>();
-        _profileService = new ProfileService(_mockUserRepository.Object, _mockStorageService.Object);
+        _mockFollowService = new Mock<IFollowService>();
+        _profileService = new ProfileService(
+            _mockUserRepository.Object, 
+            _mockStorageService.Object,
+            _mockFollowService.Object);
     }
 
     [Fact]
@@ -33,6 +38,10 @@ public class ProfileServiceTests
         
         _mockUserRepository.Setup(r => r.GetByIdAsync(userId))
             .ReturnsAsync(user);
+        _mockFollowService.Setup(f => f.GetFollowerCountAsync(userId))
+            .ReturnsAsync(10);
+        _mockFollowService.Setup(f => f.GetFollowingCountAsync(userId))
+            .ReturnsAsync(5);
 
         // Act
         var result = await _profileService.GetProfileAsync(userId);
@@ -42,6 +51,8 @@ public class ProfileServiceTests
         Assert.Equal(user.Id, result.Id);
         Assert.Equal("testuser", result.Username);
         Assert.Equal("test@example.com", result.Email);
+        Assert.Equal(10, result.FollowerCount);
+        Assert.Equal(5, result.FollowingCount);
     }
 
     [Fact]
@@ -69,6 +80,10 @@ public class ProfileServiceTests
             .ReturnsAsync(user);
         _mockUserRepository.Setup(r => r.UpdateAsync(It.IsAny<User>()))
             .Returns(Task.CompletedTask);
+        _mockFollowService.Setup(f => f.GetFollowerCountAsync(userId))
+            .ReturnsAsync(0);
+        _mockFollowService.Setup(f => f.GetFollowingCountAsync(userId))
+            .ReturnsAsync(0);
 
         // Act
         var result = await _profileService.UpdateProfileAsync(userId, updateDto);

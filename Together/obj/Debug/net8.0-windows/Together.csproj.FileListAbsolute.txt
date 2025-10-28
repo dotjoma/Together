@@ -165,3 +165,11 @@ D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\App.ba
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\UserProfileView.g.cs
 D:\Visual Studio 2022\Projects\Together\Together\bin\Debug\net8.0-windows\SixLabors.ImageSharp.dll
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\UserProfileView.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Controls\FollowButton.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Controls\FollowButton.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\FollowerListView.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\FollowingListView.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\FollowRequestsView.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\FollowerListView.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\FollowingListView.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\FollowRequestsView.baml

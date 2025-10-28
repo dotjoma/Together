@@ -1,0 +1,126 @@
+<UserControl x:Class="Together.Presentation.Views.FollowingListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converters="clr-namespace:Together.Presentation.Converters">
+    <UserControl.Resources>
+        <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+    
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="Following"
+                      Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                      Margin="0,0,0,8"/>
+            <TextBlock Style="{StaticResource MaterialDesignBody2TextBlock}"
+                      Foreground="{DynamicResource MaterialDesignBodyLight}">
+                <Run Text="Following"/>
+                <Run Text="{Binding FollowingCount, Mode=OneWay}"/>
+                <Run Text="users"/>
+            </TextBlock>
+        </StackPanel>
+
+        <!-- Following List -->
+        <ScrollViewer Grid.Row="1" 
+                     VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Following}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <materialDesign:Card Margin="0,0,0,8" Padding="16">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Profile Picture -->
+                                <Border Grid.Column="0"
+                                       Width="48"
+                                       Height="48"
+                                       CornerRadius="24"
+                                       Background="{DynamicResource MaterialDesignDivider}"
+                                       Margin="0,0,16,0">
+                                    <Grid>
+                                        <Image Source="{Binding Following.ProfilePictureUrl}"
+                                              Stretch="UniformToFill"
+                                              Visibility="{Binding Following.ProfilePictureUrl, Converter={StaticResource StringToVisibilityConverter}}"/>
+                                        <TextBlock Text="{Binding Following.Username, StringFormat={}{0:1}}"
+                                                  FontSize="20"
+                                                  FontWeight="Bold"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  Visibility="{Binding Following.ProfilePictureUrl, Converter={StaticResource StringToVisibilityConverter}, ConverterParameter=Inverse}"/>
+                                    </Grid>
+                                </Border>
+
+                                <!-- User Info -->
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Following.Username}"
+                                              Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                              FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding Following.Bio}"
+                                              Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                              Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                              TextTrimming="CharacterEllipsis"
+                                              MaxWidth="300"
+                                              Visibility="{Binding Following.Bio, Converter={StaticResource StringToVisibilityConverter}}"/>
+                                    <TextBlock Text="{Binding AcceptedAt, StringFormat='Following since {0:MMM dd, yyyy}'}"
+                                              Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                              Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                              Margin="0,4,0,0"/>
+                                </StackPanel>
+
+                                <!-- Action Buttons -->
+                                <StackPanel Grid.Column="2" 
+                                           Orientation="Horizontal" 
+                                           VerticalAlignment="Center">
+                                    <Button Content="View Profile"
+                                           Command="{Binding DataContext.ViewProfileCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                           CommandParameter="{Binding Following.Id}"
+                                           Style="{StaticResource MaterialDesignOutlinedButton}"
+                                           Height="32"
+                                           Margin="0,0,8,0"/>
+                                    <Button Content="Unfollow"
+                                           Command="{Binding DataContext.UnfollowCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                           CommandParameter="{Binding Following.Id}"
+                                           Style="{StaticResource MaterialDesignOutlinedButton}"
+                                           Height="32"/>
+                                </StackPanel>
+                            </Grid>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <!-- Empty State -->
+        <StackPanel Grid.Row="1"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Visibility="{Binding HasNoFollowing, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <materialDesign:PackIcon Kind="AccountMultiple"
+                                    Width="64"
+                                    Height="64"
+                                    Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                    HorizontalAlignment="Center"/>
+            <TextBlock Text="Not following anyone yet"
+                      Style="{StaticResource MaterialDesignBody1TextBlock}"
+                      Foreground="{DynamicResource MaterialDesignBodyLight}"
+                      Margin="0,16,0,0"
+                      HorizontalAlignment="Center"/>
+            <TextBlock Text="Start following users to see their posts in your feed"
+                      Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                      Foreground="{DynamicResource MaterialDesignBodyLight}"
+                      Margin="0,8,0,0"
+                      HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

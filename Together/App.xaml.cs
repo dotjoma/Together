@@ -40,10 +40,12 @@ namespace Together.Presentation
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IFollowRelationshipRepository, FollowRelationshipRepository>();
 
             // Application Services
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IProfileService, ProfileService>();
+            services.AddScoped<IFollowService, FollowService>();
 
             // Infrastructure Services
             services.AddScoped<IStorageService, SupabaseStorageService>();

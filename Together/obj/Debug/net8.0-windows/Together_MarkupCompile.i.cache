@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 D:\Visual Studio 2022\Projects\Together\Together\App.xaml
-4-1026939208
+8109920206
 22969629690
-18-1083502649
+25-1127899709
 243-853100252
-MainWindow.xaml;Views\LoginView.xaml;Views\RegisterView.xaml;Views\UserProfileView.xaml;
+Controls\FollowButton.xaml;MainWindow.xaml;Views\FollowerListView.xaml;Views\FollowingListView.xaml;Views\FollowRequestsView.xaml;Views\LoginView.xaml;Views\RegisterView.xaml;Views\UserProfileView.xaml;
 
 True
 

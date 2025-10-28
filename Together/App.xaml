@@ -21,6 +21,8 @@
             <converters:MoodToEmojiConverter x:Key="MoodToEmojiConverter"/>
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
             <converters:ZeroToVisibilityConverter x:Key="ZeroToVisibilityConverter"/>
+            <converters:EventFormTitleConverter x:Key="EventFormTitleConverter"/>
+            <converters:RecurrenceVisibilityConverter x:Key="RecurrenceVisibilityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

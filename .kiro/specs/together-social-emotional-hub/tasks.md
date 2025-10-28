@@ -226,7 +226,6 @@
 
 - [x] 13. Implement shared to-do list
 
-
 - [x] 13.1 Create todo service and repository
 
   - Implement CreateTodoItemAsync with title, due date, assignment
@@ -245,8 +244,10 @@
   - Implement tag filtering
   - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
-- [ ] 14. Implement event scheduling
-- [ ] 14.1 Create event service and repository
+- [x] 14. Implement event scheduling
+
+
+- [x] 14.1 Create event service and repository
 
   - Implement CreateEventAsync with title, date, time, recurrence
   - Add reminder notification system (24 hours before)
@@ -255,7 +256,8 @@
   - Add recurring event generation logic
   - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5_
 
-- [ ] 14.2 Build event calendar UI
+- [x] 14.2 Build event calendar UI
+
   - Create CalendarView displaying events
   - Implement EventFormViewModel for create/edit
   - Add recurrence options (daily, weekly, monthly, yearly)

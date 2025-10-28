@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 D:\Visual Studio 2022\Projects\Together\Together\App.xaml
-21-2101746583
+23-1333009174
 22969629690
-60-262909591
+66-1891697450
 243-853100252
-Controls\CommentSection.xaml;Controls\FollowButton.xaml;Controls\LikeButton.xaml;Controls\PostCard.xaml;MainWindow.xaml;Views\ConnectionRequestNotificationView.xaml;Views\ConnectionRequestView.xaml;Views\ConnectionStatusView.xaml;Views\FollowerListView.xaml;Views\FollowingListView.xaml;Views\FollowRequestsView.xaml;Views\JournalView.xaml;Views\LoginView.xaml;Views\MoodHistoryView.xaml;Views\MoodSelectorView.xaml;Views\MoodTrackerView.xaml;Views\PostCreationView.xaml;Views\RegisterView.xaml;Views\SocialFeedView.xaml;Views\TodoListView.xaml;Views\UserProfileView.xaml;
+Controls\CommentSection.xaml;Controls\FollowButton.xaml;Controls\LikeButton.xaml;Controls\PostCard.xaml;MainWindow.xaml;Views\CalendarView.xaml;Views\ConnectionRequestNotificationView.xaml;Views\ConnectionRequestView.xaml;Views\ConnectionStatusView.xaml;Views\EventFormView.xaml;Views\FollowerListView.xaml;Views\FollowingListView.xaml;Views\FollowRequestsView.xaml;Views\JournalView.xaml;Views\LoginView.xaml;Views\MoodHistoryView.xaml;Views\MoodSelectorView.xaml;Views\MoodTrackerView.xaml;Views\PostCreationView.xaml;Views\RegisterView.xaml;Views\SocialFeedView.xaml;Views\TodoListView.xaml;Views\UserProfileView.xaml;
 
 False
 

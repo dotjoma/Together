@@ -246,7 +246,6 @@
 
 - [x] 14. Implement event scheduling
 
-
 - [x] 14.1 Create event service and repository
 
   - Implement CreateEventAsync with title, date, time, recurrence
@@ -267,10 +266,12 @@
 
 ## Engagement Features
 
-- [ ] 15. Implement love streak tracking
-- [ ] 15.1 Create love streak service
+- [-] 15. Implement love streak tracking
+
+- [-] 15.1 Create love streak service
 
   - Implement RecordInteractionAsync tracking daily interactions
+
   - Add streak increment logic for same-day interactions
   - Create CheckAndResetStreakAsync for 24-hour inactivity
   - Implement milestone detection (7, 30, 100, 365 days)

@@ -58,6 +58,7 @@ namespace Together.Presentation
             services.AddScoped<IMoodTrackingService, MoodTrackingService>();
             services.AddScoped<IMoodAnalysisService, MoodAnalysisService>();
             services.AddScoped<IEventService, EventService>();
+            services.AddScoped<ILoveStreakService, LoveStreakService>();
 
             // Infrastructure Services
             services.AddScoped<IStorageService, SupabaseStorageService>();

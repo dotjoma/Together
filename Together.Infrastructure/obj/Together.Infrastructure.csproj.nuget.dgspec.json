@@ -62,9 +62,17 @@
               "target": "Package",
               "version": "[8.0.0, )"
             },
+            "SixLabors.ImageSharp": {
+              "target": "Package",
+              "version": "[3.1.11, )"
+            },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[8.2.1, )"
+              "version": "[8.14.0, )"
+            },
+            "supabase-csharp": {
+              "target": "Package",
+              "version": "[0.16.1, )"
             }
           },
           "imports": [
@@ -132,6 +140,20 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
+          "dependencies": {
+            "SixLabors.ImageSharp": {
+              "target": "Package",
+              "version": "[3.1.11, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.14.0, )"
+            },
+            "supabase-csharp": {
+              "target": "Package",
+              "version": "[0.16.1, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
@@ -225,11 +247,15 @@
             },
             "SixLabors.ImageSharp": {
               "target": "Package",
-              "version": "[3.1.7, )"
+              "version": "[3.1.11, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.14.0, )"
             },
             "supabase-csharp": {
               "target": "Package",
-              "version": "[0.16.2, )"
+              "version": "[0.16.1, )"
             }
           },
           "imports": [

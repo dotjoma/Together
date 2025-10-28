@@ -107,7 +107,12 @@
 
 
 
-- [ ] 5.1 Create profile service and repository
+- [x] 5.1 Create profile service and repository
+
+
+
+
+
   - Implement profile update methods (bio, profile picture, visibility settings)
   - Create SupabaseStorageService for profile picture uploads with 2MB limit
 

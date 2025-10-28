@@ -1,5 +1,13 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Together.Application.Interfaces;
+using Together.Application.Services;
+using Together.Domain.Interfaces;
+using Together.Infrastructure.Data;
+using Together.Infrastructure.Repositories;
+using Together.Infrastructure.Services;
 
 namespace Together.Presentation
 {
@@ -19,11 +27,28 @@ namespace Together.Presentation
 
         private void ConfigureServices(IServiceCollection services)
         {
-            // Register services here
-            // Domain layer services will be registered here
-            // Application layer services will be registered here
-            // Infrastructure layer services will be registered here
-            // Presentation layer ViewModels will be registered here
+            // Configuration
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+            services.AddSingleton<IConfiguration>(configuration);
+
+            // Database Context
+            services.AddDbContext<TogetherDbContext>(options =>
+                options.UseNpgsql(configuration.GetConnectionString("SupabaseConnection")));
+
+            // Repositories
+            services.AddScoped<IUserRepository, UserRepository>();
+
+            // Application Services
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<IProfileService, ProfileService>();
+
+            // Infrastructure Services
+            services.AddScoped<IStorageService, SupabaseStorageService>();
+
+            // ViewModels will be registered here as they are created
         }
 
         protected override void OnStartup(StartupEventArgs e)

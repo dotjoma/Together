@@ -120,7 +120,10 @@
   - Implement image compression and URL generation
   - _Requirements: 11.2, 11.3, 11.4_
 
-- [ ] 5.2 Build user profile UI
+- [x] 5.2 Build user profile UI
+
+
+
   - Create UserProfileView displaying username, bio, profile picture, follower/following counts
   - Implement UserProfileViewModel with edit mode
   - Add image picker for profile picture upload

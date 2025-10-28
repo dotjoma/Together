@@ -15,7 +15,7 @@ public class Email : ValueObject
 
     public static Email Create(string value) => new Email(value);
 
-    private static bool IsValid(string email)
+    public static bool IsValid(string email)
     {
         if (string.IsNullOrWhiteSpace(email))
             return false;

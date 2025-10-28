@@ -22,10 +22,16 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(50)
             .IsRequired();
 
-        builder.Property(u => u.Email)
-            .HasColumnName("email")
-            .HasMaxLength(255)
-            .IsRequired();
+        builder.OwnsOne(u => u.Email, email =>
+        {
+            email.Property(e => e.Value)
+                .HasColumnName("email")
+                .HasMaxLength(255)
+                .IsRequired();
+        });
+
+        builder.HasIndex(u => u.Email.Value)
+            .IsUnique();
 
         builder.Property(u => u.PasswordHash)
             .HasColumnName("password_hash")
@@ -55,9 +61,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         // Indexes
         builder.HasIndex(u => u.Username)
-            .IsUnique();
-
-        builder.HasIndex(u => u.Email)
             .IsUnique();
 
         builder.HasIndex(u => u.PartnerId);

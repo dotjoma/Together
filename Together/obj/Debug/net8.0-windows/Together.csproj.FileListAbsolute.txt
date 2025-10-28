@@ -156,3 +156,9 @@ D:\Visual Studio 2022\Projects\Together\Together\bin\Debug\net8.0-windows\ru\Mic
 D:\Visual Studio 2022\Projects\Together\Together\bin\Debug\net8.0-windows\tr\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 D:\Visual Studio 2022\Projects\Together\Together\bin\Debug\net8.0-windows\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 D:\Visual Studio 2022\Projects\Together\Together\bin\Debug\net8.0-windows\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\LoginView.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\RegisterView.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\LoginView.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\RegisterView.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\GeneratedInternalTypeHelper.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\App.baml

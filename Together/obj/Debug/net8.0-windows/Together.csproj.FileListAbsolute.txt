@@ -173,3 +173,7 @@ D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\FollowerListView.baml
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\FollowingListView.baml
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\FollowRequestsView.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Controls\PostCard.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Controls\PostCard.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\PostCreationView.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\PostCreationView.baml

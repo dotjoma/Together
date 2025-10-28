@@ -1,0 +1,156 @@
+<UserControl x:Class="Together.Presentation.Controls.PostCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="600">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </UserControl.Resources>
+    
+    <materialDesign:Card Margin="8" Padding="16">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header: Author Info and Menu -->
+            <Grid Grid.Row="0" Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Profile Picture -->
+                <Border Grid.Column="0"
+                        Width="40" Height="40"
+                        CornerRadius="20"
+                        Background="{DynamicResource MaterialDesignDivider}"
+                        Margin="0,0,12,0">
+                    <Border.Clip>
+                        <EllipseGeometry Center="20,20" RadiusX="20" RadiusY="20"/>
+                    </Border.Clip>
+                    <Image Source="{Binding Post.Author.ProfilePictureUrl}" 
+                           Stretch="UniformToFill"
+                           Visibility="{Binding Post.Author.ProfilePictureUrl, Converter={StaticResource BoolToVis}}"/>
+                </Border>
+
+                <!-- Author Name and Time -->
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Post.Author.Username}"
+                               Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                               FontWeight="SemiBold"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding TimeAgo}"
+                                   Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                   Foreground="{DynamicResource MaterialDesignBodyLight}"/>
+                        <TextBlock Text="{Binding EditedText}"
+                                   Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                   Foreground="{DynamicResource MaterialDesignBodyLight}"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Menu Button (for own posts) -->
+                <Button Grid.Column="2"
+                        Style="{StaticResource MaterialDesignIconButton}"
+                        Visibility="{Binding IsOwnPost, Converter={StaticResource BoolToVis}}"
+                        VerticalAlignment="Top">
+                    <materialDesign:PackIcon Kind="DotsVertical"/>
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="Edit" 
+                                      Command="{Binding EditCommand}"
+                                      IsEnabled="{Binding CanEditPost}">
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon Kind="Pencil"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Delete" 
+                                      Command="{Binding DeleteCommand}">
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon Kind="Delete"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </ContextMenu>
+                    </Button.ContextMenu>
+                </Button>
+            </Grid>
+
+            <!-- Content -->
+            <TextBlock Grid.Row="1"
+                       Text="{Binding Post.Content}"
+                       TextWrapping="Wrap"
+                       Style="{StaticResource MaterialDesignBody1TextBlock}"
+                       Margin="0,0,0,12"/>
+
+            <!-- Images -->
+            <ItemsControl Grid.Row="2" 
+                          ItemsSource="{Binding Post.ImageUrls}"
+                          Margin="0,0,0,12"
+                          Visibility="{Binding Post.ImageUrls.Count, Converter={StaticResource BoolToVis}}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Rows="2" Columns="2"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="2" 
+                                Height="200"
+                                CornerRadius="4"
+                                ClipToBounds="True">
+                            <Image Source="{Binding}" 
+                                   Stretch="UniformToFill"/>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!-- Interaction Stats -->
+            <StackPanel Grid.Row="3" 
+                        Orientation="Horizontal"
+                        HorizontalAlignment="Left">
+                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                        Padding="8,4">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Heart" 
+                                                 VerticalAlignment="Center"
+                                                 Margin="0,0,4,0"/>
+                        <TextBlock Text="{Binding Post.LikeCount}" 
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                        Padding="8,4"
+                        Margin="8,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Comment" 
+                                                 VerticalAlignment="Center"
+                                                 Margin="0,0,4,0"/>
+                        <TextBlock Text="{Binding Post.CommentCount}" 
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+            <!-- Deleting Overlay -->
+            <Grid Grid.Row="0" Grid.RowSpan="4"
+                  Background="{DynamicResource MaterialDesignPaper}"
+                  Opacity="0.8"
+                  Visibility="{Binding IsDeleting, Converter={StaticResource BoolToVis}}">
+                <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                             Width="48" Height="48"
+                             IsIndeterminate="True"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Center"/>
+            </Grid>
+        </Grid>
+    </materialDesign:Card>
+</UserControl>

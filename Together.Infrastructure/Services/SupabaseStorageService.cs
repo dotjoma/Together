@@ -103,4 +103,59 @@ public class SupabaseStorageService : IStorageService
 
         return compressedData;
     }
+
+    public async Task<string> UploadImageAsync(string filePath, string folder)
+    {
+        if (!File.Exists(filePath))
+        {
+            throw new FileNotFoundException("Image file not found", filePath);
+        }
+
+        var imageData = await File.ReadAllBytesAsync(filePath);
+        var fileName = Path.GetFileName(filePath);
+        var fileExtension = Path.GetExtension(fileName);
+        var uniqueFileName = $"{Guid.NewGuid()}{fileExtension}";
+        var storagePath = $"{folder}/{uniqueFileName}";
+
+        // Compress if needed
+        if (imageData.Length > 5 * 1024 * 1024) // 5MB
+        {
+            imageData = await CompressImageAsync(imageData, 5 * 1024 * 1024);
+        }
+
+        // In a real implementation, this would upload to Supabase Storage
+        var publicUrl = $"{_supabaseUrl}/storage/v1/object/public/{_bucketName}/{storagePath}";
+
+        // TODO: Implement actual Supabase storage upload
+        // var client = new SupabaseClient(_supabaseUrl, _supabaseKey);
+        // await client.Storage.From(_bucketName).Upload(imageData, storagePath);
+
+        return publicUrl;
+    }
+
+    public async Task<bool> DeleteImageAsync(string fileUrl)
+    {
+        if (string.IsNullOrWhiteSpace(fileUrl))
+        {
+            return false;
+        }
+
+        // Extract file path from URL
+        try
+        {
+            var uri = new Uri(fileUrl);
+            var segments = uri.Segments;
+            var filePath = string.Join("", segments.Skip(segments.Length - 2));
+
+            // TODO: Implement actual Supabase storage deletion
+            // var client = new SupabaseClient(_supabaseUrl, _supabaseKey);
+            // await client.Storage.From(_bucketName).Remove(new[] { filePath });
+
+            return await Task.FromResult(true);
+        }
+        catch
+        {
+            return false;
+        }
+    }
 }

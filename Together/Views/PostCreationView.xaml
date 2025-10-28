@@ -1,0 +1,130 @@
+<UserControl x:Class="Together.Presentation.Views.PostCreationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:converters="clr-namespace:Together.Presentation.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+        <converters:BooleanToTextConverter x:Key="BoolToText"/>
+    </UserControl.Resources>
+    
+    <materialDesign:Card Padding="16" Margin="8">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <TextBlock Grid.Row="0" 
+                       Text="{Binding IsEditing, Converter={StaticResource BoolToText}, ConverterParameter='Edit Post|Create Post'}"
+                       Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                       Margin="0,0,0,16"/>
+
+            <!-- Content Input -->
+            <TextBox Grid.Row="1"
+                     Text="{Binding Content, UpdateSourceTrigger=PropertyChanged}"
+                     materialDesign:HintAssist.Hint="What's on your mind?"
+                     AcceptsReturn="True"
+                     TextWrapping="Wrap"
+                     VerticalScrollBarVisibility="Auto"
+                     MinHeight="100"
+                     MaxHeight="200"
+                     Margin="0,0,0,8"/>
+
+            <!-- Character Counter -->
+            <StackPanel Grid.Row="2" 
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Right"
+                        Margin="0,0,0,16">
+                <TextBlock Text="{Binding CharacterCount}"/>
+                <TextBlock Text=" / "/>
+                <TextBlock Text="{Binding MaxCharacters}"/>
+                <TextBlock Text=" characters" Margin="4,0,0,0" Foreground="{DynamicResource MaterialDesignBodyLight}"/>
+            </StackPanel>
+
+            <!-- Image Previews -->
+            <ItemsControl Grid.Row="3" 
+                          ItemsSource="{Binding ImagePaths}"
+                          Margin="0,0,0,16"
+                          Visibility="{Binding ImagePaths.Count, Converter={StaticResource BoolToVis}}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <materialDesign:Card Width="120" Height="120" Margin="0,0,8,8">
+                            <Grid>
+                                <Image Source="{Binding}" Stretch="UniformToFill"/>
+                                <Button Style="{StaticResource MaterialDesignIconButton}"
+                                        Width="24" Height="24"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Top"
+                                        Margin="4"
+                                        Command="{Binding DataContext.RemoveImageCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}"
+                                        Background="{DynamicResource MaterialDesignPaper}"
+                                        Opacity="0.9">
+                                    <materialDesign:PackIcon Kind="Close" Width="16" Height="16"/>
+                                </Button>
+                            </Grid>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!-- Error Message -->
+            <TextBlock Grid.Row="4"
+                       Text="{Binding ErrorMessage}"
+                       Foreground="{DynamicResource MaterialDesignValidationErrorBrush}"
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,8"
+                       Visibility="{Binding ErrorMessage, Converter={StaticResource BoolToVis}}"/>
+
+            <!-- Action Buttons -->
+            <StackPanel Grid.Row="5" 
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Right">
+                <Button Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Command="{Binding AddImageCommand}"
+                        Margin="0,0,8,0"
+                        ToolTip="Add images (up to 4)">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Image" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                        <TextBlock Text="Add Images" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{StaticResource MaterialDesignOutlinedButton}"
+                        Command="{Binding CancelCommand}"
+                        Content="Cancel"
+                        Margin="0,0,8,0"/>
+
+                <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                        Command="{Binding PostCommand}"
+                        IsEnabled="{Binding IsPosting, Converter={StaticResource InverseBooleanConverter}}">
+                    <StackPanel Orientation="Horizontal">
+                        <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                     Width="16" Height="16"
+                                     Margin="0,0,8,0"
+                                     IsIndeterminate="True"
+                                     Visibility="{Binding IsPosting, Converter={StaticResource BoolToVis}}"/>
+                        <TextBlock Text="{Binding IsEditing, Converter={StaticResource BoolToText}, ConverterParameter='Update|Post'}" 
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </materialDesign:Card>
+</UserControl>

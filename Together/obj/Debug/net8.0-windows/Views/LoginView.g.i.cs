@@ -33,7 +33,6 @@ using System.Windows.Media.TextFormatting;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Shell;
-using Together.Presentation.Converters;
 
 
 namespace Together.Presentation.Views {

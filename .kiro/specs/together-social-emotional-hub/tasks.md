@@ -217,7 +217,6 @@
 
 - [x] 12.2 Build mood tracking UI
 
-
   - Create MoodSelectorView with emoji-based mood selection
   - Implement MoodHistoryView with chart visualization (30 days)
   - Add notes input for mood entries
@@ -225,8 +224,10 @@
   - Show supportive message suggestions
   - _Requirements: 4.1, 4.3, 4.4, 4.5_
 
-- [ ] 13. Implement shared to-do list
-- [ ] 13.1 Create todo service and repository
+- [x] 13. Implement shared to-do list
+
+
+- [x] 13.1 Create todo service and repository
 
   - Implement CreateTodoItemAsync with title, due date, assignment
   - Add MarkAsCompleteAsync updating status and notifying partner
@@ -235,7 +236,7 @@
   - Add tag support for categorization
   - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5_
 
-- [ ] 13.2 Build todo list UI
+- [x] 13.2 Build todo list UI
 
   - Create TodoListView displaying items with completion checkboxes
   - Implement TodoItemViewModel with edit functionality

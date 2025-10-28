@@ -197,3 +197,5 @@ D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\MoodSelectorView.g.cs
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\JournalView.baml
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\MoodTrackerView.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\TodoListView.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\TodoListView.baml

@@ -87,7 +87,11 @@
   - _Requirements: 1.1, 11.5_
 
 
-- [ ] 4.4 Write authentication tests
+- [x] 4.4 Write authentication tests
+
+
+
+
   - Create unit tests for password validation logic
   - Test JWT token generation and validation
   - Test login with invalid credentials

@@ -12,6 +12,8 @@
         Title="Together - Social and Emotional Hub" 
         Height="768" 
         Width="1366"
+        MinHeight="600"
+        MinWidth="1024"
         WindowStartupLocation="CenterScreen"
         Background="{DynamicResource MaterialDesignPaper}"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -19,7 +21,9 @@
         TextElement.FontSize="13"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
-        FontFamily="{DynamicResource MaterialDesignFont}">
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        WindowState="Normal"
+        ResizeMode="CanResize">
     
     <materialDesign:DialogHost Identifier="RootDialog">
         <Grid>
@@ -273,7 +277,8 @@
 
                 <!-- Main Content Area -->
                 <Grid>
-                    <ContentControl Content="{Binding CurrentViewModel}">
+                    <ContentControl Content="{Binding CurrentViewModel}"
+                                    Style="{StaticResource PageTransitionStyle}">
                         <ContentControl.Resources>
                             <!-- View-ViewModel mappings will be defined here -->
                             <DataTemplate DataType="{x:Type viewmodels:CoupleHubViewModel}">

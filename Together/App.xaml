@@ -8,8 +8,15 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <materialDesign:BundledTheme BaseTheme="Light" PrimaryColor="DeepPurple" SecondaryColor="Lime" />
+                <!-- Material Design Theme Configuration -->
+                <materialDesign:BundledTheme BaseTheme="Light" 
+                                             PrimaryColor="DeepPurple" 
+                                             SecondaryColor="Pink" 
+                                             ColorAdjustment="{materialDesign:ColorAdjustment}"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
+                
+                <!-- Custom Styles -->
+                <ResourceDictionary Source="Styles/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             
             <!-- Converters -->
@@ -27,6 +34,52 @@
             <converters:PetStateToColorConverter x:Key="PetStateToColorConverter"/>
             <converters:AppearanceToColorConverter x:Key="AppearanceToColorConverter"/>
             <converters:StringEqualityConverter x:Key="StringEqualityConverter"/>
+            
+            <!-- Global Typography Settings -->
+            <Style TargetType="TextBlock" BasedOn="{StaticResource MaterialDesignBody1TextBlock}">
+                <Setter Property="FontFamily" Value="{DynamicResource MaterialDesignFont}"/>
+                <Setter Property="TextOptions.TextFormattingMode" Value="Ideal"/>
+                <Setter Property="TextOptions.TextRenderingMode" Value="Auto"/>
+            </Style>
+            
+            <!-- Global Button Settings -->
+            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="4"/>
+                <Setter Property="Padding" Value="16,8"/>
+            </Style>
+            
+            <!-- Global Card Settings -->
+            <Style TargetType="materialDesign:Card">
+                <Setter Property="UniformCornerRadius" Value="8"/>
+                <Setter Property="Padding" Value="16"/>
+            </Style>
+            
+            <!-- Smooth Page Transitions -->
+            <Style x:Key="PageTransitionStyle" TargetType="ContentControl">
+                <Setter Property="RenderTransform">
+                    <Setter.Value>
+                        <TranslateTransform Y="0"/>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <EventTrigger RoutedEvent="Loaded">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                 From="20" To="0"
+                                                 Duration="0:0:0.3"
+                                                 AccelerationRatio="0.2"
+                                                 DecelerationRatio="0.8"/>
+                                <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                                 From="0" To="1"
+                                                 Duration="0:0:0.3"
+                                                 AccelerationRatio="0.2"
+                                                 DecelerationRatio="0.8"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -1,0 +1,31 @@
+<UserControl x:Class="Together.Presentation.Controls.EmptyStateView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="400">
+    <Grid Background="{DynamicResource MaterialDesignPaper}">
+        <StackPanel Style="{StaticResource EmptyStateContainerStyle}">
+            <!-- Icon -->
+            <materialDesign:PackIcon Kind="{Binding IconKind, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=InboxArrowDown}"
+                                     Style="{StaticResource EmptyStateIconStyle}"/>
+            
+            <!-- Title -->
+            <TextBlock Text="{Binding Title, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue='No Items'}"
+                       Style="{StaticResource EmptyStateTitleStyle}"/>
+            
+            <!-- Message -->
+            <TextBlock Text="{Binding Message, RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue='There are no items to display.'}"
+                       Style="{StaticResource EmptyStateMessageStyle}"
+                       Margin="0,8,0,16"/>
+            
+            <!-- Action Button (Optional) -->
+            <Button Content="{Binding ActionButtonText, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Command="{Binding ActionCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Visibility="{Binding ActionButtonText, RelativeSource={RelativeSource AncestorType=UserControl}, Converter={StaticResource StringToVisibilityConverter}}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

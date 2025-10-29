@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,9 @@ using Together.Infrastructure.Services;
 using Together.Infrastructure.SignalR;
 using Microsoft.Extensions.Logging;
 using Together.Presentation.ViewModels;
+using Together.Application.Common;
+using Serilog;
+using Together.Services;
 
 namespace Together.Presentation
 {
@@ -23,6 +27,15 @@ namespace Together.Presentation
 
         public App()
         {
+            // Configure Serilog first
+            Log.Logger = LoggingConfiguration.ConfigureSerilog();
+            Log.Information("Together application starting...");
+
+            // Set up global exception handlers
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+            DispatcherUnhandledException += OnDispatcherUnhandledException;
+            TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
+
             var services = new ServiceCollection();
             ConfigureServices(services);
             _serviceProvider = services.BuildServiceProvider();
@@ -84,8 +97,12 @@ namespace Together.Presentation
             // Navigation Service
             services.AddSingleton<Together.Services.INavigationService, Together.Services.NavigationService>();
             
-            // Logging
-            services.AddLogging();
+            // Logging with Serilog
+            services.AddLogging(loggingBuilder =>
+            {
+                loggingBuilder.ClearProviders();
+                loggingBuilder.AddSerilog(dispose: true);
+            });
             
             // Caching
             services.AddMemoryCache();
@@ -113,6 +130,8 @@ namespace Together.Presentation
         {
             base.OnStartup(e);
             
+            Log.Information("Application startup initiated");
+            
             // Show login window initially
             var loginWindow = new Window
             {
@@ -127,6 +146,7 @@ namespace Together.Presentation
             };
             
             loginWindow.Show();
+            Log.Information("Login window displayed");
         }
         
         public void ShowMainWindow(Application.DTOs.UserDto user)
@@ -142,8 +162,79 @@ namespace Together.Presentation
 
         protected override void OnExit(ExitEventArgs e)
         {
+            Log.Information("Application shutting down");
             _serviceProvider?.Dispose();
+            Log.CloseAndFlush();
             base.OnExit(e);
         }
+
+        #region Global Exception Handlers
+
+        private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        {
+            HandleException(e.Exception);
+            e.Handled = true;
+        }
+
+        private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            if (e.ExceptionObject is Exception exception)
+            {
+                HandleException(exception);
+            }
+        }
+
+        private void OnUnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
+        {
+            HandleException(e.Exception);
+            e.SetObserved();
+        }
+
+        private void HandleException(Exception exception)
+        {
+            try
+            {
+                // Generate correlation ID for this error
+                var correlationId = CorrelationContext.GenerateCorrelationId();
+
+                // Log the exception with correlation ID
+                Log.Error(exception, 
+                    "[CorrelationId: {CorrelationId}] Unhandled exception occurred: {ExceptionType} - {Message}", 
+                    correlationId,
+                    exception.GetType().Name,
+                    LoggingConfiguration.SanitizeLogMessage(ErrorMessageMapper.GetDetailedMessage(exception)));
+
+                // Get user-friendly message
+                var userMessage = ErrorMessageMapper.GetUserFriendlyMessage(exception);
+
+                // Show error dialog to user with correlation ID for support
+                MessageBox.Show(
+                    $"{userMessage}\n\nError ID: {correlationId}\n\nPlease provide this ID if you contact support.",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                // Fallback if error handling itself fails
+                MessageBox.Show(
+                    "A critical error occurred. Please restart the application.",
+                    "Critical Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+
+                // Try to log this as well
+                try
+                {
+                    Log.Fatal(ex, "Critical error in exception handler");
+                }
+                catch
+                {
+                    // Nothing we can do at this point
+                }
+            }
+        }
+
+        #endregion
     }
 }

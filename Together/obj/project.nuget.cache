@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "z/Tu+lQWuWQ=",
+  "dgSpecHash": "S+bEGkHHRwM=",
   "success": true,
   "projectFilePath": "D:\\Visual Studio 2022\\Projects\\Together\\Together\\Together.csproj",
   "expectedPackageFiles": [
@@ -64,6 +64,13 @@
     "C:\\Users\\joma\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\9.0.4\\npgsql.entityframeworkcore.postgresql.9.0.4.nupkg.sha512",
     "C:\\Users\\joma\\.nuget\\packages\\postgrest-csharp\\3.5.1\\postgrest-csharp.3.5.1.nupkg.sha512",
     "C:\\Users\\joma\\.nuget\\packages\\realtime-csharp\\6.0.4\\realtime-csharp.6.0.4.nupkg.sha512",
+    "C:\\Users\\joma\\.nuget\\packages\\serilog\\4.2.0\\serilog.4.2.0.nupkg.sha512",
+    "C:\\Users\\joma\\.nuget\\packages\\serilog.enrichers.environment\\3.0.1\\serilog.enrichers.environment.3.0.1.nupkg.sha512",
+    "C:\\Users\\joma\\.nuget\\packages\\serilog.enrichers.thread\\4.0.0\\serilog.enrichers.thread.4.0.0.nupkg.sha512",
+    "C:\\Users\\joma\\.nuget\\packages\\serilog.extensions.logging\\8.0.0\\serilog.extensions.logging.8.0.0.nupkg.sha512",
+    "C:\\Users\\joma\\.nuget\\packages\\serilog.formatting.compact\\3.0.0\\serilog.formatting.compact.3.0.0.nupkg.sha512",
+    "C:\\Users\\joma\\.nuget\\packages\\serilog.sinks.console\\6.0.0\\serilog.sinks.console.6.0.0.nupkg.sha512",
+    "C:\\Users\\joma\\.nuget\\packages\\serilog.sinks.file\\6.0.0\\serilog.sinks.file.6.0.0.nupkg.sha512",
     "C:\\Users\\joma\\.nuget\\packages\\sixlabors.imagesharp\\3.1.11\\sixlabors.imagesharp.3.1.11.nupkg.sha512",
     "C:\\Users\\joma\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.1.10\\sqlitepclraw.bundle_e_sqlite3.2.1.10.nupkg.sha512",
     "C:\\Users\\joma\\.nuget\\packages\\sqlitepclraw.core\\2.1.10\\sqlitepclraw.core.2.1.10.nupkg.sha512",

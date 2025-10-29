@@ -3,7 +3,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Together.Application.Common;
 using Together.Application.DTOs;
 using Together.Application.Exceptions;
 using Together.Application.Interfaces;
@@ -17,79 +19,114 @@ public class AuthenticationService : IAuthenticationService
 {
     private readonly IUserRepository _userRepository;
     private readonly IConfiguration? _configuration;
+    private readonly ILogger<AuthenticationService> _logger;
     private const int BcryptWorkFactor = 12;
     private const string DefaultJwtSecret = "ThisIsATestSecretKeyForDevelopmentOnlyPleaseChangeInProduction123456";
 
-    public AuthenticationService(IUserRepository userRepository, IConfiguration? configuration = null)
+    public AuthenticationService(
+        IUserRepository userRepository, 
+        ILogger<AuthenticationService> logger,
+        IConfiguration? configuration = null)
     {
         _userRepository = userRepository;
+        _logger = logger;
         _configuration = configuration;
     }
 
     public async Task<AuthResult> RegisterAsync(RegisterDto dto)
     {
-        // Validate input
-        var validationErrors = ValidateRegistration(dto);
-        if (validationErrors.Count > 0)
-        {
-            throw new ValidationException(validationErrors);
-        }
+        using var scope = _logger.BeginCorrelationScope("UserRegistration");
+        _logger.LogInformationWithCorrelation("Starting user registration for username: {Username}", dto.Username);
 
-        // Check if user already exists
-        var existingUserByEmail = await _userRepository.GetByEmailAsync(dto.Email);
-        if (existingUserByEmail != null)
+        try
         {
-            throw new ValidationException(new Dictionary<string, string[]>
+            // Validate input
+            var validationErrors = ValidateRegistration(dto);
+            if (validationErrors.Count > 0)
             {
-                { "Email", new[] { "A user with this email already exists" } }
-            });
-        }
+                _logger.LogWarningWithCorrelation("Registration validation failed for username: {Username}", dto.Username);
+                throw new ValidationException(validationErrors);
+            }
 
-        var existingUserByUsername = await _userRepository.GetByUsernameAsync(dto.Username);
-        if (existingUserByUsername != null)
-        {
-            throw new ValidationException(new Dictionary<string, string[]>
+            // Check if user already exists
+            var existingUserByEmail = await _userRepository.GetByEmailAsync(dto.Email);
+            if (existingUserByEmail != null)
             {
-                { "Username", new[] { "A user with this username already exists" } }
-            });
+                _logger.LogWarningWithCorrelation("Registration failed: Email already exists for username: {Username}", dto.Username);
+                throw new ValidationException(new Dictionary<string, string[]>
+                {
+                    { "Email", new[] { "A user with this email already exists" } }
+                });
+            }
+
+            var existingUserByUsername = await _userRepository.GetByUsernameAsync(dto.Username);
+            if (existingUserByUsername != null)
+            {
+                _logger.LogWarningWithCorrelation("Registration failed: Username already exists: {Username}", dto.Username);
+                throw new ValidationException(new Dictionary<string, string[]>
+                {
+                    { "Username", new[] { "A user with this username already exists" } }
+                });
+            }
+
+            // Hash password
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password, BcryptWorkFactor);
+
+            // Create user
+            var email = Email.Create(dto.Email);
+            var user = User.Create(dto.Username, email, passwordHash);
+
+            await _userRepository.AddAsync(user);
+            _logger.LogInformationWithCorrelation("User registered successfully: {Username}, UserId: {UserId}", dto.Username, user.Id);
+
+            // Generate token
+            var token = GenerateJwtToken(user);
+
+            var userDto = MapToUserDto(user);
+            return AuthResultExtensions.Success(token, "Registration successful", userDto);
         }
-
-        // Hash password
-        var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password, BcryptWorkFactor);
-
-        // Create user
-        var email = Email.Create(dto.Email);
-        var user = User.Create(dto.Username, email, passwordHash);
-
-        await _userRepository.AddAsync(user);
-
-        // Generate token
-        var token = GenerateJwtToken(user);
-
-        var userDto = MapToUserDto(user);
-        return AuthResultExtensions.Success(token, "Registration successful", userDto);
+        catch (Exception ex) when (ex is not ValidationException)
+        {
+            _logger.LogErrorWithCorrelation(ex, "Error during user registration for username: {Username}", dto.Username);
+            throw;
+        }
     }
 
     public async Task<AuthResult> LoginAsync(LoginDto dto)
     {
-        // Find user by email
-        var user = await _userRepository.GetByEmailAsync(dto.Email);
-        if (user == null)
+        using var scope = _logger.BeginCorrelationScope("UserLogin");
+        _logger.LogInformationWithCorrelation("Login attempt for email: {Email}", dto.Email);
+
+        try
         {
-            return AuthResultExtensions.Failure("Invalid email or password");
-        }
+            // Find user by email
+            var user = await _userRepository.GetByEmailAsync(dto.Email);
+            if (user == null)
+            {
+                _logger.LogWarningWithCorrelation("Login failed: User not found for email: {Email}", dto.Email);
+                return AuthResultExtensions.Failure("Invalid email or password");
+            }
 
-        // Verify password
-        if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
+            // Verify password
+            if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
+            {
+                _logger.LogWarningWithCorrelation("Login failed: Invalid password for email: {Email}", dto.Email);
+                return AuthResultExtensions.Failure("Invalid email or password");
+            }
+
+            // Generate token
+            var token = GenerateJwtToken(user);
+
+            _logger.LogInformationWithCorrelation("User logged in successfully: {Username}, UserId: {UserId}", user.Username, user.Id);
+
+            var userDto = MapToUserDto(user);
+            return AuthResultExtensions.Success(token, "Login successful", userDto);
+        }
+        catch (Exception ex)
         {
-            return AuthResultExtensions.Failure("Invalid email or password");
+            _logger.LogErrorWithCorrelation(ex, "Error during login for email: {Email}", dto.Email);
+            throw;
         }
-
-        // Generate token
-        var token = GenerateJwtToken(user);
-
-        var userDto = MapToUserDto(user);
-        return AuthResultExtensions.Success(token, "Login successful", userDto);
     }
 
     public Task<bool> ValidateTokenAsync(string token)

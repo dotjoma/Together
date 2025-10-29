@@ -270,3 +270,10 @@ D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\refint
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Together.pdb
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Together.genruntimeconfig.cache
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\ref\Together.dll
+D:\Visual Studio 2022\Projects\Together\Together\bin\Debug\net8.0-windows\Serilog.dll
+D:\Visual Studio 2022\Projects\Together\Together\bin\Debug\net8.0-windows\Serilog.Enrichers.Environment.dll
+D:\Visual Studio 2022\Projects\Together\Together\bin\Debug\net8.0-windows\Serilog.Enrichers.Thread.dll
+D:\Visual Studio 2022\Projects\Together\Together\bin\Debug\net8.0-windows\Serilog.Extensions.Logging.dll
+D:\Visual Studio 2022\Projects\Together\Together\bin\Debug\net8.0-windows\Serilog.Formatting.Compact.dll
+D:\Visual Studio 2022\Projects\Together\Together\bin\Debug\net8.0-windows\Serilog.Sinks.Console.dll
+D:\Visual Studio 2022\Projects\Together\Together\bin\Debug\net8.0-windows\Serilog.Sinks.File.dll

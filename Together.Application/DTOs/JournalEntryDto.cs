@@ -1,5 +1,8 @@
 namespace Together.Application.DTOs;
 
+/// <summary>
+/// Data transfer object for journal entries
+/// </summary>
 public record JournalEntryDto(
     Guid Id,
     Guid ConnectionId,

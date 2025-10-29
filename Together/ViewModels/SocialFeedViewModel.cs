@@ -13,6 +13,7 @@ public class SocialFeedViewModel : ViewModelBase
     private readonly ILikeService _likeService;
     private readonly ICommentService _commentService;
     private readonly IRealTimeSyncService? _realTimeSyncService;
+    private readonly IOfflineSyncManager? _offlineSyncManager;
     private readonly Guid _currentUserId;
     private bool _isLoading;
     private bool _isRefreshing;
@@ -28,13 +29,15 @@ public class SocialFeedViewModel : ViewModelBase
         ILikeService likeService,
         ICommentService commentService,
         Guid currentUserId,
-        IRealTimeSyncService? realTimeSyncService = null)
+        IRealTimeSyncService? realTimeSyncService = null,
+        IOfflineSyncManager? offlineSyncManager = null)
     {
         _socialFeedService = socialFeedService;
         _postService = postService;
         _likeService = likeService;
         _commentService = commentService;
         _realTimeSyncService = realTimeSyncService;
+        _offlineSyncManager = offlineSyncManager;
         _currentUserId = currentUserId;
         _currentSkip = 0;
         _hasMorePosts = true;
@@ -103,10 +106,30 @@ public class SocialFeedViewModel : ViewModelBase
             ErrorMessage = string.Empty;
             _currentSkip = 0;
 
-            var result = await _socialFeedService.GetFeedAsync(_currentUserId, _currentSkip, PageSize);
+            IEnumerable<PostDto> posts;
+
+            // Try to load from server, fall back to cache if offline
+            if (_offlineSyncManager != null && !await _offlineSyncManager.IsOnlineAsync())
+            {
+                var cachedPosts = await _offlineSyncManager.GetCachedPostsAsync(100);
+                posts = cachedPosts.Cast<PostDto>();
+                HasMorePosts = false; // No pagination for cached posts
+            }
+            else
+            {
+                var result = await _socialFeedService.GetFeedAsync(_currentUserId, _currentSkip, PageSize);
+                posts = result.Posts;
+                HasMorePosts = result.HasMore;
+
+                // Cache the posts for offline use
+                if (_offlineSyncManager != null)
+                {
+                    await _offlineSyncManager.CachePostsAsync(posts.Cast<object>());
+                }
+            }
 
             Posts.Clear();
-            foreach (var post in result.Posts)
+            foreach (var post in posts)
             {
                 var isLiked = await _likeService.IsLikedByUserAsync(post.Id, _currentUserId);
                 var postCardViewModel = new PostCardViewModel(_postService, _likeService, _commentService, _currentUserId, post, isLiked);
@@ -114,7 +137,6 @@ public class SocialFeedViewModel : ViewModelBase
                 Posts.Add(postCardViewModel);
             }
 
-            HasMorePosts = result.HasMore;
             _currentSkip = Posts.Count;
 
             // If no posts, show suggested users

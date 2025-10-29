@@ -12,6 +12,7 @@ public class JournalViewModel : ViewModelBase
 {
     private readonly IJournalService _journalService;
     private readonly IRealTimeSyncService? _realTimeSyncService;
+    private readonly IOfflineSyncManager? _offlineSyncManager;
     private readonly Guid _currentUserId;
     private readonly Guid _connectionId;
     private bool _isLoading;
@@ -22,10 +23,12 @@ public class JournalViewModel : ViewModelBase
         IJournalService journalService,
         Guid currentUserId,
         Guid connectionId,
-        IRealTimeSyncService? realTimeSyncService = null)
+        IRealTimeSyncService? realTimeSyncService = null,
+        IOfflineSyncManager? offlineSyncManager = null)
     {
         _journalService = journalService;
         _realTimeSyncService = realTimeSyncService;
+        _offlineSyncManager = offlineSyncManager;
         _currentUserId = currentUserId;
         _connectionId = connectionId;
 
@@ -77,7 +80,24 @@ public class JournalViewModel : ViewModelBase
             IsLoading = true;
             ErrorMessage = null;
 
-            var entries = await _journalService.GetJournalEntriesAsync(_connectionId);
+            IEnumerable<JournalEntryDto> entries;
+
+            // Try to load from server, fall back to cache if offline
+            if (_offlineSyncManager != null && !await _offlineSyncManager.IsOnlineAsync())
+            {
+                var cachedEntries = await _offlineSyncManager.GetCachedJournalEntriesAsync(_connectionId);
+                entries = cachedEntries.Cast<JournalEntryDto>();
+            }
+            else
+            {
+                entries = await _journalService.GetJournalEntriesAsync(_connectionId);
+                
+                // Cache the entries for offline use
+                if (_offlineSyncManager != null)
+                {
+                    await _offlineSyncManager.CacheJournalEntriesAsync(_connectionId, entries.Cast<object>());
+                }
+            }
             
             Entries.Clear();
             foreach (var entry in entries)

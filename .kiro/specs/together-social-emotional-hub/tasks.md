@@ -373,7 +373,6 @@
 
 - [x] 20. Implement SignalR real-time service
 
-
 - [x] 20.1 Create SignalR hub and client
 
   - Implement TogetherHub with connection management
@@ -394,8 +393,10 @@
 
 ## Offline Support
 
-- [ ] 21. Implement offline sync manager
-- [ ] 21.1 Create offline sync service
+- [x] 21. Implement offline sync manager
+
+
+- [x] 21.1 Create offline sync service
 
   - Implement SQLite local cache for posts, journal entries, mood data
   - Add QueueOperationAsync for offline actions
@@ -404,7 +405,8 @@
   - Add IsOnlineAsync network connectivity check
   - _Requirements: 19.1, 19.2, 19.3, 19.4, 19.5_
 
-- [ ] 21.2 Integrate offline support in UI
+- [x] 21.2 Integrate offline support in UI
+
   - Display offline indicator when network unavailable
   - Queue journal entries, mood logs, todos locally
   - Prevent follow requests and post creation when offline

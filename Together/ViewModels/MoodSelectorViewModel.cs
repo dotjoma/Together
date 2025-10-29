@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using Together.Application.DTOs;
 using Together.Application.Interfaces;
+using Together.Domain.Enums;
 using Together.Presentation.Commands;
 
 namespace Together.Presentation.ViewModels;
@@ -10,6 +11,7 @@ namespace Together.Presentation.ViewModels;
 public class MoodSelectorViewModel : ViewModelBase
 {
     private readonly IMoodTrackingService _moodTrackingService;
+    private readonly IOfflineSyncManager? _offlineSyncManager;
     private readonly Guid _userId;
     private string? _notes;
     private string? _selectedMood;
@@ -37,9 +39,13 @@ public class MoodSelectorViewModel : ViewModelBase
 
     public ICommand SaveMoodCommand { get; }
 
-    public MoodSelectorViewModel(IMoodTrackingService moodTrackingService, Guid userId)
+    public MoodSelectorViewModel(
+        IMoodTrackingService moodTrackingService, 
+        Guid userId,
+        IOfflineSyncManager? offlineSyncManager = null)
     {
         _moodTrackingService = moodTrackingService;
+        _offlineSyncManager = offlineSyncManager;
         _userId = userId;
 
         MoodOptions = new ObservableCollection<MoodOption>
@@ -66,9 +72,21 @@ public class MoodSelectorViewModel : ViewModelBase
         try
         {
             var dto = new CreateMoodEntryDto(SelectedMood, Notes);
-            await _moodTrackingService.CreateMoodEntryAsync(_userId, dto);
 
-            MessageBox.Show("Mood saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            // Check if offline
+            if (_offlineSyncManager != null && !await _offlineSyncManager.IsOnlineAsync())
+            {
+                // Queue for later sync
+                await _offlineSyncManager.QueueOperationAsync(OperationType.CreateMoodEntry, dto);
+                MessageBox.Show("You are offline. Mood will be saved when connection is restored.", 
+                    "Queued", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                // Save immediately
+                await _moodTrackingService.CreateMoodEntryAsync(_userId, dto);
+                MessageBox.Show("Mood saved successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
 
             // Reset form
             SelectedMood = null;

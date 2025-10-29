@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Microsoft.Win32;
 using Together.Application.DTOs;
@@ -15,6 +16,7 @@ namespace Together.Presentation.ViewModels;
 public class PostCreationViewModel : ViewModelBase
 {
     private readonly IPostService _postService;
+    private readonly IOfflineSyncManager? _offlineSyncManager;
     private readonly Guid _currentUserId;
     private string _content = string.Empty;
     private int _characterCount;
@@ -22,9 +24,13 @@ public class PostCreationViewModel : ViewModelBase
     private string? _errorMessage;
     private PostDto? _editingPost;
 
-    public PostCreationViewModel(IPostService postService, Guid currentUserId)
+    public PostCreationViewModel(
+        IPostService postService, 
+        Guid currentUserId,
+        IOfflineSyncManager? offlineSyncManager = null)
     {
         _postService = postService;
+        _offlineSyncManager = offlineSyncManager;
         _currentUserId = currentUserId;
         
         ImagePaths = new ObservableCollection<string>();
@@ -114,6 +120,14 @@ public class PostCreationViewModel : ViewModelBase
         {
             IsPosting = true;
             ErrorMessage = null;
+
+            // Check if offline - posts cannot be created offline
+            if (_offlineSyncManager != null && !await _offlineSyncManager.IsOnlineAsync())
+            {
+                MessageBox.Show("You cannot create or edit posts while offline. Please connect to the internet and try again.",
+                    "Offline", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             if (IsEditing && _editingPost != null)
             {

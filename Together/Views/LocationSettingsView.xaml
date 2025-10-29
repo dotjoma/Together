@@ -1,0 +1,115 @@
+<UserControl x:Class="Together.Presentation.Views.LocationSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="500">
+    
+    <materialDesign:Card Padding="24" Margin="16">
+        <StackPanel>
+            <!-- Header -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
+                <materialDesign:PackIcon Kind="MapMarker" 
+                                       Width="32" 
+                                       Height="32"
+                                       VerticalAlignment="Center"
+                                       Foreground="#4A90E2"/>
+                <TextBlock Text="Location Settings" 
+                          Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                          Margin="12,0,0,0"
+                          VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Description -->
+            <TextBlock Text="Share your location to enable long-distance features like distance calculation and optimal communication windows."
+                      Style="{StaticResource MaterialDesignBody2TextBlock}"
+                      TextWrapping="Wrap"
+                      Foreground="{DynamicResource MaterialDesignBodyLight}"
+                      Margin="0,0,0,24"/>
+
+            <!-- Latitude -->
+            <TextBox materialDesign:HintAssist.Hint="Latitude"
+                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                    Text="{Binding Latitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Margin="0,0,0,16"/>
+
+            <!-- Longitude -->
+            <TextBox materialDesign:HintAssist.Hint="Longitude"
+                    Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                    Text="{Binding Longitude, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Margin="0,0,0,16"/>
+
+            <!-- Timezone -->
+            <ComboBox materialDesign:HintAssist.Hint="Time Zone"
+                     Style="{StaticResource MaterialDesignFloatingHintComboBox}"
+                     ItemsSource="{Binding AvailableTimeZones}"
+                     SelectedItem="{Binding SelectedTimeZone, Mode=TwoWay}"
+                     DisplayMemberPath="DisplayName"
+                     Margin="0,0,0,24"/>
+
+            <!-- Help Text -->
+            <Border Background="#E3F2FD" 
+                   BorderBrush="#2196F3"
+                   BorderThickness="1"
+                   CornerRadius="4"
+                   Padding="12"
+                   Margin="0,0,0,24">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <materialDesign:PackIcon Kind="InformationOutline" 
+                                               VerticalAlignment="Top"
+                                               Foreground="#2196F3"
+                                               Margin="0,0,8,0"/>
+                        <TextBlock Text="How to find your coordinates:" 
+                                  Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                  FontWeight="SemiBold"/>
+                    </StackPanel>
+                    <TextBlock Text="1. Open Google Maps and find your location"
+                              Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                              Margin="24,0,0,4"/>
+                    <TextBlock Text="2. Right-click on your location"
+                              Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                              Margin="24,0,0,4"/>
+                    <TextBlock Text="3. Click on the coordinates to copy them"
+                              Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                              Margin="24,0,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Error Message -->
+            <TextBlock Text="{Binding ErrorMessage}" 
+                      Style="{StaticResource MaterialDesignBody2TextBlock}"
+                      Foreground="{DynamicResource MaterialDesignValidationErrorBrush}"
+                      TextWrapping="Wrap"
+                      Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"
+                      Margin="0,0,0,16"/>
+
+            <!-- Success Message -->
+            <TextBlock Text="{Binding SuccessMessage}" 
+                      Style="{StaticResource MaterialDesignBody2TextBlock}"
+                      Foreground="#4CAF50"
+                      TextWrapping="Wrap"
+                      Visibility="{Binding SuccessMessage, Converter={StaticResource StringToVisibilityConverter}}"
+                      Margin="0,0,0,16"/>
+
+            <!-- Buttons -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                       Content="CLEAR LOCATION"
+                       Command="{Binding ClearLocationCommand}"
+                       Margin="0,0,8,0"/>
+                <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                       Content="SAVE"
+                       Command="{Binding SaveCommand}"
+                       IsEnabled="{Binding CanSave}"/>
+            </StackPanel>
+
+            <!-- Loading Indicator -->
+            <ProgressBar IsIndeterminate="True"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Margin="0,16,0,0"/>
+        </StackPanel>
+    </materialDesign:Card>
+</UserControl>

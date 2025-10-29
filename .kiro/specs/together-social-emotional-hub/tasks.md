@@ -308,7 +308,6 @@
 
 - [x] 17. Implement virtual pet system
 
-
 - [x] 17.1 Create virtual pet service
 
   - Implement pet creation on couple connection establishment
@@ -329,8 +328,10 @@
 
 ## Long-Distance Support
 
-- [ ] 18. Implement long-distance features
-- [ ] 18.1 Create location and timezone service
+- [x] 18. Implement long-distance features
+
+
+- [x] 18.1 Create location and timezone service
 
   - Implement distance calculation using Haversine formula
   - Add timezone detection and display
@@ -338,7 +339,8 @@
   - Implement location permission handling
   - _Requirements: 10.1, 10.3, 10.4_
 
-- [ ] 18.2 Build long-distance UI
+- [x] 18.2 Build long-distance UI
+
   - Create DistanceWidget displaying distance in km/miles
   - Implement CountdownTimer for next meeting date
   - Display both partners' local times with timezone labels

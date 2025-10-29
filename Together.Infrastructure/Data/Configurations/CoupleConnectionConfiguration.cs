@@ -49,6 +49,9 @@ public class CoupleConnectionConfiguration : IEntityTypeConfiguration<CoupleConn
                 v => Enum.Parse<ConnectionStatus>(v, true))
             .IsRequired();
 
+        builder.Property(c => c.NextMeetingDate)
+            .HasColumnName("next_meeting_date");
+
         // Indexes
         builder.HasIndex(c => c.User1Id);
         builder.HasIndex(c => c.User2Id);

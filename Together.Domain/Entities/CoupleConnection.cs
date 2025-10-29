@@ -12,6 +12,7 @@ public class CoupleConnection
     public int LoveStreak { get; private set; }
     public DateTime? LastInteractionDate { get; private set; }
     public ConnectionStatus Status { get; private set; }
+    public DateTime? NextMeetingDate { get; private set; }
 
     // Navigation properties
     public User User1 { get; private set; } = null!;
@@ -73,5 +74,10 @@ public class CoupleConnection
     public void Archive()
     {
         Status = ConnectionStatus.Archived;
+    }
+
+    public void SetNextMeetingDate(DateTime? nextMeetingDate)
+    {
+        NextMeetingDate = nextMeetingDate;
     }
 }

@@ -14,6 +14,9 @@ public class User
     public ProfileVisibility Visibility { get; private set; }
     public DateTime CreatedAt { get; private set; }
     public Guid? PartnerId { get; private set; }
+    public double? Latitude { get; private set; }
+    public double? Longitude { get; private set; }
+    public string? TimeZoneId { get; private set; }
 
     // Navigation properties
     public CoupleConnection? CoupleConnection { get; private set; }
@@ -73,5 +76,12 @@ public class User
     public void RemovePartner()
     {
         PartnerId = null;
+    }
+
+    public void UpdateLocation(double? latitude, double? longitude, string? timeZoneId)
+    {
+        Latitude = latitude;
+        Longitude = longitude;
+        TimeZoneId = timeZoneId;
     }
 }

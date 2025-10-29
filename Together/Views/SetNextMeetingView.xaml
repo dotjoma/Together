@@ -1,0 +1,63 @@
+<UserControl x:Class="Together.Presentation.Views.SetNextMeetingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="400">
+    
+    <materialDesign:Card Padding="24" Margin="16">
+        <StackPanel>
+            <!-- Header -->
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
+                <materialDesign:PackIcon Kind="CalendarHeart" 
+                                       Width="32" 
+                                       Height="32"
+                                       VerticalAlignment="Center"
+                                       Foreground="#4A90E2"/>
+                <TextBlock Text="Set Next Meeting Date" 
+                          Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                          Margin="12,0,0,0"
+                          VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Date Picker -->
+            <DatePicker materialDesign:HintAssist.Hint="Select Date"
+                       Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                       SelectedDate="{Binding NextMeetingDate, Mode=TwoWay}"
+                       Margin="0,0,0,16"/>
+
+            <!-- Time Picker -->
+            <materialDesign:TimePicker materialDesign:HintAssist.Hint="Select Time"
+                                      Style="{StaticResource MaterialDesignFloatingHintTimePicker}"
+                                      SelectedTime="{Binding NextMeetingTime, Mode=TwoWay}"
+                                      Margin="0,0,0,24"/>
+
+            <!-- Error Message -->
+            <TextBlock Text="{Binding ErrorMessage}" 
+                      Style="{StaticResource MaterialDesignBody2TextBlock}"
+                      Foreground="{DynamicResource MaterialDesignValidationErrorBrush}"
+                      TextWrapping="Wrap"
+                      Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"
+                      Margin="0,0,0,16"/>
+
+            <!-- Buttons -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Style="{StaticResource MaterialDesignFlatButton}"
+                       Content="CANCEL"
+                       Command="{Binding CancelCommand}"
+                       Margin="0,0,8,0"/>
+                <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                       Content="SET DATE"
+                       Command="{Binding SaveCommand}"
+                       IsEnabled="{Binding CanSave}"/>
+            </StackPanel>
+
+            <!-- Loading Indicator -->
+            <ProgressBar IsIndeterminate="True"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Margin="0,16,0,0"/>
+        </StackPanel>
+    </materialDesign:Card>
+</UserControl>

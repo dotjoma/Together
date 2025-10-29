@@ -59,6 +59,16 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(u => u.PartnerId)
             .HasColumnName("partner_id");
 
+        builder.Property(u => u.Latitude)
+            .HasColumnName("latitude");
+
+        builder.Property(u => u.Longitude)
+            .HasColumnName("longitude");
+
+        builder.Property(u => u.TimeZoneId)
+            .HasColumnName("timezone_id")
+            .HasMaxLength(100);
+
         // Indexes
         builder.HasIndex(u => u.Username)
             .IsUnique();

@@ -1,0 +1,240 @@
+<UserControl x:Class="Together.Presentation.Controls.DistanceWidget"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="350">
+    
+    <materialDesign:Card Padding="16" Margin="8">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,12">
+                <materialDesign:PackIcon Kind="MapMarkerDistance" 
+                                       Width="24" 
+                                       Height="24"
+                                       VerticalAlignment="Center"
+                                       Foreground="#4A90E2"/>
+                <TextBlock Text="Long Distance" 
+                          Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                          Margin="8,0,0,0"
+                          VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <!-- Distance Display -->
+            <StackPanel Grid.Row="1" 
+                       Margin="0,8"
+                       Visibility="{Binding HasDistance, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock Text="Distance Between You" 
+                          Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                          Foreground="{DynamicResource MaterialDesignBodyLight}"
+                          Margin="0,0,0,4"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <TextBlock Text="{Binding DistanceDisplay}" 
+                              Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                              FontWeight="Bold"
+                              Foreground="#4A90E2"/>
+                    <TextBlock Text="{Binding DistanceUnit}" 
+                              Style="{StaticResource MaterialDesignBody1TextBlock}"
+                              Margin="4,0,0,0"
+                              VerticalAlignment="Bottom"
+                              Foreground="{DynamicResource MaterialDesignBodyLight}"/>
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Countdown Timer -->
+            <StackPanel Grid.Row="2" 
+                       Margin="0,12,0,8"
+                       Visibility="{Binding HasNextMeeting, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock Text="Time Until Next Meeting" 
+                          Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                          Foreground="{DynamicResource MaterialDesignBodyLight}"
+                          Margin="0,0,0,8"/>
+                <Border Background="#F5F5F5" 
+                       CornerRadius="8" 
+                       Padding="12">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Days -->
+                        <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding DaysUntilMeeting}" 
+                                      Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                      FontWeight="Bold"
+                                      HorizontalAlignment="Center"
+                                      Foreground="#4A90E2"/>
+                            <TextBlock Text="Days" 
+                                      Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                      HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Hours -->
+                        <StackPanel Grid.Column="1" HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding HoursUntilMeeting}" 
+                                      Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                      FontWeight="Bold"
+                                      HorizontalAlignment="Center"
+                                      Foreground="#4A90E2"/>
+                            <TextBlock Text="Hours" 
+                                      Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                      HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Minutes -->
+                        <StackPanel Grid.Column="2" HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding MinutesUntilMeeting}" 
+                                      Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                      FontWeight="Bold"
+                                      HorizontalAlignment="Center"
+                                      Foreground="#4A90E2"/>
+                            <TextBlock Text="Minutes" 
+                                      Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                      HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+                        <!-- Seconds -->
+                        <StackPanel Grid.Column="3" HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding SecondsUntilMeeting}" 
+                                      Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                      FontWeight="Bold"
+                                      HorizontalAlignment="Center"
+                                      Foreground="#4A90E2"/>
+                            <TextBlock Text="Seconds" 
+                                      Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                      HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <TextBlock Text="{Binding NextMeetingDateDisplay}" 
+                          Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                          HorizontalAlignment="Center"
+                          Margin="0,8,0,0"
+                          Foreground="{DynamicResource MaterialDesignBodyLight}"/>
+            </StackPanel>
+
+            <!-- Local Times -->
+            <StackPanel Grid.Row="3" 
+                       Margin="0,12,0,8"
+                       Visibility="{Binding HasTimeZones, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock Text="Local Times" 
+                          Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                          Foreground="{DynamicResource MaterialDesignBodyLight}"
+                          Margin="0,0,0,8"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- User 1 Time -->
+                    <Border Grid.Column="0" 
+                           Background="#F5F5F5" 
+                           CornerRadius="8" 
+                           Padding="12"
+                           Margin="0,0,4,0">
+                        <StackPanel>
+                            <TextBlock Text="You" 
+                                      Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                      HorizontalAlignment="Center"
+                                      Margin="0,0,0,4"/>
+                            <TextBlock Text="{Binding User1LocalTime, StringFormat='HH:mm'}" 
+                                      Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                      FontWeight="Bold"
+                                      HorizontalAlignment="Center"
+                                      Foreground="#4A90E2"/>
+                            <TextBlock Text="{Binding User1TimeZone}" 
+                                      Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                      HorizontalAlignment="Center"
+                                      TextWrapping="Wrap"
+                                      TextAlignment="Center"
+                                      Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- User 2 Time -->
+                    <Border Grid.Column="1" 
+                           Background="#F5F5F5" 
+                           CornerRadius="8" 
+                           Padding="12"
+                           Margin="4,0,0,0">
+                        <StackPanel>
+                            <TextBlock Text="Partner" 
+                                      Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                      HorizontalAlignment="Center"
+                                      Margin="0,0,0,4"/>
+                            <TextBlock Text="{Binding User2LocalTime, StringFormat='HH:mm'}" 
+                                      Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                      FontWeight="Bold"
+                                      HorizontalAlignment="Center"
+                                      Foreground="#4A90E2"/>
+                            <TextBlock Text="{Binding User2TimeZone}" 
+                                      Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                      HorizontalAlignment="Center"
+                                      TextWrapping="Wrap"
+                                      TextAlignment="Center"
+                                      Margin="0,4,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </StackPanel>
+
+            <!-- Optimal Communication Window -->
+            <StackPanel Grid.Row="4" 
+                       Margin="0,12,0,8"
+                       Visibility="{Binding HasOptimalWindow, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <TextBlock Text="Best Time to Connect" 
+                          Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                          Foreground="{DynamicResource MaterialDesignBodyLight}"
+                          Margin="0,0,0,8"/>
+                <Border Background="#E8F5E9" 
+                       BorderBrush="#4CAF50"
+                       BorderThickness="1"
+                       CornerRadius="8" 
+                       Padding="12">
+                    <StackPanel>
+                        <TextBlock Text="{Binding OptimalWindowDisplay}" 
+                                  Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                  TextWrapping="Wrap"
+                                  HorizontalAlignment="Center"
+                                  TextAlignment="Center"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- Set Next Meeting Button -->
+            <Button Grid.Row="5"
+                   Style="{StaticResource MaterialDesignOutlinedButton}"
+                   Command="{Binding SetNextMeetingCommand}"
+                   Margin="0,12,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="CalendarHeart" 
+                                           VerticalAlignment="Center"
+                                           Margin="0,0,8,0"/>
+                    <TextBlock Text="Set Next Meeting Date" 
+                              VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <!-- Loading Indicator -->
+            <ProgressBar Grid.Row="5" 
+                        IsIndeterminate="True"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Margin="0,8,0,0"/>
+        </Grid>
+    </materialDesign:Card>
+</UserControl>

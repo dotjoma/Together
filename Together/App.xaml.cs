@@ -124,6 +124,9 @@ namespace Together.Presentation
             services.AddSingleton<IMemoryCacheService, MemoryCacheService>();
             services.AddSingleton<IImageCacheService, ImageCacheService>();
             services.AddSingleton<IOfflineSyncManager, OfflineSyncManager>();
+            
+            // Update Service
+            services.AddSingleton<IUpdateService, UpdateService>();
 
             // ViewModels
             services.AddTransient<MainViewModel>();
@@ -139,16 +142,31 @@ namespace Together.Presentation
             services.AddTransient<ChallengeViewModel>();
             services.AddTransient<VirtualPetViewModel>();
             services.AddTransient<LongDistanceViewModel>();
+            services.AddTransient<UpdateViewModel>();
             
             // Windows
             services.AddTransient<MainWindow>();
         }
 
-        protected override void OnStartup(StartupEventArgs e)
+        protected override async void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
             
             Log.Information("Application startup initiated");
+            
+            // Check for updates on startup
+            try
+            {
+                var updateService = _serviceProvider?.GetRequiredService<IUpdateService>();
+                if (updateService != null)
+                {
+                    await updateService.CheckForUpdateOnStartupAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Warning(ex, "Failed to check for updates on startup");
+            }
             
             // Show login window initially
             var loginWindow = new Window

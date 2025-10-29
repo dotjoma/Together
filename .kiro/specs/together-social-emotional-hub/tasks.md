@@ -513,7 +513,8 @@
   - Ensure responsive layout for different window sizes
   - _Requirements: 20.1, 20.2_
 
-- [ ] 28. Create deployment package
+- [x] 28. Create deployment package
+
   - Configure ClickOnce deployment
   - Set up automatic update mechanism
   - Create installer with self-contained .NET runtime

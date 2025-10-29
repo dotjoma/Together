@@ -32,6 +32,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Resource Include="Assets\**\*" />
+  </ItemGroup>
+
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
@@ -40,6 +44,44 @@
     <UseWPF>true</UseWPF>
     <RootNamespace>Together.Presentation</RootNamespace>
     <AssemblyName>Together</AssemblyName>
+    
+    <!-- Application Information -->
+    <!-- <ApplicationIcon>Assets\together.ico</ApplicationIcon> -->
+    <!-- TODO: Create application icon at Assets\together.ico and uncomment the line above -->
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Company>Together</Company>
+    <Product>Together - Social Emotional Hub</Product>
+    <Description>A desktop application to strengthen emotional connections between partners and close friends</Description>
+    <Copyright>Copyright © 2025 Together</Copyright>
+    
+    <!-- Publishing Configuration -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <PublishTrimmed>false</PublishTrimmed>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    
+    <!-- ClickOnce Configuration -->
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>1</ApplicationRevision>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
+    <PublisherName>Together</PublisherName>
+    <ProductName>Together</ProductName>
   </PropertyGroup>
 
 </Project>

@@ -18,6 +18,7 @@ public class UserRepository : IUserRepository
     public async Task<User?> GetByIdAsync(Guid id)
     {
         return await _context.Users
+            .AsNoTracking()
             .Include(u => u.Followers)
             .Include(u => u.Following)
             .FirstOrDefaultAsync(u => u.Id == id);
@@ -26,12 +27,14 @@ public class UserRepository : IUserRepository
     public async Task<User?> GetByEmailAsync(string email)
     {
         return await _context.Users
+            .AsNoTracking()
             .FirstOrDefaultAsync(u => u.Email.Value == email);
     }
 
     public async Task<User?> GetByUsernameAsync(string username)
     {
         return await _context.Users
+            .AsNoTracking()
             .FirstOrDefaultAsync(u => u.Username == username);
     }
 
@@ -67,6 +70,7 @@ public class UserRepository : IUserRepository
         var normalizedQuery = query.Trim().ToLower();
 
         return await _context.Users
+            .AsNoTracking()
             .Where(u => u.Username.ToLower().Contains(normalizedQuery) || 
                        u.Email.Value.ToLower().Contains(normalizedQuery))
             .Where(u => u.Visibility == ProfileVisibility.Public)

@@ -145,9 +145,16 @@
             </StackPanel>
         </materialDesign:Card>
 
-        <!-- Todo Items List -->
+        <!-- Todo Items List with Virtualization -->
         <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
-            <ItemsControl ItemsSource="{Binding TodoItems}">
+            <ItemsControl ItemsSource="{Binding TodoItems}"
+                         VirtualizingPanel.IsVirtualizing="True"
+                         VirtualizingPanel.VirtualizationMode="Recycling">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <materialDesign:Card Margin="0,0,0,10" Padding="15">

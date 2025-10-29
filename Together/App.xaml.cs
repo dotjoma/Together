@@ -50,9 +50,14 @@ namespace Together.Presentation
                 .Build();
             services.AddSingleton<IConfiguration>(configuration);
 
-            // Database Context
+            // Database Context with performance optimizations
             services.AddDbContext<TogetherDbContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("SupabaseConnection")));
+            {
+                options.UseNpgsql(configuration.GetConnectionString("SupabaseConnection"));
+                
+                // Performance optimizations
+                options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking); // Default to no tracking
+            });
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
@@ -104,8 +109,11 @@ namespace Together.Presentation
                 loggingBuilder.AddSerilog(dispose: true);
             });
             
-            // Caching
+            // Performance Optimization Services
             services.AddMemoryCache();
+            services.AddSingleton<IMemoryCacheService, MemoryCacheService>();
+            services.AddSingleton<IImageCacheService, ImageCacheService>();
+            services.AddSingleton<IOfflineSyncManager, OfflineSyncManager>();
 
             // ViewModels
             services.AddTransient<MainViewModel>();

@@ -17,6 +17,7 @@ public class JournalEntryRepository : IJournalEntryRepository
     public async Task<JournalEntry?> GetByIdAsync(Guid id)
     {
         return await _context.JournalEntries
+            .AsNoTracking()
             .Include(j => j.Author)
             .FirstOrDefaultAsync(j => j.Id == id);
     }
@@ -24,6 +25,7 @@ public class JournalEntryRepository : IJournalEntryRepository
     public async Task<IEnumerable<JournalEntry>> GetByConnectionIdAsync(Guid connectionId)
     {
         return await _context.JournalEntries
+            .AsNoTracking()
             .Include(j => j.Author)
             .Where(j => j.ConnectionId == connectionId)
             .OrderByDescending(j => j.CreatedAt)

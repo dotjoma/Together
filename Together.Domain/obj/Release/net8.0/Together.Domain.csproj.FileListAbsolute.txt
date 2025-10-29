@@ -1,0 +1,13 @@
+D:\Visual Studio 2022\Projects\Together\Together.Domain\bin\Release\net8.0\Together.Domain.deps.json
+D:\Visual Studio 2022\Projects\Together\Together.Domain\bin\Release\net8.0\Together.Domain.dll
+D:\Visual Studio 2022\Projects\Together\Together.Domain\bin\Release\net8.0\Together.Domain.pdb
+D:\Visual Studio 2022\Projects\Together\Together.Domain\obj\Release\net8.0\Together.Domain.csproj.AssemblyReference.cache
+D:\Visual Studio 2022\Projects\Together\Together.Domain\obj\Release\net8.0\Together.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Visual Studio 2022\Projects\Together\Together.Domain\obj\Release\net8.0\Together.Domain.AssemblyInfoInputs.cache
+D:\Visual Studio 2022\Projects\Together\Together.Domain\obj\Release\net8.0\Together.Domain.AssemblyInfo.cs
+D:\Visual Studio 2022\Projects\Together\Together.Domain\obj\Release\net8.0\Together.Domain.csproj.CoreCompileInputs.cache
+D:\Visual Studio 2022\Projects\Together\Together.Domain\obj\Release\net8.0\Together.Domain.sourcelink.json
+D:\Visual Studio 2022\Projects\Together\Together.Domain\obj\Release\net8.0\Together.Domain.dll
+D:\Visual Studio 2022\Projects\Together\Together.Domain\obj\Release\net8.0\refint\Together.Domain.dll
+D:\Visual Studio 2022\Projects\Together\Together.Domain\obj\Release\net8.0\Together.Domain.pdb
+D:\Visual Studio 2022\Projects\Together\Together.Domain\obj\Release\net8.0\ref\Together.Domain.dll

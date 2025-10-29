@@ -58,11 +58,18 @@
                      Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
                      Margin="0,0,0,20"/>
 
-        <!-- Mood History List -->
+        <!-- Mood History List with Virtualization -->
         <ScrollViewer Grid.Row="3"
                      VerticalScrollBarVisibility="Auto"
                      Visibility="{Binding IsLoading, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
-            <ItemsControl ItemsSource="{Binding MoodHistory}">
+            <ItemsControl ItemsSource="{Binding MoodHistory}"
+                         VirtualizingPanel.IsVirtualizing="True"
+                         VirtualizingPanel.VirtualizationMode="Recycling">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <materialDesign:Card Margin="0,0,0,10" Padding="15">

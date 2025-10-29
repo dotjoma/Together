@@ -17,6 +17,7 @@ public class PostRepository : IPostRepository
     public async Task<Post?> GetByIdAsync(Guid id)
     {
         return await _context.Posts
+            .AsNoTracking()
             .Include(p => p.Author)
             .Include(p => p.Images)
             .Include(p => p.Likes)
@@ -27,6 +28,7 @@ public class PostRepository : IPostRepository
     public async Task<IEnumerable<Post>> GetUserPostsAsync(Guid userId, int skip, int take)
     {
         return await _context.Posts
+            .AsNoTracking()
             .Include(p => p.Author)
             .Include(p => p.Images)
             .Where(p => p.AuthorId == userId)
@@ -40,12 +42,14 @@ public class PostRepository : IPostRepository
     {
         // Get users that the current user is following
         var followingIds = await _context.FollowRelationships
+            .AsNoTracking()
             .Where(f => f.FollowerId == userId && f.Status == "accepted")
             .Select(f => f.FollowingId)
             .ToListAsync();
 
         // Get posts from followed users
         return await _context.Posts
+            .AsNoTracking()
             .Include(p => p.Author)
             .Include(p => p.Images)
             .Where(p => followingIds.Contains(p.AuthorId))

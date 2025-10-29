@@ -128,8 +128,15 @@
                               Margin="16"/>
                 </materialDesign:Card>
 
-                <!-- Journal Entries Timeline -->
-                <ItemsControl ItemsSource="{Binding Entries}">
+                <!-- Journal Entries Timeline with Virtualization -->
+                <ItemsControl ItemsSource="{Binding Entries}"
+                             VirtualizingPanel.IsVirtualizing="True"
+                             VirtualizingPanel.VirtualizationMode="Recycling">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <materialDesign:Card Margin="0,0,0,16">

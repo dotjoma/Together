@@ -9,6 +9,23 @@ public class TogetherDbContext : DbContext
     {
     }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+
+        // Performance optimizations
+        if (!optionsBuilder.IsConfigured)
+        {
+            return;
+        }
+
+        // Enable sensitive data logging only in development
+        #if DEBUG
+        optionsBuilder.EnableSensitiveDataLogging();
+        optionsBuilder.EnableDetailedErrors();
+        #endif
+    }
+
     public DbSet<User> Users { get; set; }
     public DbSet<CoupleConnection> CoupleConnections { get; set; }
     public DbSet<Post> Posts { get; set; }

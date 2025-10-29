@@ -1,8 +1,0 @@
-D:\Visual Studio 2022\Projects\Together\Together.Application.Tests\bin\Release\net9.0\.msCoverageSourceRootsMapping_Together.Application.Tests
-D:\Visual Studio 2022\Projects\Together\Together.Application.Tests\bin\Release\net9.0\CoverletSourceRootsMapping_Together.Application.Tests
-D:\Visual Studio 2022\Projects\Together\Together.Application.Tests\obj\Release\net9.0\Together.Application.Tests.csproj.AssemblyReference.cache
-D:\Visual Studio 2022\Projects\Together\Together.Application.Tests\obj\Release\net9.0\Together.Application.Tests.GeneratedMSBuildEditorConfig.editorconfig
-D:\Visual Studio 2022\Projects\Together\Together.Application.Tests\obj\Release\net9.0\Together.Application.Tests.AssemblyInfoInputs.cache
-D:\Visual Studio 2022\Projects\Together\Together.Application.Tests\obj\Release\net9.0\Together.Application.Tests.AssemblyInfo.cs
-D:\Visual Studio 2022\Projects\Together\Together.Application.Tests\obj\Release\net9.0\Together.Application.Tests.csproj.CoreCompileInputs.cache
-D:\Visual Studio 2022\Projects\Together\Together.Application.Tests\obj\Release\net9.0\Together.Application.Tests.sourcelink.json

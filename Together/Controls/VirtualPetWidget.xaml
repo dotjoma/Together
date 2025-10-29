@@ -1,0 +1,95 @@
+<UserControl x:Class="Together.Presentation.Controls.VirtualPetWidget"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="300">
+    <materialDesign:Card Padding="16">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Pet Display -->
+            <Viewbox Grid.Column="0" Width="80" Height="80" Margin="0,0,16,0">
+                <Canvas Width="150" Height="150">
+                    <!-- Pet Body -->
+                    <Ellipse Width="150" Height="150">
+                        <Ellipse.Fill>
+                            <SolidColorBrush>
+                                <SolidColorBrush.Color>
+                                    <MultiBinding Converter="{StaticResource PetStateToColorConverter}">
+                                        <Binding Path="State"/>
+                                        <Binding Path="AppearanceOptions"/>
+                                    </MultiBinding>
+                                </SolidColorBrush.Color>
+                            </SolidColorBrush>
+                        </Ellipse.Fill>
+                    </Ellipse>
+
+                    <!-- Eyes -->
+                    <Ellipse Width="20" Height="25" Fill="Black" Canvas.Left="45" Canvas.Top="50"/>
+                    <Ellipse Width="20" Height="25" Fill="Black" Canvas.Left="85" Canvas.Top="50"/>
+
+                    <!-- Mouth -->
+                    <Path Stroke="Black" StrokeThickness="3" Canvas.Left="50" Canvas.Top="90">
+                        <Path.Data>
+                            <PathGeometry>
+                                <PathGeometry.Figures>
+                                    <PathFigure StartPoint="0,0">
+                                        <PathFigure.Segments>
+                                            <QuadraticBezierSegment Point1="25,12" Point2="50,0"/>
+                                        </PathFigure.Segments>
+                                    </PathFigure>
+                                </PathGeometry.Figures>
+                            </PathGeometry>
+                        </Path.Data>
+                    </Path>
+                </Canvas>
+            </Viewbox>
+
+            <!-- Pet Info -->
+            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                <TextBlock Text="{Binding PetName}" 
+                           Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                           FontWeight="Bold"/>
+                
+                <TextBlock Margin="0,4,0,0">
+                    <Run Text="Level"/>
+                    <Run Text="{Binding Level, Mode=OneWay}" FontWeight="Bold"/>
+                </TextBlock>
+
+                <TextBlock Text="{Binding StateDisplay}" 
+                           Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                           Foreground="{DynamicResource PrimaryHueMidBrush}"
+                           Margin="0,4,0,0"/>
+
+                <!-- XP Progress -->
+                <Grid Margin="0,8,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ProgressBar Grid.Column="0"
+                                 Value="{Binding ExperiencePercentage}"
+                                 Maximum="100"
+                                 Height="4"
+                                 VerticalAlignment="Center"
+                                 Margin="0,0,8,0"/>
+
+                    <TextBlock Grid.Column="1" 
+                               Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                               VerticalAlignment="Center">
+                        <Run Text="{Binding ExperiencePoints, Mode=OneWay}"/>
+                        <Run Text="/"/>
+                        <Run Text="{Binding ExperienceToNextLevel, Mode=OneWay}"/>
+                    </TextBlock>
+                </Grid>
+            </StackPanel>
+        </Grid>
+    </materialDesign:Card>
+</UserControl>

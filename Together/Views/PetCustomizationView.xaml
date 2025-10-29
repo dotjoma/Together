@@ -1,0 +1,144 @@
+<UserControl x:Class="Together.Presentation.Views.PetCustomizationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="400">
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <TextBlock Grid.Row="0" 
+                   Text="Customize Your Pet" 
+                   Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,24"/>
+
+        <!-- Customization Options -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Pet Name -->
+                <TextBox Text="{Binding PetName, UpdateSourceTrigger=PropertyChanged}"
+                         materialDesign:HintAssist.Hint="Pet Name"
+                         Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                         Margin="0,0,0,16"
+                         MaxLength="50"/>
+
+                <!-- Appearance Selection -->
+                <TextBlock Text="Appearance" 
+                           Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                           Margin="0,0,0,8"/>
+
+                <ItemsControl ItemsSource="{Binding UnlockedAppearances}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <RadioButton Content="{Binding}"
+                                         GroupName="Appearance"
+                                         IsChecked="{Binding Path=DataContext.SelectedAppearance, 
+                                                     RelativeSource={RelativeSource AncestorType=UserControl},
+                                                     Converter={StaticResource StringEqualityConverter},
+                                                     ConverterParameter={Binding}}"
+                                         Style="{StaticResource MaterialDesignChoiceChipRadioButton}"
+                                         Margin="4"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Preview -->
+                <Border Background="{DynamicResource MaterialDesignPaper}"
+                        CornerRadius="8"
+                        Padding="24"
+                        Margin="0,24,0,0">
+                    <StackPanel HorizontalAlignment="Center">
+                        <TextBlock Text="Preview" 
+                                   Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,0,0,16"/>
+
+                        <!-- Pet Preview -->
+                        <Viewbox Width="120" Height="120">
+                            <Canvas Width="150" Height="150">
+                                <!-- Pet Body -->
+                                <Ellipse Width="150" Height="150">
+                                    <Ellipse.Fill>
+                                        <SolidColorBrush Color="{Binding SelectedAppearance, Converter={StaticResource AppearanceToColorConverter}}"/>
+                                    </Ellipse.Fill>
+                                </Ellipse>
+
+                                <!-- Eyes -->
+                                <Ellipse Width="20" Height="25" Fill="Black" Canvas.Left="45" Canvas.Top="50"/>
+                                <Ellipse Width="20" Height="25" Fill="Black" Canvas.Left="85" Canvas.Top="50"/>
+
+                                <!-- Mouth -->
+                                <Path Stroke="Black" StrokeThickness="3" Canvas.Left="50" Canvas.Top="90">
+                                    <Path.Data>
+                                        <PathGeometry>
+                                            <PathGeometry.Figures>
+                                                <PathFigure StartPoint="0,0">
+                                                    <PathFigure.Segments>
+                                                        <QuadraticBezierSegment Point1="25,12" Point2="50,0"/>
+                                                    </PathFigure.Segments>
+                                                </PathFigure>
+                                            </PathGeometry.Figures>
+                                        </PathGeometry>
+                                    </Path.Data>
+                                </Path>
+                            </Canvas>
+                        </Viewbox>
+
+                        <TextBlock Text="{Binding PetName}" 
+                                   Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                   HorizontalAlignment="Center"
+                                   Margin="0,16,0,0"
+                                   FontWeight="Bold"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Messages -->
+                <TextBlock Text="{Binding SuccessMessage}"
+                           Foreground="{DynamicResource SecondaryHueMidBrush}"
+                           TextWrapping="Wrap"
+                           Margin="0,16,0,0"
+                           Visibility="{Binding SuccessMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
+
+                <TextBlock Text="{Binding ErrorMessage}"
+                           Foreground="{DynamicResource MaterialDesignValidationErrorBrush}"
+                           TextWrapping="Wrap"
+                           Margin="0,16,0,0"
+                           Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Loading Indicator -->
+        <ProgressBar Grid.Row="2"
+                     IsIndeterminate="True"
+                     Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"
+                     Margin="0,16,0,0"/>
+
+        <!-- Action Buttons -->
+        <StackPanel Grid.Row="3" 
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right"
+                    Margin="0,16,0,0">
+            <Button Content="CANCEL"
+                    Command="{Binding CancelCommand}"
+                    Style="{StaticResource MaterialDesignOutlinedButton}"
+                    Margin="0,0,8,0"/>
+            <Button Content="SAVE"
+                    Command="{Binding SaveCommand}"
+                    Style="{StaticResource MaterialDesignRaisedButton}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

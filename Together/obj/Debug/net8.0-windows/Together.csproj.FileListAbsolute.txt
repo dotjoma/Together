@@ -211,3 +211,9 @@ D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Contro
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Controls\ChallengeCard.g.cs
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\ChallengeView.g.cs
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\ChallengeView.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Controls\VirtualPetWidget.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\PetCustomizationView.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\VirtualPetView.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Controls\VirtualPetWidget.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\PetCustomizationView.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\VirtualPetView.g.cs

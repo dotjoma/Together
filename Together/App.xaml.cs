@@ -47,6 +47,7 @@ namespace Together.Presentation
             services.AddScoped<ICoupleConnectionRepository, CoupleConnectionRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<ISharedEventRepository, SharedEventRepository>();
+            services.AddScoped<IVirtualPetRepository, VirtualPetRepository>();
 
             // Application Services
             services.AddScoped<IAuthenticationService, AuthenticationService>();
@@ -59,6 +60,7 @@ namespace Together.Presentation
             services.AddScoped<IMoodAnalysisService, MoodAnalysisService>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<ILoveStreakService, LoveStreakService>();
+            services.AddScoped<IVirtualPetService, VirtualPetService>();
 
             // Infrastructure Services
             services.AddScoped<IStorageService, SupabaseStorageService>();

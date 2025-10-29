@@ -24,6 +24,9 @@
             <converters:NotZeroToVisibilityConverter x:Key="NotZeroToVisibilityConverter"/>
             <converters:EventFormTitleConverter x:Key="EventFormTitleConverter"/>
             <converters:RecurrenceVisibilityConverter x:Key="RecurrenceVisibilityConverter"/>
+            <converters:PetStateToColorConverter x:Key="PetStateToColorConverter"/>
+            <converters:AppearanceToColorConverter x:Key="AppearanceToColorConverter"/>
+            <converters:StringEqualityConverter x:Key="StringEqualityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

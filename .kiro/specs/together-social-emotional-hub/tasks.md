@@ -288,7 +288,6 @@
 
 - [x] 16. Implement challenge system
 
-
 - [x] 16.1 Create challenge generator service
 
   - Implement challenge factory with categories (communication, fun, appreciation, learning)
@@ -307,8 +306,10 @@
   - Add couple total score display
   - _Requirements: 8.2, 8.3_
 
-- [ ] 17. Implement virtual pet system
-- [ ] 17.1 Create virtual pet service
+- [x] 17. Implement virtual pet system
+
+
+- [x] 17.1 Create virtual pet service
 
   - Implement pet creation on couple connection establishment
   - Add AddExperienceAsync calculating XP from interactions
@@ -317,7 +318,8 @@
   - Add CustomizePetAsync for name and appearance changes
   - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5_
 
-- [ ] 17.2 Build virtual pet UI
+- [x] 17.2 Build virtual pet UI
+
   - Create VirtualPetView with animated pet display
   - Implement PetCustomizationView for name and appearance
   - Display level, XP bar, and current state

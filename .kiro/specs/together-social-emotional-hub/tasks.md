@@ -351,7 +351,6 @@
 
 - [x] 19. Implement couple hub dashboard
 
-
 - [x] 19.1 Create dashboard aggregation service
 
   - Implement GetDashboardSummaryAsync aggregating partner mood, streak, events
@@ -372,8 +371,10 @@
 
 ## Real-time Synchronization
 
-- [ ] 20. Implement SignalR real-time service
-- [ ] 20.1 Create SignalR hub and client
+- [x] 20. Implement SignalR real-time service
+
+
+- [x] 20.1 Create SignalR hub and client
 
   - Implement TogetherHub with connection management
   - Add group management for couples and followers
@@ -382,7 +383,8 @@
   - Add connection status tracking
   - _Requirements: 16.1, 16.2, 16.3, 16.4, 16.5_
 
-- [ ] 20.2 Integrate real-time updates in ViewModels
+- [x] 20.2 Integrate real-time updates in ViewModels
+
   - Subscribe to SignalR events in relevant ViewModels
   - Implement real-time journal entry updates
   - Add real-time post feed updates

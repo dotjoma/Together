@@ -13,6 +13,5 @@ public partial class ConnectionStatusView : UserControl
     public ConnectionStatusView(ConnectionStatusViewModel viewModel) : this()
     {
         DataContext = viewModel;
-        Loaded += async (s, e) => await viewModel.LoadConnectionStatusAsync();
     }
 }

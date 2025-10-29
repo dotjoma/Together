@@ -11,17 +11,20 @@ public class PostService : IPostService
     private readonly IPostRepository _postRepository;
     private readonly IUserRepository _userRepository;
     private readonly IStorageService _storageService;
+    private readonly IRealTimeSyncService? _realTimeSyncService;
     private const int MaxImages = 4;
     private const long MaxImageSizeBytes = 5 * 1024 * 1024; // 5MB
 
     public PostService(
         IPostRepository postRepository,
         IUserRepository userRepository,
-        IStorageService storageService)
+        IStorageService storageService,
+        IRealTimeSyncService? realTimeSyncService = null)
     {
         _postRepository = postRepository;
         _userRepository = userRepository;
         _storageService = storageService;
+        _realTimeSyncService = realTimeSyncService;
     }
 
     public async Task<PostDto> CreatePostAsync(Guid authorId, CreatePostDto dto)
@@ -102,7 +105,22 @@ public class PostService : IPostService
 
         await _postRepository.AddAsync(post);
 
-        return MapToDto(post, author);
+        var postDto = MapToDto(post, author);
+
+        // Broadcast to followers in real-time
+        if (_realTimeSyncService != null)
+        {
+            try
+            {
+                await _realTimeSyncService.BroadcastToFollowersAsync("PostCreated", postDto);
+            }
+            catch
+            {
+                // Don't fail the operation if real-time broadcast fails
+            }
+        }
+
+        return postDto;
     }
 
     public async Task<PostDto> UpdatePostAsync(Guid userId, UpdatePostDto dto)

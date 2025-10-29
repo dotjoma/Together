@@ -68,6 +68,7 @@ public class MoodAnalysisService : IMoodAnalysisService
             .Take(10)
             .Select(m => new MoodEntryDto(
                 m.Id,
+                m.UserId,
                 m.Mood.ToString(),
                 m.Notes,
                 m.Timestamp

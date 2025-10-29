@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 D:\Visual Studio 2022\Projects\Together\Together\App.xaml
-35-1268475538
+36-769647510
 22969629690
-93935643470
-243-853100252
-Controls\ChallengeCard.xaml;Controls\CommentSection.xaml;Controls\DistanceWidget.xaml;Controls\FollowButton.xaml;Controls\LikeButton.xaml;Controls\PostCard.xaml;Controls\StreakWidget.xaml;Controls\VirtualPetWidget.xaml;MainWindow.xaml;Views\CalendarView.xaml;Views\ChallengeView.xaml;Views\ConnectionRequestNotificationView.xaml;Views\ConnectionRequestView.xaml;Views\ConnectionStatusView.xaml;Views\CoupleHubView.xaml;Views\EventFormView.xaml;Views\FollowerListView.xaml;Views\FollowingListView.xaml;Views\FollowRequestsView.xaml;Views\JournalView.xaml;Views\LocationSettingsView.xaml;Views\LoginView.xaml;Views\LongDistanceView.xaml;Views\MoodHistoryView.xaml;Views\MoodSelectorView.xaml;Views\MoodTrackerView.xaml;Views\PetCustomizationView.xaml;Views\PostCreationView.xaml;Views\RegisterView.xaml;Views\SetNextMeetingView.xaml;Views\SocialFeedView.xaml;Views\StreakHistoryView.xaml;Views\TodoListView.xaml;Views\UserProfileView.xaml;Views\VirtualPetView.xaml;
+9568787101
+254891288210
+Controls\ChallengeCard.xaml;Controls\CommentSection.xaml;Controls\ConnectionStatusIndicator.xaml;Controls\DistanceWidget.xaml;Controls\FollowButton.xaml;Controls\LikeButton.xaml;Controls\PostCard.xaml;Controls\StreakWidget.xaml;Controls\VirtualPetWidget.xaml;MainWindow.xaml;Views\CalendarView.xaml;Views\ChallengeView.xaml;Views\ConnectionRequestNotificationView.xaml;Views\ConnectionRequestView.xaml;Views\ConnectionStatusView.xaml;Views\CoupleHubView.xaml;Views\EventFormView.xaml;Views\FollowerListView.xaml;Views\FollowingListView.xaml;Views\FollowRequestsView.xaml;Views\JournalView.xaml;Views\LocationSettingsView.xaml;Views\LoginView.xaml;Views\LongDistanceView.xaml;Views\MoodHistoryView.xaml;Views\MoodSelectorView.xaml;Views\MoodTrackerView.xaml;Views\PetCustomizationView.xaml;Views\PostCreationView.xaml;Views\RegisterView.xaml;Views\SetNextMeetingView.xaml;Views\SocialFeedView.xaml;Views\StreakHistoryView.xaml;Views\TodoListView.xaml;Views\UserProfileView.xaml;Views\VirtualPetView.xaml;
 
 False
 

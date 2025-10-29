@@ -11,16 +11,19 @@ public class JournalService : IJournalService
     private readonly IJournalEntryRepository _journalRepository;
     private readonly ICoupleConnectionRepository _connectionRepository;
     private readonly IStorageService _storageService;
+    private readonly IRealTimeSyncService? _realTimeSyncService;
     private const long MaxImageSizeBytes = 5 * 1024 * 1024; // 5MB
 
     public JournalService(
         IJournalEntryRepository journalRepository,
         ICoupleConnectionRepository connectionRepository,
-        IStorageService storageService)
+        IStorageService storageService,
+        IRealTimeSyncService? realTimeSyncService = null)
     {
         _journalRepository = journalRepository;
         _connectionRepository = connectionRepository;
         _storageService = storageService;
+        _realTimeSyncService = realTimeSyncService;
     }
 
     public async Task<JournalEntryDto> CreateJournalEntryAsync(CreateJournalEntryDto dto)
@@ -48,7 +51,22 @@ public class JournalService : IJournalService
             throw new NotFoundException(nameof(JournalEntry), entry.Id);
         }
 
-        return MapToDto(createdEntry);
+        var entryDto = MapToDto(createdEntry);
+
+        // Broadcast to partner in real-time
+        if (_realTimeSyncService != null)
+        {
+            try
+            {
+                await _realTimeSyncService.BroadcastToPartnerAsync("JournalEntryCreated", entryDto);
+            }
+            catch
+            {
+                // Don't fail the operation if real-time broadcast fails
+            }
+        }
+
+        return entryDto;
     }
 
     public async Task<IEnumerable<JournalEntryDto>> GetJournalEntriesAsync(Guid connectionId)

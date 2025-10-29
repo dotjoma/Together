@@ -11,6 +11,7 @@ namespace Together.Presentation.ViewModels;
 public class JournalViewModel : ViewModelBase
 {
     private readonly IJournalService _journalService;
+    private readonly IRealTimeSyncService? _realTimeSyncService;
     private readonly Guid _currentUserId;
     private readonly Guid _connectionId;
     private bool _isLoading;
@@ -20,9 +21,11 @@ public class JournalViewModel : ViewModelBase
     public JournalViewModel(
         IJournalService journalService,
         Guid currentUserId,
-        Guid connectionId)
+        Guid connectionId,
+        IRealTimeSyncService? realTimeSyncService = null)
     {
         _journalService = journalService;
+        _realTimeSyncService = realTimeSyncService;
         _currentUserId = currentUserId;
         _connectionId = connectionId;
 
@@ -33,6 +36,12 @@ public class JournalViewModel : ViewModelBase
 
         LoadEntriesCommand = new RelayCommand(async _ => await LoadEntriesAsync());
         RefreshCommand = new RelayCommand(async _ => await LoadEntriesAsync());
+
+        // Subscribe to real-time updates
+        if (_realTimeSyncService != null)
+        {
+            _realTimeSyncService.JournalEntryReceived += OnJournalEntryReceived;
+        }
 
         // Load entries on initialization
         _ = LoadEntriesAsync();
@@ -135,6 +144,47 @@ public class JournalViewModel : ViewModelBase
         {
             entry.EntryDeleted -= OnEntryDeleted;
             Entries.Remove(entry);
+        }
+    }
+
+    private void OnJournalEntryReceived(object? sender, JournalEntryDto entry)
+    {
+        // Only add entries from partner (not our own, as they're already added locally)
+        if (entry.Author.Id == _currentUserId)
+            return;
+
+        // Check if entry already exists
+        if (Entries.Any(e => e.Id == entry.Id))
+            return;
+
+        // Add the new entry to the collection on UI thread
+        System.Windows.Application.Current?.Dispatcher.Invoke(() =>
+        {
+            var viewModel = new JournalEntryItemViewModel(
+                entry,
+                _journalService,
+                _currentUserId
+            );
+            viewModel.EntryDeleted += OnEntryDeleted;
+            Entries.Insert(0, viewModel);
+        });
+    }
+
+    public void Dispose()
+    {
+        if (_realTimeSyncService != null)
+        {
+            _realTimeSyncService.JournalEntryReceived -= OnJournalEntryReceived;
+        }
+
+        if (_entryCreationViewModel != null)
+        {
+            _entryCreationViewModel.EntryCreated -= OnEntryCreated;
+        }
+
+        foreach (var entry in Entries)
+        {
+            entry.EntryDeleted -= OnEntryDeleted;
         }
     }
 }

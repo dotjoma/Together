@@ -14,19 +14,22 @@ public class MoodTrackingService : IMoodTrackingService
     private readonly ICoupleConnectionRepository _coupleConnectionRepository;
     private readonly INotificationRepository _notificationRepository;
     private readonly IMoodAnalysisService _moodAnalysisService;
+    private readonly IRealTimeSyncService? _realTimeSyncService;
 
     public MoodTrackingService(
         IMoodEntryRepository moodEntryRepository,
         IUserRepository userRepository,
         ICoupleConnectionRepository coupleConnectionRepository,
         INotificationRepository notificationRepository,
-        IMoodAnalysisService moodAnalysisService)
+        IMoodAnalysisService moodAnalysisService,
+        IRealTimeSyncService? realTimeSyncService = null)
     {
         _moodEntryRepository = moodEntryRepository;
         _userRepository = userRepository;
         _coupleConnectionRepository = coupleConnectionRepository;
         _notificationRepository = notificationRepository;
         _moodAnalysisService = moodAnalysisService;
+        _realTimeSyncService = realTimeSyncService;
     }
 
     public async Task<MoodEntryDto> CreateMoodEntryAsync(Guid userId, CreateMoodEntryDto dto)
@@ -67,12 +70,28 @@ public class MoodTrackingService : IMoodTrackingService
             await _notificationRepository.AddAsync(notification);
         }
 
-        return new MoodEntryDto(
+        var moodEntryDto = new MoodEntryDto(
             moodEntry.Id,
+            userId,
             moodEntry.Mood.ToString(),
             moodEntry.Notes,
             moodEntry.Timestamp
         );
+
+        // Broadcast mood update to partner in real-time
+        if (_realTimeSyncService != null && connection != null)
+        {
+            try
+            {
+                await _realTimeSyncService.BroadcastToPartnerAsync("MoodEntryCreated", moodEntryDto);
+            }
+            catch
+            {
+                // Don't fail the operation if real-time broadcast fails
+            }
+        }
+
+        return moodEntryDto;
     }
 
     public async Task<IEnumerable<MoodEntryDto>> GetMoodHistoryAsync(Guid userId, int days = 30)
@@ -84,6 +103,7 @@ public class MoodTrackingService : IMoodTrackingService
 
         return moodEntries.Select(m => new MoodEntryDto(
             m.Id,
+            m.UserId,
             m.Mood.ToString(),
             m.Notes,
             m.Timestamp
@@ -101,6 +121,7 @@ public class MoodTrackingService : IMoodTrackingService
 
         return new MoodEntryDto(
             moodEntry.Id,
+            moodEntry.UserId,
             moodEntry.Mood.ToString(),
             moodEntry.Notes,
             moodEntry.Timestamp

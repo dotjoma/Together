@@ -1,0 +1,26 @@
+<UserControl x:Class="Together.Presentation.Controls.ConnectionStatusIndicator"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:Together.Presentation.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="30" d:DesignWidth="150"
+             d:DataContext="{d:DesignInstance Type=viewModels:SignalRConnectionStatusViewModel}">
+    <Border Background="Transparent"
+            CornerRadius="15"
+            Padding="10,5">
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <!-- Status Indicator Dot -->
+            <Ellipse Width="10" Height="10" 
+                     Fill="{Binding StatusColor}"
+                     Margin="0,0,8,0"/>
+            
+            <!-- Status Text -->
+            <TextBlock Text="{Binding StatusText}"
+                       FontSize="12"
+                       VerticalAlignment="Center"
+                       Foreground="{DynamicResource MaterialDesignBody}"/>
+        </StackPanel>
+    </Border>
+</UserControl>

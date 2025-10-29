@@ -12,6 +12,7 @@ public class SocialFeedViewModel : ViewModelBase
     private readonly IPostService _postService;
     private readonly ILikeService _likeService;
     private readonly ICommentService _commentService;
+    private readonly IRealTimeSyncService? _realTimeSyncService;
     private readonly Guid _currentUserId;
     private bool _isLoading;
     private bool _isRefreshing;
@@ -26,12 +27,14 @@ public class SocialFeedViewModel : ViewModelBase
         IPostService postService,
         ILikeService likeService,
         ICommentService commentService,
-        Guid currentUserId)
+        Guid currentUserId,
+        IRealTimeSyncService? realTimeSyncService = null)
     {
         _socialFeedService = socialFeedService;
         _postService = postService;
         _likeService = likeService;
         _commentService = commentService;
+        _realTimeSyncService = realTimeSyncService;
         _currentUserId = currentUserId;
         _currentSkip = 0;
         _hasMorePosts = true;
@@ -42,6 +45,12 @@ public class SocialFeedViewModel : ViewModelBase
         LoadFeedCommand = new RelayCommand(async _ => await LoadFeedAsync(), _ => !IsLoading);
         LoadMoreCommand = new RelayCommand(async _ => await LoadMoreAsync(), _ => !IsLoading && HasMorePosts);
         RefreshCommand = new RelayCommand(async _ => await RefreshFeedAsync(), _ => !IsRefreshing);
+
+        // Subscribe to real-time updates
+        if (_realTimeSyncService != null)
+        {
+            _realTimeSyncService.PostReceived += OnPostReceived;
+        }
 
         // Load initial feed
         _ = LoadFeedAsync();
@@ -236,6 +245,49 @@ public class SocialFeedViewModel : ViewModelBase
             postToRemove.PostDeleted -= OnPostDeleted;
             Posts.Remove(postToRemove);
             _currentSkip = Posts.Count;
+        }
+    }
+
+    private void OnPostReceived(object? sender, PostDto post)
+    {
+        // Check if post already exists
+        if (Posts.Any(p => p.Post.Id == post.Id))
+            return;
+
+        // Add the new post to the feed on UI thread
+        System.Windows.Application.Current?.Dispatcher.Invoke(async () =>
+        {
+            try
+            {
+                var isLiked = await _likeService.IsLikedByUserAsync(post.Id, _currentUserId);
+                var postCardViewModel = new PostCardViewModel(_postService, _likeService, _commentService, _currentUserId, post, isLiked);
+                postCardViewModel.PostDeleted += OnPostDeleted;
+                Posts.Insert(0, postCardViewModel);
+                _currentSkip = Posts.Count;
+
+                // Hide suggested users if we now have posts
+                if (ShowSuggestedUsers && Posts.Count > 0)
+                {
+                    ShowSuggestedUsers = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Failed to add new post: {ex.Message}";
+            }
+        });
+    }
+
+    public void Dispose()
+    {
+        if (_realTimeSyncService != null)
+        {
+            _realTimeSyncService.PostReceived -= OnPostReceived;
+        }
+
+        foreach (var post in Posts)
+        {
+            post.PostDeleted -= OnPostDeleted;
         }
     }
 }

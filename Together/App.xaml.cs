@@ -8,6 +8,8 @@ using Together.Domain.Interfaces;
 using Together.Infrastructure.Data;
 using Together.Infrastructure.Repositories;
 using Together.Infrastructure.Services;
+using Together.Infrastructure.SignalR;
+using Microsoft.Extensions.Logging;
 
 namespace Together.Presentation
 {
@@ -76,6 +78,10 @@ namespace Together.Presentation
 
             // Infrastructure Services
             services.AddScoped<IStorageService, SupabaseStorageService>();
+            services.AddSingleton<IRealTimeSyncService, TogetherHub>();
+            
+            // Logging
+            services.AddLogging();
             
             // Caching
             services.AddMemoryCache();

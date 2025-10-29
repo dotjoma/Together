@@ -72,6 +72,7 @@ namespace Together.Presentation
             services.AddScoped<ICoupleConnectionService, CoupleConnectionService>();
             services.AddScoped<ILikeService, LikeService>();
             services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IDashboardService, DashboardService>();
 
             // Infrastructure Services
             services.AddScoped<IStorageService, SupabaseStorageService>();

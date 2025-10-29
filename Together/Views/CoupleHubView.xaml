@@ -1,0 +1,372 @@
+<UserControl x:Class="Together.Presentation.Views.CoupleHubView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:controls="clr-namespace:Together.Presentation.Controls"
+             Background="#F5F5F5">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <materialDesign:Card Grid.Row="0" Margin="0,0,0,20" Padding="20">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Couple Hub" 
+                                  Style="{StaticResource MaterialDesignHeadline4TextBlock}"
+                                  FontWeight="Bold"/>
+                        <TextBlock Text="{Binding DaysTogether, StringFormat='Together for {0} days ❤️'}" 
+                                  Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                  Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                  Margin="0,4,0,0"/>
+                    </StackPanel>
+
+                    <Button Grid.Column="1"
+                           Command="{Binding RefreshCommand}"
+                           Style="{StaticResource MaterialDesignIconButton}"
+                           ToolTip="Refresh Dashboard">
+                        <materialDesign:PackIcon Kind="Refresh" Width="24" Height="24"/>
+                    </Button>
+                </Grid>
+            </materialDesign:Card>
+
+            <!-- Supportive Message (when partner is sad) -->
+            <materialDesign:Card Grid.Row="1" 
+                                Margin="0,0,0,20" 
+                                Padding="16"
+                                Background="#FFF3E0"
+                                Visibility="{Binding SupportiveMessage, Converter={StaticResource StringToVisibilityConverter}}">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="HeartOutline" 
+                                           Width="32" 
+                                           Height="32"
+                                           VerticalAlignment="Center"
+                                           Foreground="#FF6B35"
+                                           Margin="0,0,12,0"/>
+                    <StackPanel>
+                        <TextBlock Text="Your partner needs support" 
+                                  Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                  FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding SupportiveMessage}" 
+                                  Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                  TextWrapping="Wrap"
+                                  Margin="0,4,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+            </materialDesign:Card>
+
+            <!-- Main Dashboard Widgets -->
+            <Grid Grid.Row="2" Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Partner Mood Widget -->
+                <materialDesign:Card Grid.Column="0" Margin="0,0,10,0" Padding="16">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <materialDesign:PackIcon Kind="EmoticonHappy" 
+                                                   Width="24" 
+                                                   Height="24"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#4CAF50"/>
+                            <TextBlock Text="Partner's Mood" 
+                                      Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                      Margin="8,0,0,0"
+                                      VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <StackPanel Visibility="{Binding PartnerMood, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=Inverse}">
+                            <TextBlock Text="{Binding PartnerMood.Mood}" 
+                                      Style="{StaticResource MaterialDesignHeadline5TextBlock}"
+                                      FontWeight="Bold"
+                                      HorizontalAlignment="Center"
+                                      Margin="0,8"/>
+                            <TextBlock Text="{Binding PartnerMood.Timestamp, StringFormat='Updated {0:g}'}" 
+                                      Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                      HorizontalAlignment="Center"
+                                      Foreground="{DynamicResource MaterialDesignBodyLight}"/>
+                            <TextBlock Text="{Binding PartnerMood.Notes}" 
+                                      Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                      TextWrapping="Wrap"
+                                      Margin="0,8,0,0"
+                                      Visibility="{Binding PartnerMood.Notes, Converter={StaticResource StringToVisibilityConverter}}"/>
+                        </StackPanel>
+
+                        <TextBlock Text="No mood logged yet" 
+                                  Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                  HorizontalAlignment="Center"
+                                  Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                  Margin="0,16"
+                                  Visibility="{Binding PartnerMood, Converter={StaticResource NullToVisibilityConverter}}"/>
+                    </StackPanel>
+                </materialDesign:Card>
+
+                <!-- Love Streak Widget -->
+                <materialDesign:Card Grid.Column="1" Margin="5,0,5,0" Padding="16">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <materialDesign:PackIcon Kind="Fire" 
+                                                   Width="24" 
+                                                   Height="24"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#FF6B35"/>
+                            <TextBlock Text="Love Streak" 
+                                      Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                      Margin="8,0,0,0"
+                                      VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <TextBlock Text="{Binding LoveStreak}" 
+                                  Style="{StaticResource MaterialDesignHeadline3TextBlock}"
+                                  FontWeight="Bold"
+                                  Foreground="#FF6B35"
+                                  HorizontalAlignment="Center"
+                                  Margin="0,8"/>
+                        <TextBlock Text="days in a row" 
+                                  Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                  HorizontalAlignment="Center"
+                                  Foreground="{DynamicResource MaterialDesignBodyLight}"/>
+                    </StackPanel>
+                </materialDesign:Card>
+
+                <!-- Virtual Pet Widget -->
+                <materialDesign:Card Grid.Column="2" Margin="10,0,0,0" Padding="16">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                            <materialDesign:PackIcon Kind="PawOutline" 
+                                                   Width="24" 
+                                                   Height="24"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#9C27B0"/>
+                            <TextBlock Text="Virtual Pet" 
+                                      Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                      Margin="8,0,0,0"
+                                      VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <StackPanel Visibility="{Binding VirtualPet, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=Inverse}">
+                            <TextBlock Text="{Binding VirtualPet.Name}" 
+                                      Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                      FontWeight="Bold"
+                                      HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding VirtualPet.Level, StringFormat='Level {0}'}" 
+                                      Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                      HorizontalAlignment="Center"
+                                      Margin="0,4"/>
+                            <TextBlock Text="{Binding VirtualPet.State}" 
+                                      Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                      HorizontalAlignment="Center"
+                                      Foreground="{DynamicResource MaterialDesignBodyLight}"/>
+                            <ProgressBar Value="{Binding VirtualPet.ExperiencePoints}" 
+                                       Maximum="{Binding VirtualPet.ExperienceToNextLevel}"
+                                       Height="8"
+                                       Margin="0,8,0,0"
+                                       Foreground="#9C27B0"/>
+                        </StackPanel>
+
+                        <TextBlock Text="No pet yet" 
+                                  Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                  HorizontalAlignment="Center"
+                                  Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                  Margin="0,16"
+                                  Visibility="{Binding VirtualPet, Converter={StaticResource NullToVisibilityConverter}}"/>
+                    </StackPanel>
+                </materialDesign:Card>
+            </Grid>
+
+            <!-- Daily Suggestion -->
+            <materialDesign:Card Grid.Row="3" 
+                                Margin="0,0,0,20" 
+                                Padding="20"
+                                Background="#E8F5E9"
+                                Visibility="{Binding DailySuggestion, Converter={StaticResource NullToVisibilityConverter}, ConverterParameter=Inverse}">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,12">
+                        <materialDesign:PackIcon Kind="Lightbulb" 
+                                               Width="28" 
+                                               Height="28"
+                                               VerticalAlignment="Center"
+                                               Foreground="#4CAF50"/>
+                        <TextBlock Text="Today's Suggestion" 
+                                  Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                  FontWeight="SemiBold"
+                                  Margin="12,0,0,0"
+                                  VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <TextBlock Text="{Binding DailySuggestion.Title}" 
+                              Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                              FontWeight="SemiBold"
+                              Margin="0,0,0,8"/>
+                    <TextBlock Text="{Binding DailySuggestion.Description}" 
+                              Style="{StaticResource MaterialDesignBody1TextBlock}"
+                              TextWrapping="Wrap"/>
+                    <materialDesign:Chip Content="{Binding DailySuggestion.Category}"
+                                       Margin="0,12,0,0"
+                                       HorizontalAlignment="Left"
+                                       IconBackground="#4CAF50"
+                                       IconForeground="White">
+                        <materialDesign:Chip.Icon>
+                            <materialDesign:PackIcon Kind="Tag"/>
+                        </materialDesign:Chip.Icon>
+                    </materialDesign:Chip>
+                </StackPanel>
+            </materialDesign:Card>
+
+            <!-- Bottom Section: Upcoming Events and Together Moments -->
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Upcoming Events -->
+                <materialDesign:Card Grid.Column="0" Margin="0,0,10,0" Padding="16">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                            <materialDesign:PackIcon Kind="Calendar" 
+                                                   Width="24" 
+                                                   Height="24"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#2196F3"/>
+                            <TextBlock Text="Upcoming Events" 
+                                      Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                      Margin="8,0,0,0"
+                                      VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <ItemsControl ItemsSource="{Binding UpcomingEvents}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                           BorderThickness="0,0,0,1"
+                                           Padding="0,8">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Title}" 
+                                                      Style="{StaticResource MaterialDesignBody1TextBlock}"
+                                                      FontWeight="SemiBold"/>
+                                            <TextBlock Text="{Binding EventDate, StringFormat='{}{0:MMM dd, yyyy h:mm tt}'}" 
+                                                      Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                                      Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                                      Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Text="No upcoming events" 
+                                  Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                  Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                  Margin="0,16,0,0"
+                                  Visibility="{Binding UpcomingEvents.Count, Converter={StaticResource ZeroToVisibilityConverter}}"/>
+                    </StackPanel>
+                </materialDesign:Card>
+
+                <!-- Together Moments -->
+                <materialDesign:Card Grid.Column="1" Margin="10,0,0,0" Padding="16">
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                            <materialDesign:PackIcon Kind="Heart" 
+                                                   Width="24" 
+                                                   Height="24"
+                                                   VerticalAlignment="Center"
+                                                   Foreground="#E91E63"/>
+                            <TextBlock Text="Together Moments" 
+                                      Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+                                      Margin="8,0,0,0"
+                                      VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <ItemsControl ItemsSource="{Binding TogetherMoments}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="{DynamicResource MaterialDesignDivider}"
+                                           BorderThickness="0,0,0,1"
+                                           Padding="0,8">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Description}" 
+                                                      Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                                      TextWrapping="Wrap"/>
+                                            <TextBlock Text="{Binding Timestamp, StringFormat='{}{0:g}'}" 
+                                                      Style="{StaticResource MaterialDesignCaptionTextBlock}"
+                                                      Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                                      Margin="0,4,0,0"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Text="No recent moments" 
+                                  Style="{StaticResource MaterialDesignBody2TextBlock}"
+                                  Foreground="{DynamicResource MaterialDesignBodyLight}"
+                                  Margin="0,16,0,0"
+                                  Visibility="{Binding TogetherMoments.Count, Converter={StaticResource ZeroToVisibilityConverter}}"/>
+                    </StackPanel>
+                </materialDesign:Card>
+            </Grid>
+
+            <!-- Loading Overlay -->
+            <Grid Grid.Row="0" Grid.RowSpan="5"
+                 Background="#80FFFFFF"
+                 Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <ProgressBar Style="{StaticResource MaterialDesignCircularProgressBar}"
+                                Value="0"
+                                IsIndeterminate="True"
+                                Width="48"
+                                Height="48"/>
+                    <TextBlock Text="Loading dashboard..." 
+                              Style="{StaticResource MaterialDesignBody1TextBlock}"
+                              Margin="0,16,0,0"
+                              HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Error Message -->
+            <materialDesign:Card Grid.Row="0" Grid.RowSpan="5"
+                                Margin="20"
+                                Padding="20"
+                                Background="#FFEBEE"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,12">
+                        <materialDesign:PackIcon Kind="AlertCircle" 
+                                               Width="32" 
+                                               Height="32"
+                                               Foreground="#D32F2F"/>
+                        <TextBlock Text="Error" 
+                                  Style="{StaticResource MaterialDesignHeadline6TextBlock}"
+                                  Margin="12,0,0,0"
+                                  VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding ErrorMessage}" 
+                              Style="{StaticResource MaterialDesignBody1TextBlock}"
+                              TextWrapping="Wrap"
+                              TextAlignment="Center"/>
+                    <Button Content="Retry"
+                           Command="{Binding RefreshCommand}"
+                           Style="{StaticResource MaterialDesignRaisedButton}"
+                           HorizontalAlignment="Center"
+                           Margin="0,16,0,0"/>
+                </StackPanel>
+            </materialDesign:Card>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

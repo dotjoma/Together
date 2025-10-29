@@ -330,7 +330,6 @@
 
 - [x] 18. Implement long-distance features
 
-
 - [x] 18.1 Create location and timezone service
 
   - Implement distance calculation using Haversine formula
@@ -350,8 +349,10 @@
 
 ## Couple Hub Dashboard
 
-- [ ] 19. Implement couple hub dashboard
-- [ ] 19.1 Create dashboard aggregation service
+- [x] 19. Implement couple hub dashboard
+
+
+- [x] 19.1 Create dashboard aggregation service
 
   - Implement GetDashboardSummaryAsync aggregating partner mood, streak, events
   - Add GetTogetherMomentsAsync returning last 5 activities
@@ -359,7 +360,8 @@
   - Implement supportive message detection for negative moods
   - _Requirements: 17.1, 17.3, 17.4, 17.5_
 
-- [ ] 19.2 Build couple hub UI
+- [x] 19.2 Build couple hub UI
+
   - Create CoupleHubView as main dashboard
   - Implement CoupleHubViewModel coordinating all widgets
   - Display partner mood, love streak, virtual pet, upcoming events

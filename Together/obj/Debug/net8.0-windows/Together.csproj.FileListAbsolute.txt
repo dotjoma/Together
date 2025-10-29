@@ -225,3 +225,5 @@ D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\LongDistanceView.g.cs
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\SetNextMeetingView.g.cs
 D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\LongDistanceView.baml
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\CoupleHubView.g.cs
+D:\Visual Studio 2022\Projects\Together\Together\obj\Debug\net8.0-windows\Views\CoupleHubView.baml

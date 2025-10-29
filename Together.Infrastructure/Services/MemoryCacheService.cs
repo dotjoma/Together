@@ -58,7 +58,7 @@ namespace Together.Infrastructure.Services
             var expirationTime = expiration ?? _defaultExpiration;
             var entry = new CacheEntry
             {
-                Value = value,
+                Value = value!,
                 ExpiresAt = DateTime.UtcNow.Add(expirationTime)
             };
 

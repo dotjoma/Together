@@ -198,7 +198,7 @@ public class OfflineSyncManager : IOfflineSyncManager
         return result;
     }
 
-    private async Task ProcessOperationAsync(OfflineOperation operation)
+    private Task ProcessOperationAsync(OfflineOperation operation)
     {
         // Note: In a real implementation, you would inject the appropriate services
         // and call their methods. For now, we'll throw NotImplementedException

@@ -59,7 +59,7 @@ namespace Together.Infrastructure.Services
                 {
                     _imageCache.TryAdd(url, imageData);
                 }
-                return imageData;
+                return imageData!;
             }
             finally
             {

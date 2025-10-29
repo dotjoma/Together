@@ -13,8 +13,6 @@ public class TogetherHub : IRealTimeSyncService
     private HubConnection? _connection;
     private readonly ILogger<TogetherHub>? _logger;
     private Guid _currentUserId;
-    private int _reconnectAttempts = 0;
-    private const int MaxReconnectAttempts = 5;
     private readonly TimeSpan[] _reconnectDelays = new[]
     {
         TimeSpan.FromSeconds(0),
@@ -66,7 +64,6 @@ public class TogetherHub : IRealTimeSyncService
         try
         {
             await _connection.StartAsync();
-            _reconnectAttempts = 0;
             _logger?.LogInformation("Connected to SignalR hub for user {UserId}", userId);
             ConnectionStatusChanged?.Invoke(this, true);
 
@@ -210,7 +207,6 @@ public class TogetherHub : IRealTimeSyncService
     private Task OnReconnected(string? connectionId)
     {
         _logger?.LogInformation("SignalR reconnected with connection ID: {ConnectionId}", connectionId);
-        _reconnectAttempts = 0;
         ConnectionStatusChanged?.Invoke(this, true);
 
         // Rejoin user group after reconnection

@@ -78,22 +78,22 @@ namespace Together.Application.Tests.Integration
         // Test ViewModel for property change notification
         private class TestViewModel : INotifyPropertyChanged
         {
-            private string _testProperty;
+            private string? _testProperty;
             
-            public string TestProperty
+            public string? TestProperty
             {
                 get => _testProperty;
                 set => SetProperty(ref _testProperty, value);
             }
 
-            public event PropertyChangedEventHandler PropertyChanged;
+            public event PropertyChangedEventHandler? PropertyChanged;
 
-            protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+            protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
 
-            protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+            protected bool SetProperty<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
             {
                 if (EqualityComparer<T>.Default.Equals(field, value)) return false;
                 field = value;

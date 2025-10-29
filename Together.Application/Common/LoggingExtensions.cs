@@ -50,7 +50,7 @@ public static class LoggingExtensions
     /// <summary>
     /// Begins a logging scope with correlation ID
     /// </summary>
-    public static IDisposable BeginCorrelationScope(this ILogger logger, string operationName)
+    public static IDisposable? BeginCorrelationScope(this ILogger logger, string operationName)
     {
         var correlationId = CorrelationContext.GenerateCorrelationId();
         return logger.BeginScope(new Dictionary<string, object>

@@ -129,11 +129,11 @@ namespace Together.Application.Tests.Integration
             // Step 2: Login both users
             var login1 = await authService.LoginAsync(new LoginDto("user1@test.com", "Password123"));
             Assert.True(login1.Success);
-            Assert.NotEmpty(login1.Token);
+            Assert.NotEmpty(login1.Token!);
 
             var login2 = await authService.LoginAsync(new LoginDto("user2@test.com", "Password123"));
             Assert.True(login2.Success);
-            Assert.NotEmpty(login2.Token);
+            Assert.NotEmpty(login2.Token!);
 
             // Step 3: Establish couple connection
             var connectionRequest = await connectionService.SendConnectionRequestAsync(
@@ -187,7 +187,7 @@ namespace Together.Application.Tests.Integration
             var user2 = await authService.RegisterAsync(new RegisterDto("social2", "social2@test.com", "Password123"));
 
             // Follow relationship
-            var followRequest = await followService.SendFollowRequestAsync(user1.User.Id, user2.User.Id);
+            var followRequest = await followService.SendFollowRequestAsync(user1.User!.Id, user2.User!.Id);
             await followService.AcceptFollowRequestAsync(followRequest.Id);
 
             // Create post
@@ -230,7 +230,7 @@ namespace Together.Application.Tests.Integration
             var user1 = await authService.RegisterAsync(new RegisterDto("couple1", "couple1@test.com", "Password123"));
             var user2 = await authService.RegisterAsync(new RegisterDto("couple2", "couple2@test.com", "Password123"));
             
-            var request = await connectionService.SendConnectionRequestAsync(user1.User.Id, user2.User.Id);
+            var request = await connectionService.SendConnectionRequestAsync(user1.User!.Id, user2.User!.Id);
             var connection = await connectionService.AcceptConnectionRequestAsync(request.Id, user2.User.Id);
 
             // Create todo
@@ -279,7 +279,7 @@ namespace Together.Application.Tests.Integration
             var user1 = await authService.RegisterAsync(new RegisterDto("dash1", "dash1@test.com", "Password123"));
             var user2 = await authService.RegisterAsync(new RegisterDto("dash2", "dash2@test.com", "Password123"));
             
-            var request = await connectionService.SendConnectionRequestAsync(user1.User.Id, user2.User.Id);
+            var request = await connectionService.SendConnectionRequestAsync(user1.User!.Id, user2.User!.Id);
             await connectionService.AcceptConnectionRequestAsync(request.Id, user2.User.Id);
 
             // Add mood

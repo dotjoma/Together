@@ -112,7 +112,7 @@ public class MoodTrackerViewModel : ViewModelBase, INavigationAware
             PartnerMoodStatus = $"Your partner is feeling {moodEntry.Mood.ToLower()}";
             
             // Refresh mood history to include the new entry
-            _ = MoodHistory.RefreshAsync();
+            _ = MoodHistory?.RefreshAsync();
         });
     }
 

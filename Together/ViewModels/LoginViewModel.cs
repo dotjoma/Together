@@ -96,7 +96,7 @@ public class LoginViewModel : ViewModelBase
 
                 // Close login window and show main window
                 var app = System.Windows.Application.Current as App;
-                app?.ShowMainWindow(result.User);
+                app?.ShowMainWindow(result.User!);
                 
                 // Close the login window
                 foreach (Window window in System.Windows.Application.Current.Windows)

@@ -395,7 +395,6 @@
 
 - [x] 21. Implement offline sync manager
 
-
 - [x] 21.1 Create offline sync service
 
   - Implement SQLite local cache for posts, journal entries, mood data
@@ -415,8 +414,10 @@
 
 ## Navigation and Main Window
 
-- [ ] 22. Implement navigation system
-- [ ] 22.1 Create navigation service
+- [x] 22. Implement navigation system
+
+
+- [x] 22.1 Create navigation service
 
   - Implement NavigationService with ViewModel-based navigation
   - Add navigation history with back button support

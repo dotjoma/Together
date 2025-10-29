@@ -3,13 +3,14 @@ using System.Windows.Input;
 using Together.Application.DTOs;
 using Together.Application.Interfaces;
 using Together.Presentation.Commands;
+using Together.Services;
 
 namespace Together.Presentation.ViewModels;
 
-public class CoupleHubViewModel : ViewModelBase
+public class CoupleHubViewModel : ViewModelBase, INavigationAware
 {
     private readonly IDashboardService _dashboardService;
-    private readonly Guid _currentUserId;
+    private Guid _currentUserId;
 
     private MoodEntryDto? _partnerMood;
     private int _loveStreak;
@@ -20,18 +21,30 @@ public class CoupleHubViewModel : ViewModelBase
     private bool _isLoading;
     private string? _errorMessage;
 
-    public CoupleHubViewModel(IDashboardService dashboardService, Guid currentUserId)
+    public CoupleHubViewModel(IDashboardService dashboardService)
     {
         _dashboardService = dashboardService;
-        _currentUserId = currentUserId;
 
         UpcomingEvents = new ObservableCollection<SharedEventDto>();
         TogetherMoments = new ObservableCollection<TogetherMomentDto>();
 
         RefreshCommand = new RelayCommand(async _ => await LoadDashboardDataAsync());
+    }
 
-        // Load data on initialization
-        _ = LoadDashboardDataAsync();
+    public void OnNavigatedTo(object? parameter)
+    {
+        // Get current user from application properties
+        var currentUser = System.Windows.Application.Current.Properties["CurrentUser"] as UserDto;
+        if (currentUser != null)
+        {
+            _currentUserId = currentUser.Id;
+            _ = LoadDashboardDataAsync();
+        }
+    }
+
+    public void OnNavigatedFrom()
+    {
+        // Cleanup if needed
     }
 
     public MoodEntryDto? PartnerMood

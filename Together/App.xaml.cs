@@ -10,6 +10,7 @@ using Together.Infrastructure.Repositories;
 using Together.Infrastructure.Services;
 using Together.Infrastructure.SignalR;
 using Microsoft.Extensions.Logging;
+using Together.ViewModels;
 
 namespace Together.Presentation
 {
@@ -80,22 +81,63 @@ namespace Together.Presentation
             services.AddScoped<IStorageService, SupabaseStorageService>();
             services.AddSingleton<IRealTimeSyncService, TogetherHub>();
             
+            // Navigation Service
+            services.AddSingleton<Together.Services.INavigationService, Together.Services.NavigationService>();
+            
             // Logging
             services.AddLogging();
             
             // Caching
             services.AddMemoryCache();
 
-            // ViewModels will be registered here as they are created
+            // ViewModels
+            services.AddTransient<MainViewModel>();
+            services.AddTransient<LoginViewModel>();
+            services.AddTransient<RegisterViewModel>();
+            services.AddTransient<CoupleHubViewModel>();
+            services.AddTransient<JournalViewModel>();
+            services.AddTransient<MoodTrackerViewModel>();
+            services.AddTransient<SocialFeedViewModel>();
+            services.AddTransient<UserProfileViewModel>();
+            services.AddTransient<CalendarViewModel>();
+            services.AddTransient<TodoListViewModel>();
+            services.AddTransient<ChallengeViewModel>();
+            services.AddTransient<VirtualPetViewModel>();
+            services.AddTransient<LongDistanceViewModel>();
+            
+            // Windows
+            services.AddTransient<MainWindow>();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
             
-            // MainWindow will be resolved from DI container once ViewModels are set up
-            // var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-            // mainWindow.Show();
+            // Show login window initially
+            var loginWindow = new Window
+            {
+                Title = "Together - Login",
+                Width = 400,
+                Height = 500,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                Content = new Views.LoginView
+                {
+                    DataContext = _serviceProvider?.GetRequiredService<LoginViewModel>()
+                }
+            };
+            
+            loginWindow.Show();
+        }
+        
+        public void ShowMainWindow(Application.DTOs.UserDto user)
+        {
+            var mainWindow = _serviceProvider?.GetRequiredService<MainWindow>();
+            if (mainWindow != null)
+            {
+                var mainViewModel = mainWindow.DataContext as MainViewModel;
+                mainViewModel?.Initialize(user);
+                mainWindow.Show();
+            }
         }
 
         protected override void OnExit(ExitEventArgs e)

@@ -5,37 +5,34 @@ using System.Windows.Input;
 using Together.Application.DTOs;
 using Together.Application.Interfaces;
 using Together.Presentation.Commands;
+using Together.Services;
 
 namespace Together.Presentation.ViewModels;
 
-public class JournalViewModel : ViewModelBase
+public class JournalViewModel : ViewModelBase, INavigationAware
 {
     private readonly IJournalService _journalService;
+    private readonly ICoupleConnectionService _coupleConnectionService;
     private readonly IRealTimeSyncService? _realTimeSyncService;
     private readonly IOfflineSyncManager? _offlineSyncManager;
-    private readonly Guid _currentUserId;
-    private readonly Guid _connectionId;
+    private Guid _currentUserId;
+    private Guid _connectionId;
     private bool _isLoading;
     private string? _errorMessage;
     private JournalEntryViewModel? _entryCreationViewModel;
 
     public JournalViewModel(
         IJournalService journalService,
-        Guid currentUserId,
-        Guid connectionId,
+        ICoupleConnectionService coupleConnectionService,
         IRealTimeSyncService? realTimeSyncService = null,
         IOfflineSyncManager? offlineSyncManager = null)
     {
         _journalService = journalService;
+        _coupleConnectionService = coupleConnectionService;
         _realTimeSyncService = realTimeSyncService;
         _offlineSyncManager = offlineSyncManager;
-        _currentUserId = currentUserId;
-        _connectionId = connectionId;
 
         Entries = new ObservableCollection<JournalEntryItemViewModel>();
-        
-        _entryCreationViewModel = new JournalEntryViewModel(journalService, currentUserId, connectionId);
-        _entryCreationViewModel.EntryCreated += OnEntryCreated;
 
         LoadEntriesCommand = new RelayCommand(async _ => await LoadEntriesAsync());
         RefreshCommand = new RelayCommand(async _ => await LoadEntriesAsync());
@@ -45,9 +42,40 @@ public class JournalViewModel : ViewModelBase
         {
             _realTimeSyncService.JournalEntryReceived += OnJournalEntryReceived;
         }
+    }
 
-        // Load entries on initialization
-        _ = LoadEntriesAsync();
+    public async void OnNavigatedTo(object? parameter)
+    {
+        // Get current user from application properties
+        var currentUser = System.Windows.Application.Current.Properties["CurrentUser"] as UserDto;
+        if (currentUser != null)
+        {
+            _currentUserId = currentUser.Id;
+            
+            // Get couple connection
+            var connection = await _coupleConnectionService.GetUserConnectionAsync(_currentUserId);
+            if (connection != null)
+            {
+                _connectionId = connection.Id;
+                
+                // Initialize entry creation view model
+                _entryCreationViewModel = new JournalEntryViewModel(_journalService, _currentUserId, _connectionId);
+                _entryCreationViewModel.EntryCreated += OnEntryCreated;
+                
+                // Load entries
+                await LoadEntriesAsync();
+            }
+        }
+    }
+
+    public void OnNavigatedFrom()
+    {
+        // Cleanup
+        if (_entryCreationViewModel != null)
+        {
+            _entryCreationViewModel.EntryCreated -= OnEntryCreated;
+        }
+    }
     }
 
     public ObservableCollection<JournalEntryItemViewModel> Entries { get; }

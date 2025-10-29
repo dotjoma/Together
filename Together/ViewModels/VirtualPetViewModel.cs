@@ -3,27 +3,48 @@ using Together.Application.DTOs;
 using Together.Application.Interfaces;
 using Together.Presentation.Commands;
 using Together.Domain.Enums;
+using Together.Services;
 
 namespace Together.Presentation.ViewModels;
 
-public class VirtualPetViewModel : ViewModelBase
+public class VirtualPetViewModel : ViewModelBase, INavigationAware
 {
     private readonly IVirtualPetService _petService;
-    private readonly Guid _connectionId;
+    private readonly ICoupleConnectionService _coupleConnectionService;
+    private Guid _connectionId;
 
     private VirtualPetDto? _pet;
     private bool _isLoading;
     private string? _errorMessage;
 
-    public VirtualPetViewModel(IVirtualPetService petService, Guid connectionId)
+    public VirtualPetViewModel(IVirtualPetService petService, ICoupleConnectionService coupleConnectionService)
     {
         _petService = petService;
-        _connectionId = connectionId;
+        _coupleConnectionService = coupleConnectionService;
 
         OpenCustomizationCommand = new RelayCommand(_ => OpenCustomization(), _ => Pet != null);
         RefreshCommand = new RelayCommand(async _ => await LoadPetAsync());
+    }
 
-        _ = LoadPetAsync();
+    public async void OnNavigatedTo(object? parameter)
+    {
+        // Get current user from application properties
+        var currentUser = System.Windows.Application.Current.Properties["CurrentUser"] as UserDto;
+        if (currentUser != null)
+        {
+            // Get couple connection
+            var connection = await _coupleConnectionService.GetUserConnectionAsync(currentUser.Id);
+            if (connection != null)
+            {
+                _connectionId = connection.Id;
+                await LoadPetAsync();
+            }
+        }
+    }
+
+    public void OnNavigatedFrom()
+    {
+        // Cleanup if needed
     }
 
     public VirtualPetDto? Pet

@@ -7,14 +7,15 @@ using System.Windows.Input;
 using Together.Application.DTOs;
 using Together.Application.Interfaces;
 using Together.Presentation.Commands;
+using Together.Services;
 
 namespace Together.Presentation.ViewModels;
 
-public class TodoListViewModel : ViewModelBase
+public class TodoListViewModel : ViewModelBase, INavigationAware
 {
     private readonly ITodoService _todoService;
     private readonly ICoupleConnectionService _connectionService;
-    private readonly Guid _currentUserId;
+    private Guid _currentUserId;
     private bool _isLoading;
     private bool _isCreating;
     private string _newTitle = string.Empty;
@@ -26,11 +27,10 @@ public class TodoListViewModel : ViewModelBase
     private bool _showOverdueOnly;
     private Guid? _partnerId;
 
-    public TodoListViewModel(ITodoService todoService, ICoupleConnectionService connectionService, Guid currentUserId)
+    public TodoListViewModel(ITodoService todoService, ICoupleConnectionService connectionService)
     {
         _todoService = todoService;
         _connectionService = connectionService;
-        _currentUserId = currentUserId;
 
         TodoItems = new ObservableCollection<TodoItemViewModel>();
 
@@ -40,8 +40,22 @@ public class TodoListViewModel : ViewModelBase
         RefreshCommand = new RelayCommand(async _ => await LoadTodoItemsAsync());
         ApplyFilterCommand = new RelayCommand(async _ => await ApplyFilterAsync());
         ClearFilterCommand = new RelayCommand(async _ => await ClearFilterAsync());
+    }
 
-        _ = InitializeAsync();
+    public void OnNavigatedTo(object? parameter)
+    {
+        // Get current user from application properties
+        var currentUser = System.Windows.Application.Current.Properties["CurrentUser"] as UserDto;
+        if (currentUser != null)
+        {
+            _currentUserId = currentUser.Id;
+            _ = InitializeAsync();
+        }
+    }
+
+    public void OnNavigatedFrom()
+    {
+        // Cleanup if needed
     }
 
     public ObservableCollection<TodoItemViewModel> TodoItems { get; }

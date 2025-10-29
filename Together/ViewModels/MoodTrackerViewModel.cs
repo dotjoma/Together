@@ -2,18 +2,32 @@ using System.Windows.Input;
 using Together.Application.DTOs;
 using Together.Application.Interfaces;
 using Together.Presentation.Commands;
+using Together.Services;
 
 namespace Together.Presentation.ViewModels;
 
-public class MoodTrackerViewModel : ViewModelBase
+public class MoodTrackerViewModel : ViewModelBase, INavigationAware
 {
+    private readonly IMoodTrackingService _moodTrackingService;
+    private readonly IMoodAnalysisService _moodAnalysisService;
     private readonly IRealTimeSyncService? _realTimeSyncService;
-    private readonly Guid _userId;
+    private Guid _userId;
     private bool _showSelector = true;
     private string? _partnerMoodStatus;
+    private MoodSelectorViewModel? _moodSelector;
+    private MoodHistoryViewModel? _moodHistory;
 
-    public MoodSelectorViewModel MoodSelector { get; }
-    public MoodHistoryViewModel MoodHistory { get; }
+    public MoodSelectorViewModel? MoodSelector
+    {
+        get => _moodSelector;
+        private set => SetProperty(ref _moodSelector, value);
+    }
+
+    public MoodHistoryViewModel? MoodHistory
+    {
+        get => _moodHistory;
+        private set => SetProperty(ref _moodHistory, value);
+    }
 
     public bool ShowSelector
     {
@@ -36,14 +50,11 @@ public class MoodTrackerViewModel : ViewModelBase
     public MoodTrackerViewModel(
         IMoodTrackingService moodTrackingService,
         IMoodAnalysisService moodAnalysisService,
-        Guid userId,
         IRealTimeSyncService? realTimeSyncService = null)
     {
-        _userId = userId;
+        _moodTrackingService = moodTrackingService;
+        _moodAnalysisService = moodAnalysisService;
         _realTimeSyncService = realTimeSyncService;
-
-        MoodSelector = new MoodSelectorViewModel(moodTrackingService, userId);
-        MoodHistory = new MoodHistoryViewModel(moodTrackingService, moodAnalysisService, userId);
 
         ShowSelectorCommand = new RelayCommand(_ =>
         {
@@ -57,13 +68,36 @@ public class MoodTrackerViewModel : ViewModelBase
             OnPropertyChanged(nameof(ShowHistory));
         });
 
-        RefreshCommand = new RelayCommand(async _ => await MoodHistory.RefreshAsync());
+        RefreshCommand = new RelayCommand(async _ =>
+        {
+            if (MoodHistory != null)
+            {
+                await MoodHistory.RefreshAsync();
+            }
+        });
 
         // Subscribe to real-time mood updates
         if (_realTimeSyncService != null)
         {
             _realTimeSyncService.MoodEntryReceived += OnMoodEntryReceived;
         }
+    }
+
+    public void OnNavigatedTo(object? parameter)
+    {
+        // Get current user from application properties
+        var currentUser = System.Windows.Application.Current.Properties["CurrentUser"] as UserDto;
+        if (currentUser != null)
+        {
+            _userId = currentUser.Id;
+            MoodSelector = new MoodSelectorViewModel(_moodTrackingService, _userId);
+            MoodHistory = new MoodHistoryViewModel(_moodTrackingService, _moodAnalysisService, _userId);
+        }
+    }
+
+    public void OnNavigatedFrom()
+    {
+        // Cleanup if needed
     }
 
     private void OnMoodEntryReceived(object? sender, MoodEntryDto moodEntry)

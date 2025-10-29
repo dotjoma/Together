@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Together.ViewModels;
 
 namespace Together.Presentation
 {
@@ -7,9 +8,10 @@ namespace Together.Presentation
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(MainViewModel viewModel)
         {
             InitializeComponent();
+            DataContext = viewModel ?? throw new System.ArgumentNullException(nameof(viewModel));
         }
     }
 }

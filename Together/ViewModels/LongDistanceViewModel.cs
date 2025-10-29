@@ -2,27 +2,26 @@ using System;
 using System.Windows.Input;
 using Together.Application.Interfaces;
 using Together.Presentation.Commands;
+using Together.Services;
 
 namespace Together.Presentation.ViewModels;
 
-public class LongDistanceViewModel : ViewModelBase
+public class LongDistanceViewModel : ViewModelBase, INavigationAware
 {
     private readonly ILongDistanceService _longDistanceService;
-    private readonly Guid _connectionId;
-    private readonly Guid _userId;
+    private readonly ICoupleConnectionService _coupleConnectionService;
+    private Guid _connectionId;
+    private Guid _userId;
 
     private DistanceWidgetViewModel? _distanceWidgetViewModel;
 
     public LongDistanceViewModel(
-        ILongDistanceService longDistanceService, 
-        Guid connectionId,
-        Guid userId)
+        ILongDistanceService longDistanceService,
+        ICoupleConnectionService coupleConnectionService)
     {
         _longDistanceService = longDistanceService;
-        _connectionId = connectionId;
-        _userId = userId;
+        _coupleConnectionService = coupleConnectionService;
 
-        DistanceWidgetViewModel = new DistanceWidgetViewModel(longDistanceService, connectionId);
         OpenLocationSettingsCommand = new RelayCommand(_ => OpenLocationSettings());
     }
 
@@ -33,6 +32,29 @@ public class LongDistanceViewModel : ViewModelBase
     }
 
     public ICommand OpenLocationSettingsCommand { get; }
+
+    public async void OnNavigatedTo(object? parameter)
+    {
+        // Get current user from application properties
+        var currentUser = System.Windows.Application.Current.Properties["CurrentUser"] as Application.DTOs.UserDto;
+        if (currentUser != null)
+        {
+            _userId = currentUser.Id;
+            
+            // Get couple connection
+            var connection = await _coupleConnectionService.GetUserConnectionAsync(_userId);
+            if (connection != null)
+            {
+                _connectionId = connection.Id;
+                DistanceWidgetViewModel = new DistanceWidgetViewModel(_longDistanceService, _connectionId);
+            }
+        }
+    }
+
+    public void OnNavigatedFrom()
+    {
+        // Cleanup if needed
+    }
 
     private void OpenLocationSettings()
     {

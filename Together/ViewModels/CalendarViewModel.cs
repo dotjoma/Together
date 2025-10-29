@@ -5,13 +5,14 @@ using System.Windows.Input;
 using Together.Application.DTOs;
 using Together.Application.Interfaces;
 using Together.Presentation.Commands;
+using Together.Services;
 
 namespace Together.Presentation.ViewModels;
 
-public class CalendarViewModel : ViewModelBase
+public class CalendarViewModel : ViewModelBase, INavigationAware
 {
     private readonly IEventService _eventService;
-    private readonly Guid _currentUserId;
+    private Guid _currentUserId;
 
     private DateTime _currentMonth;
     private int _daysTogether;
@@ -21,10 +22,9 @@ public class CalendarViewModel : ViewModelBase
     private bool _isLoading;
     private string _errorMessage = string.Empty;
 
-    public CalendarViewModel(IEventService eventService, Guid currentUserId)
+    public CalendarViewModel(IEventService eventService)
     {
         _eventService = eventService;
-        _currentUserId = currentUserId;
         _currentMonth = DateTime.Now;
         _upcomingEvents = new ObservableCollection<SharedEventDto>();
         _monthEvents = new ObservableCollection<SharedEventDto>();
@@ -36,6 +36,22 @@ public class CalendarViewModel : ViewModelBase
         EditEventCommand = new RelayCommand(_ => OnEditEventRequested?.Invoke(SelectedEvent!), _ => SelectedEvent != null);
         DeleteEventCommand = new RelayCommand(async _ => await DeleteEventAsync(), _ => SelectedEvent != null);
         RefreshCommand = new RelayCommand(async _ => await LoadDataAsync());
+    }
+
+    public void OnNavigatedTo(object? parameter)
+    {
+        // Get current user from application properties
+        var currentUser = System.Windows.Application.Current.Properties["CurrentUser"] as UserDto;
+        if (currentUser != null)
+        {
+            _currentUserId = currentUser.Id;
+            _ = LoadDataAsync();
+        }
+    }
+
+    public void OnNavigatedFrom()
+    {
+        // Cleanup if needed
     }
 
     public DateTime CurrentMonth

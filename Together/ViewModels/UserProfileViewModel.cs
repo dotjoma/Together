@@ -4,13 +4,14 @@ using Together.Application.DTOs;
 using Together.Application.Interfaces;
 using Together.Presentation.Commands;
 using Together.Domain.Enums;
+using Together.Services;
 
 namespace Together.Presentation.ViewModels;
 
-public class UserProfileViewModel : ViewModelBase
+public class UserProfileViewModel : ViewModelBase, INavigationAware
 {
     private readonly IProfileService _profileService;
-    private readonly Guid _userId;
+    private Guid _userId;
 
     private ProfileDto? _profile;
     private bool _isEditMode;
@@ -21,17 +22,38 @@ public class UserProfileViewModel : ViewModelBase
     private byte[]? _selectedImageData;
     private string? _selectedImageFileName;
 
-    public UserProfileViewModel(IProfileService profileService, Guid userId)
+    public UserProfileViewModel(IProfileService profileService)
     {
         _profileService = profileService;
-        _userId = userId;
 
         EditProfileCommand = new RelayCommand(async _ => await EnterEditModeAsync(), _ => !IsEditMode && !IsLoading);
         SaveProfileCommand = new RelayCommand(async _ => await SaveProfileAsync(), _ => IsEditMode && !IsLoading);
         CancelEditCommand = new RelayCommand(_ => CancelEdit(), _ => IsEditMode && !IsLoading);
         SelectImageCommand = new RelayCommand(async _ => await SelectImageAsync(), _ => IsEditMode && !IsLoading);
+    }
+
+    public void OnNavigatedTo(object? parameter)
+    {
+        if (parameter is Guid userId)
+        {
+            _userId = userId;
+        }
+        else
+        {
+            // Default to current user
+            var currentUser = System.Windows.Application.Current.Properties["CurrentUser"] as UserDto;
+            if (currentUser != null)
+            {
+                _userId = currentUser.Id;
+            }
+        }
 
         _ = LoadProfileAsync();
+    }
+
+    public void OnNavigatedFrom()
+    {
+        // Cleanup if needed
     }
 
     public ProfileDto? Profile

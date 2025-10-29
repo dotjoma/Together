@@ -94,6 +94,20 @@ public class LoginViewModel : ViewModelBase
                 System.Windows.Application.Current.Properties["AuthToken"] = result.Token;
                 System.Windows.Application.Current.Properties["CurrentUser"] = result.User;
 
+                // Close login window and show main window
+                var app = System.Windows.Application.Current as App;
+                app?.ShowMainWindow(result.User);
+                
+                // Close the login window
+                foreach (Window window in System.Windows.Application.Current.Windows)
+                {
+                    if (window.DataContext == this)
+                    {
+                        window.Close();
+                        break;
+                    }
+                }
+
                 LoginSuccessful?.Invoke(this, EventArgs.Empty);
             }
             else

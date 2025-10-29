@@ -3,10 +3,11 @@ using System.Windows.Input;
 using Together.Application.DTOs;
 using Together.Application.Interfaces;
 using Together.Presentation.Commands;
+using Together.Services;
 
 namespace Together.Presentation.ViewModels;
 
-public class SocialFeedViewModel : ViewModelBase
+public class SocialFeedViewModel : ViewModelBase, INavigationAware
 {
     private readonly ISocialFeedService _socialFeedService;
     private readonly IPostService _postService;
@@ -14,7 +15,7 @@ public class SocialFeedViewModel : ViewModelBase
     private readonly ICommentService _commentService;
     private readonly IRealTimeSyncService? _realTimeSyncService;
     private readonly IOfflineSyncManager? _offlineSyncManager;
-    private readonly Guid _currentUserId;
+    private Guid _currentUserId;
     private bool _isLoading;
     private bool _isRefreshing;
     private bool _hasMorePosts;
@@ -28,7 +29,6 @@ public class SocialFeedViewModel : ViewModelBase
         IPostService postService,
         ILikeService likeService,
         ICommentService commentService,
-        Guid currentUserId,
         IRealTimeSyncService? realTimeSyncService = null,
         IOfflineSyncManager? offlineSyncManager = null)
     {
@@ -38,7 +38,6 @@ public class SocialFeedViewModel : ViewModelBase
         _commentService = commentService;
         _realTimeSyncService = realTimeSyncService;
         _offlineSyncManager = offlineSyncManager;
-        _currentUserId = currentUserId;
         _currentSkip = 0;
         _hasMorePosts = true;
 
@@ -48,6 +47,23 @@ public class SocialFeedViewModel : ViewModelBase
         LoadFeedCommand = new RelayCommand(async _ => await LoadFeedAsync(), _ => !IsLoading);
         LoadMoreCommand = new RelayCommand(async _ => await LoadMoreAsync(), _ => !IsLoading && HasMorePosts);
         RefreshCommand = new RelayCommand(async _ => await RefreshFeedAsync(), _ => !IsRefreshing);
+    }
+
+    public void OnNavigatedTo(object? parameter)
+    {
+        // Get current user from application properties
+        var currentUser = System.Windows.Application.Current.Properties["CurrentUser"] as UserDto;
+        if (currentUser != null)
+        {
+            _currentUserId = currentUser.Id;
+            _ = LoadFeedAsync();
+        }
+    }
+
+    public void OnNavigatedFrom()
+    {
+        // Cleanup if needed
+    }
 
         // Subscribe to real-time updates
         if (_realTimeSyncService != null)

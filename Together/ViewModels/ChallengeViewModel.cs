@@ -4,14 +4,16 @@ using System.Windows.Input;
 using Together.Application.DTOs;
 using Together.Application.Interfaces;
 using Together.Presentation.Commands;
+using Together.Services;
 
 namespace Together.Presentation.ViewModels;
 
-public class ChallengeViewModel : ViewModelBase
+public class ChallengeViewModel : ViewModelBase, INavigationAware
 {
     private readonly IChallengeService _challengeService;
-    private readonly Guid _currentUserId;
-    private readonly Guid _connectionId;
+    private readonly ICoupleConnectionService _coupleConnectionService;
+    private Guid _currentUserId;
+    private Guid _connectionId;
 
     private ObservableCollection<ChallengeDto> _activeChallenges;
     private ChallengeDto? _selectedChallenge;
@@ -20,11 +22,10 @@ public class ChallengeViewModel : ViewModelBase
     private string _errorMessage;
     private bool _hasNoChallenges;
 
-    public ChallengeViewModel(IChallengeService challengeService, Guid currentUserId, Guid connectionId)
+    public ChallengeViewModel(IChallengeService challengeService, ICoupleConnectionService coupleConnectionService)
     {
         _challengeService = challengeService;
-        _currentUserId = currentUserId;
-        _connectionId = connectionId;
+        _coupleConnectionService = coupleConnectionService;
         _activeChallenges = new ObservableCollection<ChallengeDto>();
         _errorMessage = string.Empty;
 
@@ -32,8 +33,29 @@ public class ChallengeViewModel : ViewModelBase
         GenerateNewChallengeCommand = new RelayCommand(async _ => await GenerateNewChallengeAsync());
         RefreshCommand = new RelayCommand(async _ => await LoadDataAsync());
         SelectChallengeCommand = new RelayCommand(param => SelectChallenge(param as ChallengeDto));
+    }
 
-        _ = LoadDataAsync();
+    public async void OnNavigatedTo(object? parameter)
+    {
+        // Get current user from application properties
+        var currentUser = System.Windows.Application.Current.Properties["CurrentUser"] as UserDto;
+        if (currentUser != null)
+        {
+            _currentUserId = currentUser.Id;
+            
+            // Get couple connection
+            var connection = await _coupleConnectionService.GetUserConnectionAsync(_currentUserId);
+            if (connection != null)
+            {
+                _connectionId = connection.Id;
+                await LoadDataAsync();
+            }
+        }
+    }
+
+    public void OnNavigatedFrom()
+    {
+        // Cleanup if needed
     }
 
     public ObservableCollection<ChallengeDto> ActiveChallenges

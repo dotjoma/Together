@@ -4,9 +4,271 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Together.Presentation"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:viewmodels="clr-namespace:Together.ViewModels"
         mc:Ignorable="d"
-        Title="Together - Social and Emotional Hub" Height="450" Width="800">
-    <Grid>
+        d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
+        Title="Together - Social and Emotional Hub" 
+        Height="768" 
+        Width="1366"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        FontFamily="{DynamicResource MaterialDesignFont}">
+    
+    <materialDesign:DialogHost Identifier="RootDialog">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-    </Grid>
+            <!-- Top App Bar -->
+            <materialDesign:ColorZone Grid.Row="0" 
+                                      Mode="PrimaryMid" 
+                                      Padding="16"
+                                      materialDesign:ElevationAssist.Elevation="Dp4">
+                <DockPanel>
+                    <!-- Menu Button -->
+                    <Button DockPanel.Dock="Left"
+                            Style="{StaticResource MaterialDesignIconButton}"
+                            Command="{Binding ToggleNavigationDrawerCommand}"
+                            ToolTip="Menu">
+                        <materialDesign:PackIcon Kind="Menu" Width="24" Height="24"/>
+                    </Button>
+
+                    <!-- Back Button -->
+                    <Button DockPanel.Dock="Left"
+                            Style="{StaticResource MaterialDesignIconButton}"
+                            Command="{Binding GoBackCommand}"
+                            Margin="8,0,0,0"
+                            ToolTip="Go Back">
+                        <materialDesign:PackIcon Kind="ArrowLeft" Width="24" Height="24"/>
+                    </Button>
+
+                    <!-- User Info -->
+                    <StackPanel DockPanel.Dock="Right" 
+                                Orientation="Horizontal"
+                                VerticalAlignment="Center">
+                        <TextBlock Text="{Binding CurrentUser.Username}" 
+                                   VerticalAlignment="Center"
+                                   Margin="0,0,8,0"
+                                   FontWeight="Medium"/>
+                        <Button Style="{StaticResource MaterialDesignIconButton}"
+                                Command="{Binding LogoutCommand}"
+                                ToolTip="Logout">
+                            <materialDesign:PackIcon Kind="Logout" Width="20" Height="20"/>
+                        </Button>
+                    </StackPanel>
+
+                    <!-- Title -->
+                    <TextBlock Text="Together" 
+                               VerticalAlignment="Center"
+                               FontSize="20"
+                               FontWeight="Medium"
+                               Margin="16,0,0,0"/>
+                </DockPanel>
+            </materialDesign:ColorZone>
+
+            <!-- Main Content with Navigation Drawer -->
+            <materialDesign:DrawerHost Grid.Row="1"
+                                       IsLeftDrawerOpen="{Binding IsNavigationDrawerOpen}">
+                
+                <!-- Navigation Drawer Content -->
+                <materialDesign:DrawerHost.LeftDrawerContent>
+                    <DockPanel MinWidth="250" Background="{DynamicResource MaterialDesignPaper}">
+                        <!-- User Profile Section -->
+                        <Border DockPanel.Dock="Top" 
+                                Background="{DynamicResource PrimaryHueMidBrush}"
+                                Padding="16">
+                            <StackPanel>
+                                <Ellipse Width="64" Height="64" 
+                                         HorizontalAlignment="Left"
+                                         Margin="0,0,0,8">
+                                    <Ellipse.Fill>
+                                        <ImageBrush ImageSource="{Binding CurrentUser.ProfilePictureUrl}"/>
+                                    </Ellipse.Fill>
+                                </Ellipse>
+                                <TextBlock Text="{Binding CurrentUser.Username}" 
+                                           FontSize="16"
+                                           FontWeight="Medium"
+                                           Foreground="White"/>
+                                <TextBlock Text="{Binding CurrentUser.Email}" 
+                                           FontSize="12"
+                                           Foreground="White"
+                                           Opacity="0.8"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Navigation Menu Items -->
+                        <ScrollViewer DockPanel.Dock="Top" 
+                                      VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <!-- Couple Features Section -->
+                                <TextBlock Text="COUPLE FEATURES" 
+                                           Margin="16,16,16,8"
+                                           FontSize="12"
+                                           FontWeight="Medium"
+                                           Opacity="0.6"/>
+
+                                <ListBox Style="{StaticResource MaterialDesignNavigationListBox}">
+                                    <ListBoxItem Command="{Binding NavigateToCoupleHubCommand}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Heart" 
+                                                                     Width="24" 
+                                                                     Height="24"
+                                                                     Margin="0,0,16,0"/>
+                                            <TextBlock Text="Couple Hub" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </ListBoxItem>
+
+                                    <ListBoxItem Command="{Binding NavigateToJournalCommand}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Book" 
+                                                                     Width="24" 
+                                                                     Height="24"
+                                                                     Margin="0,0,16,0"/>
+                                            <TextBlock Text="Shared Journal" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </ListBoxItem>
+
+                                    <ListBoxItem Command="{Binding NavigateToMoodCommand}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="EmoticonHappy" 
+                                                                     Width="24" 
+                                                                     Height="24"
+                                                                     Margin="0,0,16,0"/>
+                                            <TextBlock Text="Mood Tracker" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </ListBoxItem>
+
+                                    <ListBoxItem Command="{Binding NavigateToTodoCommand}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="CheckboxMarkedOutline" 
+                                                                     Width="24" 
+                                                                     Height="24"
+                                                                     Margin="0,0,16,0"/>
+                                            <TextBlock Text="To-Do List" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </ListBoxItem>
+
+                                    <ListBoxItem Command="{Binding NavigateToCalendarCommand}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Calendar" 
+                                                                     Width="24" 
+                                                                     Height="24"
+                                                                     Margin="0,0,16,0"/>
+                                            <TextBlock Text="Events & Calendar" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </ListBoxItem>
+
+                                    <ListBoxItem Command="{Binding NavigateToChallengesCommand}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Trophy" 
+                                                                     Width="24" 
+                                                                     Height="24"
+                                                                     Margin="0,0,16,0"/>
+                                            <TextBlock Text="Challenges" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </ListBoxItem>
+
+                                    <ListBoxItem Command="{Binding NavigateToVirtualPetCommand}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Cat" 
+                                                                     Width="24" 
+                                                                     Height="24"
+                                                                     Margin="0,0,16,0"/>
+                                            <TextBlock Text="Virtual Pet" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </ListBoxItem>
+
+                                    <ListBoxItem Command="{Binding NavigateToLongDistanceCommand}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="MapMarkerDistance" 
+                                                                     Width="24" 
+                                                                     Height="24"
+                                                                     Margin="0,0,16,0"/>
+                                            <TextBlock Text="Long Distance" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </ListBoxItem>
+                                </ListBox>
+
+                                <!-- Social Features Section -->
+                                <TextBlock Text="SOCIAL FEATURES" 
+                                           Margin="16,16,16,8"
+                                           FontSize="12"
+                                           FontWeight="Medium"
+                                           Opacity="0.6"/>
+
+                                <ListBox Style="{StaticResource MaterialDesignNavigationListBox}">
+                                    <ListBoxItem Command="{Binding NavigateToSocialFeedCommand}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="ViewDashboard" 
+                                                                     Width="24" 
+                                                                     Height="24"
+                                                                     Margin="0,0,16,0"/>
+                                            <TextBlock Text="Social Feed" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </ListBoxItem>
+
+                                    <ListBoxItem Command="{Binding NavigateToProfileCommand}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <materialDesign:PackIcon Kind="Account" 
+                                                                     Width="24" 
+                                                                     Height="24"
+                                                                     Margin="0,0,16,0"/>
+                                            <TextBlock Text="My Profile" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </ListBoxItem>
+                                </ListBox>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </DockPanel>
+                </materialDesign:DrawerHost.LeftDrawerContent>
+
+                <!-- Main Content Area -->
+                <Grid>
+                    <ContentControl Content="{Binding CurrentViewModel}">
+                        <ContentControl.Resources>
+                            <!-- View-ViewModel mappings will be defined here -->
+                            <DataTemplate DataType="{x:Type viewmodels:CoupleHubViewModel}">
+                                <local:CoupleHubView/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type viewmodels:JournalViewModel}">
+                                <local:JournalView/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type viewmodels:MoodTrackerViewModel}">
+                                <local:MoodTrackerView/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type viewmodels:SocialFeedViewModel}">
+                                <local:SocialFeedView/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type viewmodels:UserProfileViewModel}">
+                                <local:UserProfileView/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type viewmodels:CalendarViewModel}">
+                                <local:CalendarView/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type viewmodels:TodoListViewModel}">
+                                <local:TodoListView/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type viewmodels:ChallengeViewModel}">
+                                <local:ChallengeView/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type viewmodels:VirtualPetViewModel}">
+                                <local:VirtualPetView/>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type viewmodels:LongDistanceViewModel}">
+                                <local:LongDistanceView/>
+                            </DataTemplate>
+                        </ContentControl.Resources>
+                    </ContentControl>
+                </Grid>
+            </materialDesign:DrawerHost>
+        </Grid>
+    </materialDesign:DialogHost>
 </Window>

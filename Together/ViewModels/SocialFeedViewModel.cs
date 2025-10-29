@@ -63,16 +63,10 @@ public class SocialFeedViewModel : ViewModelBase, INavigationAware
     public void OnNavigatedFrom()
     {
         // Cleanup if needed
-    }
-
-        // Subscribe to real-time updates
         if (_realTimeSyncService != null)
         {
-            _realTimeSyncService.PostReceived += OnPostReceived;
+            _realTimeSyncService.PostReceived -= OnPostReceived;
         }
-
-        // Load initial feed
-        _ = LoadFeedAsync();
     }
 
     public ObservableCollection<PostCardViewModel> Posts { get; }

@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Together.Presentation"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:viewmodels="clr-namespace:Together.ViewModels"
+        xmlns:viewmodels="clr-namespace:Together.Presentation.ViewModels"
+        xmlns:views="clr-namespace:Together.Presentation.Views"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance Type=viewmodels:MainViewModel}"
         Title="Together - Social and Emotional Hub" 
@@ -115,87 +116,119 @@
                                            FontWeight="Medium"
                                            Opacity="0.6"/>
 
-                                <ListBox Style="{StaticResource MaterialDesignNavigationListBox}">
-                                    <ListBoxItem Command="{Binding NavigateToCoupleHubCommand}">
+                                <StackPanel>
+                                    <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                            HorizontalContentAlignment="Left"
+                                            Padding="16,12"
+                                            Command="{Binding NavigateToCoupleHubCommand}">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="Heart" 
                                                                      Width="24" 
                                                                      Height="24"
-                                                                     Margin="0,0,16,0"/>
+                                                                     Margin="0,0,16,0"
+                                                                     VerticalAlignment="Center"/>
                                             <TextBlock Text="Couple Hub" VerticalAlignment="Center"/>
                                         </StackPanel>
-                                    </ListBoxItem>
+                                    </Button>
 
-                                    <ListBoxItem Command="{Binding NavigateToJournalCommand}">
+                                    <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                            HorizontalContentAlignment="Left"
+                                            Padding="16,12"
+                                            Command="{Binding NavigateToJournalCommand}">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="Book" 
                                                                      Width="24" 
                                                                      Height="24"
-                                                                     Margin="0,0,16,0"/>
+                                                                     Margin="0,0,16,0"
+                                                                     VerticalAlignment="Center"/>
                                             <TextBlock Text="Shared Journal" VerticalAlignment="Center"/>
                                         </StackPanel>
-                                    </ListBoxItem>
+                                    </Button>
 
-                                    <ListBoxItem Command="{Binding NavigateToMoodCommand}">
+                                    <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                            HorizontalContentAlignment="Left"
+                                            Padding="16,12"
+                                            Command="{Binding NavigateToMoodCommand}">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="EmoticonHappy" 
                                                                      Width="24" 
                                                                      Height="24"
-                                                                     Margin="0,0,16,0"/>
+                                                                     Margin="0,0,16,0"
+                                                                     VerticalAlignment="Center"/>
                                             <TextBlock Text="Mood Tracker" VerticalAlignment="Center"/>
                                         </StackPanel>
-                                    </ListBoxItem>
+                                    </Button>
 
-                                    <ListBoxItem Command="{Binding NavigateToTodoCommand}">
+                                    <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                            HorizontalContentAlignment="Left"
+                                            Padding="16,12"
+                                            Command="{Binding NavigateToTodoCommand}">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="CheckboxMarkedOutline" 
                                                                      Width="24" 
                                                                      Height="24"
-                                                                     Margin="0,0,16,0"/>
+                                                                     Margin="0,0,16,0"
+                                                                     VerticalAlignment="Center"/>
                                             <TextBlock Text="To-Do List" VerticalAlignment="Center"/>
                                         </StackPanel>
-                                    </ListBoxItem>
+                                    </Button>
 
-                                    <ListBoxItem Command="{Binding NavigateToCalendarCommand}">
+                                    <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                            HorizontalContentAlignment="Left"
+                                            Padding="16,12"
+                                            Command="{Binding NavigateToCalendarCommand}">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="Calendar" 
                                                                      Width="24" 
                                                                      Height="24"
-                                                                     Margin="0,0,16,0"/>
-                                            <TextBlock Text="Events & Calendar" VerticalAlignment="Center"/>
+                                                                     Margin="0,0,16,0"
+                                                                     VerticalAlignment="Center"/>
+                                            <TextBlock Text="Events &amp; Calendar" VerticalAlignment="Center"/>
                                         </StackPanel>
-                                    </ListBoxItem>
+                                    </Button>
 
-                                    <ListBoxItem Command="{Binding NavigateToChallengesCommand}">
+                                    <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                            HorizontalContentAlignment="Left"
+                                            Padding="16,12"
+                                            Command="{Binding NavigateToChallengesCommand}">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="Trophy" 
                                                                      Width="24" 
                                                                      Height="24"
-                                                                     Margin="0,0,16,0"/>
+                                                                     Margin="0,0,16,0"
+                                                                     VerticalAlignment="Center"/>
                                             <TextBlock Text="Challenges" VerticalAlignment="Center"/>
                                         </StackPanel>
-                                    </ListBoxItem>
+                                    </Button>
 
-                                    <ListBoxItem Command="{Binding NavigateToVirtualPetCommand}">
+                                    <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                            HorizontalContentAlignment="Left"
+                                            Padding="16,12"
+                                            Command="{Binding NavigateToVirtualPetCommand}">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="Cat" 
                                                                      Width="24" 
                                                                      Height="24"
-                                                                     Margin="0,0,16,0"/>
+                                                                     Margin="0,0,16,0"
+                                                                     VerticalAlignment="Center"/>
                                             <TextBlock Text="Virtual Pet" VerticalAlignment="Center"/>
                                         </StackPanel>
-                                    </ListBoxItem>
+                                    </Button>
 
-                                    <ListBoxItem Command="{Binding NavigateToLongDistanceCommand}">
+                                    <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                            HorizontalContentAlignment="Left"
+                                            Padding="16,12"
+                                            Command="{Binding NavigateToLongDistanceCommand}">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="MapMarkerDistance" 
                                                                      Width="24" 
                                                                      Height="24"
-                                                                     Margin="0,0,16,0"/>
+                                                                     Margin="0,0,16,0"
+                                                                     VerticalAlignment="Center"/>
                                             <TextBlock Text="Long Distance" VerticalAlignment="Center"/>
                                         </StackPanel>
-                                    </ListBoxItem>
-                                </ListBox>
+                                    </Button>
+                                </StackPanel>
 
                                 <!-- Social Features Section -->
                                 <TextBlock Text="SOCIAL FEATURES" 
@@ -204,27 +237,35 @@
                                            FontWeight="Medium"
                                            Opacity="0.6"/>
 
-                                <ListBox Style="{StaticResource MaterialDesignNavigationListBox}">
-                                    <ListBoxItem Command="{Binding NavigateToSocialFeedCommand}">
+                                <StackPanel>
+                                    <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                            HorizontalContentAlignment="Left"
+                                            Padding="16,12"
+                                            Command="{Binding NavigateToSocialFeedCommand}">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="ViewDashboard" 
                                                                      Width="24" 
                                                                      Height="24"
-                                                                     Margin="0,0,16,0"/>
+                                                                     Margin="0,0,16,0"
+                                                                     VerticalAlignment="Center"/>
                                             <TextBlock Text="Social Feed" VerticalAlignment="Center"/>
                                         </StackPanel>
-                                    </ListBoxItem>
+                                    </Button>
 
-                                    <ListBoxItem Command="{Binding NavigateToProfileCommand}">
+                                    <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                            HorizontalContentAlignment="Left"
+                                            Padding="16,12"
+                                            Command="{Binding NavigateToProfileCommand}">
                                         <StackPanel Orientation="Horizontal">
                                             <materialDesign:PackIcon Kind="Account" 
                                                                      Width="24" 
                                                                      Height="24"
-                                                                     Margin="0,0,16,0"/>
+                                                                     Margin="0,0,16,0"
+                                                                     VerticalAlignment="Center"/>
                                             <TextBlock Text="My Profile" VerticalAlignment="Center"/>
                                         </StackPanel>
-                                    </ListBoxItem>
-                                </ListBox>
+                                    </Button>
+                                </StackPanel>
                             </StackPanel>
                         </ScrollViewer>
                     </DockPanel>
@@ -236,34 +277,34 @@
                         <ContentControl.Resources>
                             <!-- View-ViewModel mappings will be defined here -->
                             <DataTemplate DataType="{x:Type viewmodels:CoupleHubViewModel}">
-                                <local:CoupleHubView/>
+                                <views:CoupleHubView/>
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type viewmodels:JournalViewModel}">
-                                <local:JournalView/>
+                                <views:JournalView/>
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type viewmodels:MoodTrackerViewModel}">
-                                <local:MoodTrackerView/>
+                                <views:MoodTrackerView/>
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type viewmodels:SocialFeedViewModel}">
-                                <local:SocialFeedView/>
+                                <views:SocialFeedView/>
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type viewmodels:UserProfileViewModel}">
-                                <local:UserProfileView/>
+                                <views:UserProfileView/>
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type viewmodels:CalendarViewModel}">
-                                <local:CalendarView/>
+                                <views:CalendarView/>
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type viewmodels:TodoListViewModel}">
-                                <local:TodoListView/>
+                                <views:TodoListView/>
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type viewmodels:ChallengeViewModel}">
-                                <local:ChallengeView/>
+                                <views:ChallengeView/>
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type viewmodels:VirtualPetViewModel}">
-                                <local:VirtualPetView/>
+                                <views:VirtualPetView/>
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type viewmodels:LongDistanceViewModel}">
-                                <local:LongDistanceView/>
+                                <views:LongDistanceView/>
                             </DataTemplate>
                         </ContentControl.Resources>
                     </ContentControl>

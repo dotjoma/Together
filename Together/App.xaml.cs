@@ -10,7 +10,7 @@ using Together.Infrastructure.Repositories;
 using Together.Infrastructure.Services;
 using Together.Infrastructure.SignalR;
 using Microsoft.Extensions.Logging;
-using Together.ViewModels;
+using Together.Presentation.ViewModels;
 
 namespace Together.Presentation
 {

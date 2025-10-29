@@ -416,7 +416,6 @@
 
 - [x] 22. Implement navigation system
 
-
 - [x] 22.1 Create navigation service
 
   - Implement NavigationService with ViewModel-based navigation
@@ -425,7 +424,9 @@
   - Implement parameter passing between views
   - _Requirements: 20.1_
 
-- [ ] 22.2 Build main window and navigation
+- [x] 22.2 Build main window and navigation
+
+
   - Create MainWindow with navigation drawer
   - Implement MainViewModel coordinating navigation
   - Add navigation menu items (Couple Hub, Journal, Mood, Social Feed, Profile)

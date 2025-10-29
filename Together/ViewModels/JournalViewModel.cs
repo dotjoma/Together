@@ -76,7 +76,6 @@ public class JournalViewModel : ViewModelBase, INavigationAware
             _entryCreationViewModel.EntryCreated -= OnEntryCreated;
         }
     }
-    }
 
     public ObservableCollection<JournalEntryItemViewModel> Entries { get; }
 

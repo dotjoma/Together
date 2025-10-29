@@ -1,4 +1,4 @@
-using Together.ViewModels;
+using Together.Presentation.ViewModels;
 
 namespace Together.Services
 {

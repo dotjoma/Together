@@ -1,11 +1,11 @@
 using System;
 using System.Windows.Input;
-using Together.Commands;
+using Together.Presentation.Commands;
 using Together.Services;
 using Together.Application.Interfaces;
 using Together.Application.DTOs;
 
-namespace Together.ViewModels
+namespace Together.Presentation.ViewModels
 {
     /// <summary>
     /// Main ViewModel coordinating navigation and application state

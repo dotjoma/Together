@@ -69,6 +69,8 @@ public class UserRepository : IUserRepository
 
         var normalizedQuery = query.Trim().ToLower();
 
+        // Privacy: Only return users with public profiles in search results
+        // Friends-only and private profiles are not searchable
         return await _context.Users
             .AsNoTracking()
             .Where(u => u.Username.ToLower().Contains(normalizedQuery) || 

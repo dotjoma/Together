@@ -20,17 +20,23 @@ public class AuthenticationService : IAuthenticationService
     private readonly IUserRepository _userRepository;
     private readonly IConfiguration? _configuration;
     private readonly ILogger<AuthenticationService> _logger;
+    private readonly IInputValidator? _inputValidator;
+    private readonly IAuditLogger? _auditLogger;
     private const int BcryptWorkFactor = 12;
     private const string DefaultJwtSecret = "ThisIsATestSecretKeyForDevelopmentOnlyPleaseChangeInProduction123456";
 
     public AuthenticationService(
         IUserRepository userRepository, 
         ILogger<AuthenticationService> logger,
-        IConfiguration? configuration = null)
+        IConfiguration? configuration = null,
+        IInputValidator? inputValidator = null,
+        IAuditLogger? auditLogger = null)
     {
         _userRepository = userRepository;
         _logger = logger;
         _configuration = configuration;
+        _inputValidator = inputValidator;
+        _auditLogger = auditLogger;
     }
 
     public async Task<AuthResult> RegisterAsync(RegisterDto dto)
@@ -40,29 +46,77 @@ public class AuthenticationService : IAuthenticationService
 
         try
         {
+            // Sanitize inputs
+            var sanitizedUsername = _inputValidator?.SanitizeText(dto.Username) ?? dto.Username;
+            var sanitizedEmail = _inputValidator?.SanitizeText(dto.Email) ?? dto.Email;
+
+            // Check for injection patterns
+            if (_inputValidator != null)
+            {
+                if (_inputValidator.ContainsSqlInjectionPatterns(dto.Username) ||
+                    _inputValidator.ContainsSqlInjectionPatterns(dto.Email))
+                {
+                    if (_auditLogger != null)
+                    {
+                        await _auditLogger.LogSecurityViolationAsync(null, "SQLInjectionAttempt", 
+                            $"Registration attempt with SQL injection patterns: {dto.Username}");
+                    }
+                    throw new ValidationException(new Dictionary<string, string[]>
+                    {
+                        { "Security", new[] { "Invalid input detected" } }
+                    });
+                }
+
+                if (_inputValidator.ContainsXssPatterns(dto.Username) ||
+                    _inputValidator.ContainsXssPatterns(dto.Email))
+                {
+                    if (_auditLogger != null)
+                    {
+                        await _auditLogger.LogSecurityViolationAsync(null, "XSSAttempt", 
+                            $"Registration attempt with XSS patterns: {dto.Username}");
+                    }
+                    throw new ValidationException(new Dictionary<string, string[]>
+                    {
+                        { "Security", new[] { "Invalid input detected" } }
+                    });
+                }
+            }
+
             // Validate input
-            var validationErrors = ValidateRegistration(dto);
+            var validationErrors = ValidateRegistration(new RegisterDto(sanitizedUsername, sanitizedEmail, dto.Password));
             if (validationErrors.Count > 0)
             {
-                _logger.LogWarningWithCorrelation("Registration validation failed for username: {Username}", dto.Username);
+                _logger.LogWarningWithCorrelation("Registration validation failed for username: {Username}", sanitizedUsername);
+                if (_auditLogger != null)
+                {
+                    await _auditLogger.LogAuthenticationEventAsync(null, "Registration", false, "Validation failed");
+                }
                 throw new ValidationException(validationErrors);
             }
 
             // Check if user already exists
-            var existingUserByEmail = await _userRepository.GetByEmailAsync(dto.Email);
+            var existingUserByEmail = await _userRepository.GetByEmailAsync(sanitizedEmail);
             if (existingUserByEmail != null)
             {
-                _logger.LogWarningWithCorrelation("Registration failed: Email already exists for username: {Username}", dto.Username);
+                _logger.LogWarningWithCorrelation("Registration failed: Email already exists for username: {Username}", sanitizedUsername);
+                if (_auditLogger != null)
+                {
+                    await _auditLogger.LogAuthenticationEventAsync(null, "Registration", false, "Email already exists");
+                }
                 throw new ValidationException(new Dictionary<string, string[]>
                 {
                     { "Email", new[] { "A user with this email already exists" } }
                 });
             }
 
-            var existingUserByUsername = await _userRepository.GetByUsernameAsync(dto.Username);
+            var existingUserByUsername = await _userRepository.GetByUsernameAsync(sanitizedUsername);
             if (existingUserByUsername != null)
             {
-                _logger.LogWarningWithCorrelation("Registration failed: Username already exists: {Username}", dto.Username);
+                _logger.LogWarningWithCorrelation("Registration failed: Username already exists: {Username}", sanitizedUsername);
+                if (_auditLogger != null)
+                {
+                    await _auditLogger.LogAuthenticationEventAsync(null, "Registration", false, "Username already exists");
+                }
                 throw new ValidationException(new Dictionary<string, string[]>
                 {
                     { "Username", new[] { "A user with this username already exists" } }
@@ -73,11 +127,15 @@ public class AuthenticationService : IAuthenticationService
             var passwordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password, BcryptWorkFactor);
 
             // Create user
-            var email = Email.Create(dto.Email);
-            var user = User.Create(dto.Username, email, passwordHash);
+            var email = Email.Create(sanitizedEmail);
+            var user = User.Create(sanitizedUsername, email, passwordHash);
 
             await _userRepository.AddAsync(user);
-            _logger.LogInformationWithCorrelation("User registered successfully: {Username}, UserId: {UserId}", dto.Username, user.Id);
+            _logger.LogInformationWithCorrelation("User registered successfully: {Username}, UserId: {UserId}", sanitizedUsername, user.Id);
+            if (_auditLogger != null)
+            {
+                await _auditLogger.LogAuthenticationEventAsync(user.Id, "Registration", true, "User registered successfully");
+            }
 
             // Generate token
             var token = GenerateJwtToken(user);
@@ -99,18 +157,43 @@ public class AuthenticationService : IAuthenticationService
 
         try
         {
+            // Sanitize email input
+            var sanitizedEmail = _inputValidator?.SanitizeText(dto.Email) ?? dto.Email;
+
+            // Check for injection patterns
+            if (_inputValidator != null)
+            {
+                if (_inputValidator.ContainsSqlInjectionPatterns(sanitizedEmail))
+                {
+                    if (_auditLogger != null)
+                    {
+                        await _auditLogger.LogSecurityViolationAsync(null, "SQLInjectionAttempt", 
+                            $"Login attempt with SQL injection patterns: {sanitizedEmail}");
+                    }
+                    return AuthResultExtensions.Failure("Invalid email or password");
+                }
+            }
+
             // Find user by email
-            var user = await _userRepository.GetByEmailAsync(dto.Email);
+            var user = await _userRepository.GetByEmailAsync(sanitizedEmail);
             if (user == null)
             {
-                _logger.LogWarningWithCorrelation("Login failed: User not found for email: {Email}", dto.Email);
+                _logger.LogWarningWithCorrelation("Login failed: User not found for email: {Email}", sanitizedEmail);
+                if (_auditLogger != null)
+                {
+                    await _auditLogger.LogAuthenticationEventAsync(null, "Login", false, "User not found");
+                }
                 return AuthResultExtensions.Failure("Invalid email or password");
             }
 
             // Verify password
             if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
             {
-                _logger.LogWarningWithCorrelation("Login failed: Invalid password for email: {Email}", dto.Email);
+                _logger.LogWarningWithCorrelation("Login failed: Invalid password for email: {Email}", sanitizedEmail);
+                if (_auditLogger != null)
+                {
+                    await _auditLogger.LogAuthenticationEventAsync(user.Id, "Login", false, "Invalid password");
+                }
                 return AuthResultExtensions.Failure("Invalid email or password");
             }
 
@@ -118,6 +201,10 @@ public class AuthenticationService : IAuthenticationService
             var token = GenerateJwtToken(user);
 
             _logger.LogInformationWithCorrelation("User logged in successfully: {Username}, UserId: {UserId}", user.Username, user.Id);
+            if (_auditLogger != null)
+            {
+                await _auditLogger.LogAuthenticationEventAsync(user.Id, "Login", true, "Login successful");
+            }
 
             var userDto = MapToUserDto(user);
             return AuthResultExtensions.Success(token, "Login successful", userDto);

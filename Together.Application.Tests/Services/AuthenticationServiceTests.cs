@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Moq;
 using Together.Application.DTOs;
 using Together.Application.Exceptions;
@@ -12,12 +13,16 @@ namespace Together.Application.Tests.Services;
 public class AuthenticationServiceTests
 {
     private readonly Mock<IUserRepository> _mockUserRepository;
+    private readonly Mock<ILogger<AuthenticationService>> _mockLogger;
     private readonly AuthenticationService _authenticationService;
 
     public AuthenticationServiceTests()
     {
         _mockUserRepository = new Mock<IUserRepository>();
-        _authenticationService = new AuthenticationService(_mockUserRepository.Object);
+        _mockLogger = new Mock<ILogger<AuthenticationService>>();
+        _authenticationService = new AuthenticationService(
+            _mockUserRepository.Object, 
+            _mockLogger.Object);
     }
 
     [Fact]

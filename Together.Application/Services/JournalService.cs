@@ -12,30 +12,52 @@ public class JournalService : IJournalService
     private readonly ICoupleConnectionRepository _connectionRepository;
     private readonly IStorageService _storageService;
     private readonly IRealTimeSyncService? _realTimeSyncService;
+    private readonly IPrivacyService? _privacyService;
+    private readonly IAuditLogger? _auditLogger;
     private const long MaxImageSizeBytes = 5 * 1024 * 1024; // 5MB
 
     public JournalService(
         IJournalEntryRepository journalRepository,
         ICoupleConnectionRepository connectionRepository,
         IStorageService storageService,
-        IRealTimeSyncService? realTimeSyncService = null)
+        IRealTimeSyncService? realTimeSyncService = null,
+        IPrivacyService? privacyService = null,
+        IAuditLogger? auditLogger = null)
     {
         _journalRepository = journalRepository;
         _connectionRepository = connectionRepository;
         _storageService = storageService;
         _realTimeSyncService = realTimeSyncService;
+        _privacyService = privacyService;
+        _auditLogger = auditLogger;
     }
 
     public async Task<JournalEntryDto> CreateJournalEntryAsync(CreateJournalEntryDto dto)
     {
-        // Validate connection exists and user is part of it
+        // Privacy: Validate connection exists and user is part of it
         var connection = await _connectionRepository.GetByIdAsync(dto.ConnectionId);
         if (connection == null)
         {
             throw new NotFoundException(nameof(CoupleConnection), dto.ConnectionId);
         }
 
-        if (connection.User1Id != dto.AuthorId && connection.User2Id != dto.AuthorId)
+        // Privacy: Enforce couple data isolation
+        if (_privacyService != null)
+        {
+            var hasAccess = await _privacyService.HasCoupleDataAccessAsync(dto.AuthorId, dto.ConnectionId);
+            if (!hasAccess)
+            {
+                if (_auditLogger != null)
+                {
+                    await _auditLogger.LogSecurityViolationAsync(
+                        dto.AuthorId,
+                        "UnauthorizedJournalAccess",
+                        $"User {dto.AuthorId} attempted to create journal entry for connection {dto.ConnectionId}");
+                }
+                throw new BusinessRuleViolationException("User is not part of this couple connection");
+            }
+        }
+        else if (connection.User1Id != dto.AuthorId && connection.User2Id != dto.AuthorId)
         {
             throw new BusinessRuleViolationException("User is not part of this couple connection");
         }

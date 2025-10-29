@@ -40,14 +40,15 @@ public class PostRepository : IPostRepository
 
     public async Task<IEnumerable<Post>> GetFeedPostsAsync(Guid userId, int skip, int take)
     {
-        // Get users that the current user is following
+        // Privacy: Get users that the current user is following with accepted relationships
         var followingIds = await _context.FollowRelationships
             .AsNoTracking()
             .Where(f => f.FollowerId == userId && f.Status == "accepted")
             .Select(f => f.FollowingId)
             .ToListAsync();
 
-        // Get posts from followed users
+        // Privacy: Only get posts from followed users
+        // Posts from private or friends-only profiles are filtered by follow relationships
         return await _context.Posts
             .AsNoTracking()
             .Include(p => p.Author)

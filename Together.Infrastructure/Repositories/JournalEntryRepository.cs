@@ -16,6 +16,8 @@ public class JournalEntryRepository : IJournalEntryRepository
 
     public async Task<JournalEntry?> GetByIdAsync(Guid id)
     {
+        // Privacy: Journal entries are isolated by connection ID
+        // Caller must verify user has access to the connection
         return await _context.JournalEntries
             .AsNoTracking()
             .Include(j => j.Author)
@@ -24,6 +26,8 @@ public class JournalEntryRepository : IJournalEntryRepository
 
     public async Task<IEnumerable<JournalEntry>> GetByConnectionIdAsync(Guid connectionId)
     {
+        // Privacy: Only return entries for the specified connection
+        // Caller must verify user is part of this connection
         return await _context.JournalEntries
             .AsNoTracking()
             .Include(j => j.Author)

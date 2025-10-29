@@ -31,6 +31,9 @@ namespace Together.Presentation
             Log.Logger = LoggingConfiguration.ConfigureSerilog();
             Log.Information("Together application starting...");
 
+            // Configure TLS 1.2+ enforcement
+            TlsConfigurationService.ConfigureTls();
+
             // Set up global exception handlers
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
             DispatcherUnhandledException += OnDispatcherUnhandledException;
@@ -98,6 +101,13 @@ namespace Together.Presentation
             // Infrastructure Services
             services.AddScoped<IStorageService, SupabaseStorageService>();
             services.AddSingleton<IRealTimeSyncService, TogetherHub>();
+            
+            // Security Services
+            services.AddSingleton<IInputValidator, InputValidator>();
+            services.AddSingleton<ISecureTokenStorage, WindowsCredentialTokenStorage>();
+            services.AddSingleton<IAuditLogger, AuditLogger>();
+            services.AddScoped<IPrivacyService, PrivacyService>();
+            services.AddScoped<ILocationPermissionService, LocationPermissionService>();
             
             // Navigation Service
             services.AddSingleton<Together.Services.INavigationService, Together.Services.NavigationService>();
